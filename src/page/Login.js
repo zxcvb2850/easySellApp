@@ -1,19 +1,30 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import {StyleSheet, StatusBar, TouchableHighlight, View, Text,Image} from "react-native";
+import {scaleSize} from "../common/screenUtil";
 
 export default class Login extends React.Component {
 
-    login = () => {
-        console.log(this.props);
-        this.props.navigation.navigate('Home', { name: 'abc' })
+    constructor() {
+        super()
     }
 
     render() {
         return (
-            <View>
-                <Text style={{ color: '#000' }}>我是登录页面</Text>
-                <Text onPress={this.login}>登录</Text>
+            <View style={styles.container}>
+                <View>
+                    <Image style={{width: scaleSize(236), height: scaleSize(236)}}
+                           source={require('../assets/resource/login/logo.png')}/>
+
+                </View>
             </View>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})

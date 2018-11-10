@@ -1,6 +1,5 @@
 import { AppRegistry, YellowBox } from 'react-native';
-import Index from "./src/index";
-import App from './App';
+import App from "./src/App";
 
 YellowBox.ignoreWarnings([
     'Warning: componentWillMount is deprecated',
@@ -9,4 +8,4 @@ YellowBox.ignoreWarnings([
     'Warning: isMounted(...) is deprecated', 'Module RCTImageLoader',
 ]);
 
-AppRegistry.registerComponent('easySellApp', () => Index);
+AppRegistry.registerComponent('easySellApp', () => App);
