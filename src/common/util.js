@@ -2,6 +2,7 @@
 * 公用函数
 * */
 import Toast from "react-native-root-toast"
+import {dangerColor, successColor, warringColor} from "./styles";
 
 /*封装公共Toast*/
 export function showToast(text, type = "info", duration = 2000, position = "bottom") {
@@ -31,13 +32,13 @@ export function showToast(text, type = "info", duration = 2000, position = "bott
             showType = "#000"
             break;
         case "success":
-            showType = "#5cb85c"
+            showType = successColor
             break;
         case "danger":
-            showType = "#d9534f"
+            showType = dangerColor
             break;
         case "warning":
-            showType = "#f0ad4e"
+            showType = warringColor
             break;
         default:
             showType = "#f4f4f4"
