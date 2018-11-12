@@ -1,5 +1,5 @@
 ## 此项项目为react-native开发的app
-
+  
 ## 安装环境
 ``` json
 "node": "8.12.0",
