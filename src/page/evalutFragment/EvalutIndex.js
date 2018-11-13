@@ -6,7 +6,7 @@ import {StyleSheet, View, Text, Image, FlatList} from "react-native"
 import {Drawer, Content, ListItem, Left, Body, Right, Icon, Button, Segment} from "native-base"
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"
-import {whiteColor} from "../../common/styles";
+import {whiteColor} from "../../common/styles"
 
 export default class DynamicIndex extends React.Component {
 
