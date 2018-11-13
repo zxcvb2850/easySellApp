@@ -53,6 +53,10 @@ const mineIndex = createStackNavigator({
 
 /*四个页签*/
 const tabFragment = createBottomTabNavigator({
+    TabEvalut: {
+        screen: evalutIndex,
+        navigationOptions: {title: "考评"}
+    },
     TabDynamic: {
         screen: dynamicIndex,
         navigationOptions: {title: "动态"}
@@ -60,10 +64,6 @@ const tabFragment = createBottomTabNavigator({
     TabShop: {
         screen: shopIndex,
         navigationOptions: {title: "店铺"}
-    },
-    TabEvalut: {
-        screen: evalutIndex,
-        navigationOptions: {title: "考评"}
     },
     TabMine: {
         screen: mineIndex,
