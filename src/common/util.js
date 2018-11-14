@@ -7,7 +7,7 @@ import {dangerColor, successColor, warringColor} from "./styles";
 /*封装公共Toast*/
 export function showToast(text, type = "info", duration = 2000, position = "bottom") {
     let showDuration = ""//展示时间长短
-    if (duration > 2000) {
+    if (duration > 1500) {
         showDuration = Toast.durations.LONG
     } else {
         showDuration = Toast.durations.SHORT
