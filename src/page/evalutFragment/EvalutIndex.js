@@ -55,7 +55,7 @@ export default class DynamicIndex extends React.Component {
         <ListItem icon style={{backgroundColor: whiteColor}}
                   key={item.id}
                   onPress={() => {
-                      console.log(item.id)
+                      this.props.navigation.navigate('EvalutDetails')
                   }}
         >
             <Left>
