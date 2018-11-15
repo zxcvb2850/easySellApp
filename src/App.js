@@ -1,6 +1,25 @@
 import React from "react"
-import {View, Text} from "react-native"
 import {Root} from "native-base"
-import {AppNavigator} from "./routers/navigations"
+import {appReducer, AppWithNavigationState} from "./routers/navigations"
+import {Provider} from 'react-redux';
+import {
+    createStore,
+    applyMiddleware,
+} from 'redux';
 
-export default () => <Root><AppNavigator/></Root>;
+const store = createStore(
+    appReducer,
+    applyMiddleware(),
+);
+
+export default class App extends React.Component {
+    componentDidMount() {
+        console.log('----------------', this.props)
+    }
+
+    render() {
+        return (
+            <Provider store={store}><AppWithNavigationState/></Provider>
+        )
+    }
+}

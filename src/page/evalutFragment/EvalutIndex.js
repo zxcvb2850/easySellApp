@@ -89,7 +89,7 @@ export default class DynamicIndex extends React.Component {
                         tabBarUnderlineStyle={{height: scaleSize(2), backgroundColor: mainColor}}
                         tabBarActiveTextColor={mainColor}
                         tabBarInactiveTextColor={garyColor}
-                        initialPage={1}
+                        initialPage={0}
                         renderTabBar={() => <DefaultTabBar style={styles.tab}/>}
                     >
                         <FlatList

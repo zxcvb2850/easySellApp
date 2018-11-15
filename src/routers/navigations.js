@@ -3,7 +3,7 @@
 * xiaobai
 * */
 import React from "react";
-import {Image} from "react-native"
+import {Image, BackHandler} from "react-native"
 import {createStackNavigator, createTabNavigator, createBottomTabNavigator} from "react-navigation"
 
 /*路由指向的文件*/
@@ -20,7 +20,20 @@ import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
-import {tabImages} from "../common/util";
+import {showToast, tabImages} from "../common/util";
+
+/**/
+import {
+    createStore,
+    applyMiddleware,
+    combineReducers,
+} from 'redux';
+import {
+    reduxifyNavigator,
+    createReactNavigationReduxMiddleware,
+    createNavigationReducer,
+} from 'react-navigation-redux-helpers';
+import {connect} from 'react-redux';
 
 /*动态*/
 const dynamicIndex = createStackNavigator({
@@ -94,9 +107,9 @@ const tabFragment = createBottomTabNavigator({
 })
 
 export const AppNavigator = createStackNavigator({
-    TabFragment: {screen: tabFragment},
+    BootPage: {screen: BootPage},
     Login: {screen: Login},
-    BootPage: {screen: BootPage}
+    TabFragment: {screen: tabFragment}
 }, {
     //路由参数
     header: null,
@@ -105,3 +118,12 @@ export const AppNavigator = createStackNavigator({
         gesturesEnabled: false,
     }
 })
+
+const navReducer = createNavigationReducer(AppNavigator);
+export const appReducer = combineReducers({
+    nav: navReducer,
+})
+const mapStateToProps = (state) => ({
+    state: state.nav,
+});
+export const AppWithNavigationState = connect(mapStateToProps)(AppNavigator);

@@ -1,12 +1,39 @@
 import React from "react";
-import {StyleSheet, StatusBar, TouchableHighlight, View, Text, Image, TouchableOpacity} from "react-native";
+import {
+    StyleSheet,
+    StatusBar,
+    TouchableHighlight,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    BackHandler
+} from "react-native";
 import {Container, Item, Input, Form, Label, Thumbnail, Button} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
 import {mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 
 export default class Login extends React.Component {
+    /*componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
+    }
 
+
+    componentWillUnmount() {
+        BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
+    }
+
+    _onBackAndroid = () => {
+        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+            BackHandler.exitApp()
+            return false;
+        }
+        this.lastBackPressed = Date.now();
+        showToast('再按一次退出!');
+        return true;
+    }
+*/
     constructor() {
         super()
         this.state = {

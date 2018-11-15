@@ -21,9 +21,9 @@ export default class BootPage extends React.Component {
     down = () => {
         if (this.state.downTimer > 0) {
             this.timer = setTimeout(() => {
-                this.setState({downTimer: this.state.downTimer-1})
+                this.setState({downTimer: this.state.downTimer - 1})
                 this.down();
-            }, 1000)
+            }, 2000)
         } else {
             this.props.navigation.navigate('Login');
         }

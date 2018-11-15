@@ -13,6 +13,7 @@ const MineIndex = (props) => (
     <View style={styles.container}>
         <Header title={"我的"}/>
         <ImageBackground
+            source={require("../../assets/resource/mine/mine_bg.png")}
             style={styles.header_bg}>
             <View style={[styles.avatar_border]}>
                 <Image style={styles.avatar}
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     header_bg: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: scaleSize(750),
+        // width: scaleSize(750),
         height: scaleSize(470),
     },
     avatar: {
