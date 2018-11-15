@@ -19,7 +19,7 @@ export default class ShopDetail extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.navigation.state.params)
+        //console.log(this.props.navigation.state.params)
     }
 
     render() {

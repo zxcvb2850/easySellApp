@@ -3,11 +3,16 @@
 * */
 import React from "react"
 import {StyleSheet, ImageBackground, View, Text, Image, FlatList, TouchableOpacity} from "react-native"
-
-
+import {AnimatedCircularProgress} from 'react-native-circular-progress'
+import LinearGradient from 'react-native-linear-gradient';
 import Header from "../../components/Header"
 import {scaleSize} from "../../common/screenUtil";
-import {garyColor, mainColor, whiteColor} from "../../common/styles";
+import {
+  backgroundColor,
+  headerColor,
+  itemHeadColor,
+  whiteColor
+} from "../../common/styles";
 
 export default class DynamicIndex extends React.Component {
   constructor() {
@@ -34,18 +39,62 @@ export default class DynamicIndex extends React.Component {
   _keyExtractor = (item) => item.id + '';
 
   _listHeaderComponent = () => (
-	<ImageBackground
-	  style={styles.show_data}>
+	<LinearGradient colors={[headerColor, itemHeadColor]} style={styles.show_data}>
 	  <View style={styles.cols}>
-		<Text>1</Text>
+		<AnimatedCircularProgress
+		  size={80}
+		  width={6}
+		  fill={98}
+		  tintColor="#FFF"
+		  onAnimationComplete={() => console.log('onAnimationComplete')}
+		  backgroundColor="rgba(0,0,0,0.1)"
+		  children={() => (
+			<View>
+			  <Text style={styles.gary_color}>可视</Text><Text style={styles.color_white}>98%</Text>
+			</View>)}/>
+		<View style={styles.desc_title}>
+		  <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_video.png")}/>
+		  <Text style={styles.gary_color}>视频总数</Text>
+		</View>
+		<Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
+	  </View>
+	  <View style={[styles.cols, styles.borderLeftRight]}>
+		<AnimatedCircularProgress
+		  size={80}
+		  width={6}
+		  fill={50}
+		  tintColor="#FFF"
+		  onAnimationComplete={() => console.log('onAnimationComplete')}
+		  backgroundColor="rgba(0,0,0,0.1)"
+		  children={() => (
+			<View>
+			  <Text style={styles.gary_color}>在线</Text><Text style={styles.color_white}>50%</Text>
+			</View>)}/>
+		<View style={styles.desc_title}>
+		  <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_shop.png")}/>
+		  <Text style={styles.gary_color}>门店总数</Text>
+		</View>
+		<Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
 	  </View>
 	  <View style={styles.cols}>
-		<Text>2</Text>
+		<AnimatedCircularProgress
+		  size={80}
+		  width={6}
+		  fill={95}
+		  tintColor="#FFF"
+		  onAnimationComplete={() => console.log('onAnimationComplete')}
+		  backgroundColor="rgba(0,0,0,0.1)"
+		  children={() => (
+			<View>
+			  <Text style={styles.gary_color}>布防</Text><Text style={styles.color_white}>95%</Text>
+			</View>)}/>
+		<View style={styles.desc_title}>
+		  <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_bufan.png")}/>
+		  <Text style={styles.gary_color}>布防总数</Text>
+		</View>
+		<Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
 	  </View>
-	  <View style={styles.cols}>
-		<Text>3</Text>
-	  </View>
-	</ImageBackground>
+	</LinearGradient>
   )
 
   _renderItem = ({item}) => (
@@ -97,6 +146,20 @@ export default class DynamicIndex extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  color_white: {
+	color: whiteColor,
+  },
+  gary_color: {
+	color: backgroundColor,
+  },
+  borderLeftRight: {
+	borderLeftColor: 'rgba(255,255,255,0.3)',
+	borderRightColor: 'rgba(255,255,255,0.3)',
+	borderLeftWidth: scaleSize(1),
+	borderRightWidth: scaleSize(1),
+	borderStyle: 'solid',
+  },
+
   container: {
 	flex: 1,
   },
@@ -108,8 +171,21 @@ const styles = StyleSheet.create({
   cols: {
 	flex: 1,
 	height: scaleSize(444),
-	backgroundColor: '#000'
+	alignItems: 'center',
+	justifyContent: 'center',
   },
+  desc_title: {
+	flexDirection: 'row',
+	alignItems: 'center',
+	justifyContent: 'center',
+	height: scaleSize(70),
+  },
+  icon_min: {
+	marginHorizontal: scaleSize(6),
+	width: scaleSize(30),
+	height: scaleSize(30),
+  },
+
   list: {
 	flex: 1,
   },
@@ -124,7 +200,7 @@ const styles = StyleSheet.create({
 	flexDirection: 'row',
 	alignItems: 'center',
 	height: scaleSize(56),
-	backgroundColor: mainColor,
+	backgroundColor: itemHeadColor,
   },
   item_body: {
 	flexDirection: 'row',

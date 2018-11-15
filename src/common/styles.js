@@ -11,6 +11,7 @@ export const lightGaryColor = "#c3c3c3";
 export const whiteColor = "#FFF";
 export const headerColor = "#3894f1";
 export const headColor = "#41a4f2";
+export const itemHeadColor = "#4cc2f2";
 export const backgroundColor = "#f7f7f7";
 export const successColor = "#5cb85c";
 export const dangerColor = "#d9534f";

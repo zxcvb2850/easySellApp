@@ -20,20 +20,20 @@ export default class DynamicIndex extends React.Component {
     }
 
     allClick = () => {
-        console.log("全部");
+        //console.log("全部");
     }
 
     search = () => {
-        console.log("搜索");
+        //console.log("搜索");
     }
 
     filter = () => {
-        console.log("筛选");
+        //console.log("筛选");
         this.openDrawer();
     }
 
     itemHeadIcon = () => {
-        console.log("icon");
+        //console.log("icon");
     }
 
     closeDrawer = () => {
@@ -101,7 +101,7 @@ export default class DynamicIndex extends React.Component {
                         <Status status={2}/>
                     </View>
                     <Text style={{color: garyColor}} onPress={() => {
-                        console.log("更多监控")
+                        //console.log("更多监控")
                     }}>更多(15) ></Text>
                 </View>
                 <View style={styles.body_center}>
