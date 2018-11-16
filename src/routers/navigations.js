@@ -3,7 +3,7 @@
 * xiaobai
 * */
 import React from "react";
-import {Image, BackHandler} from "react-native"
+import {Image} from "react-native"
 import {createStackNavigator, createTabNavigator, createBottomTabNavigator} from "react-navigation"
 
 /*路由指向的文件*/
@@ -20,9 +20,9 @@ import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
-import {showToast, tabImages} from "../common/util";
+import {tabImages} from "../common/util";
 
-/**/
+/*mobx*/
 import {observer, inject} from 'mobx-react'
 import {action, computed} from 'mobx'
 
@@ -110,6 +110,8 @@ export const AppNavigator = createStackNavigator({
   }
 })
 
+export const routerRule = ['Login', 'TabDynamic', 'TabShop', 'TabEvalut', 'TabMine', 'TabFragment']
+
 @inject('store')
 @observer
 export default class AppNavigatorRoot extends React.Component {
@@ -122,8 +124,12 @@ export default class AppNavigatorRoot extends React.Component {
 	return (
 	  <AppNavigator
 		onNavigationStateChange={(prevState, newState, action) => {
+		  console.log('-----------', action)
 		  if (action.routeName) {
 			this.setRouter(action.routeName)
+		  }
+		  if (action.type === 'Navigation/COMPLETE_TRANSITION' && !routerRule.indexOf(action.key)) {
+			this.setRouter(action.key)
 		  }
 		}}/>
 	)

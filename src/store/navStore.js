@@ -1,11 +1,6 @@
 import {observable, computed, action} from 'mobx'
 import navInfo from "./navInfo"
 
-/**
- * 根store
- * OneInfo OneInfo数据
- * TwoInfo TwoInfo数据
- */
 class RootStore {
   constructor() {
 	this.NavInfo = new NavInfo(navInfo, this)
