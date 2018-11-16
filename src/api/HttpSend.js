@@ -3,12 +3,21 @@
  * */
 import BaseServer from "./BaseServer"
 
-export default {
-  login(name, pwd) {
-	let url = "";
-	let formData = new FormData()
-	formData.append("name", name)
-	formData.append("password", pwd)
-	return BaseServer.post(url, formData, false,)
-  },
+//登录
+export function login(username, password) {
+    let url = "/app/user/login";
+    let data = {username, password}
+    return BaseServer.post(url, data)
+}
+
+//获取个人信息
+export function getInfo() {
+    let url = "/app/user/info";
+    return BaseServer.get(url)
+}
+
+//登出
+export function postLogout() {
+    let url = "/app/user/logout";
+    return BaseServer.post(url)
 }

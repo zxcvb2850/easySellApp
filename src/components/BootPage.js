@@ -1,6 +1,7 @@
 import React from "react"
-import {StyleSheet, StatusBar, View, Text, Image} from "react-native"
+import {StyleSheet, StatusBar, View, Text, Image, AsyncStorage} from "react-native"
 import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
+import {getInfo} from "../api/HttpSend";
 
 export default class BootPage extends React.Component {
     componentWillUnmount() {
@@ -18,14 +19,22 @@ export default class BootPage extends React.Component {
         }
     }
 
-    down = () => {
+    down = async () => {
         if (this.state.downTimer > 0) {
             this.timer = setTimeout(() => {
                 this.setState({downTimer: this.state.downTimer - 1})
                 this.down();
             }, 2000)
         } else {
-            this.props.navigation.navigate('Login');
+            const value = await AsyncStorage.getItem('shop_token');
+            if (value !== null) {
+                let result = await getInfo()
+                console.log(value);
+                await AsyncStorage.setItem('shop_info', JSON.stringify(result.user))
+                this.props.navigation.navigate('TabFragment');
+            } else {
+                this.props.navigation.navigate('Login');
+            }
         }
     }
 

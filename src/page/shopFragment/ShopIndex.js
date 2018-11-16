@@ -10,6 +10,7 @@ import HeaderAttach from "../../components/HeaderAttach"
 import {scaleSize} from "../../common/screenUtil";
 import {showToast} from "../../common/util"
 import Status from "../../components/Status";
+import {getStoreList} from "../../api/evaluReq";
 
 export default class DynamicIndex extends React.Component {
     constructor() {
@@ -17,6 +18,13 @@ export default class DynamicIndex extends React.Component {
         this.state = {
             data: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}]
         }
+
+        this._getStoreList();
+    }
+
+    _getStoreList = async () => {
+        let reult = await getStoreList();
+        console.log('------------', reult);
     }
 
     allClick = () => {
