@@ -1,25 +1,19 @@
 import React from "react"
 import {Root} from "native-base"
-import {appReducer, AppWithNavigationState} from "./routers/navigations"
-import {Provider} from 'react-redux';
-import {
-    createStore,
-    applyMiddleware,
-} from 'redux';
-
-const store = createStore(
-    appReducer,
-    applyMiddleware(),
-);
+import AppNavigatorRoot from "./routers/navigations"
+// 全局注册并注入mobx，其他地方都可以使用store
+import {Provider} from 'mobx-react';
+// 获取store实例
+import store from './store/navStore';
 
 export default class App extends React.Component {
-    componentDidMount() {
-        console.log('----------------', this.props)
-    }
-
-    render() {
-        return (
-            <Provider store={store}><AppWithNavigationState/></Provider>
-        )
-    }
+  render() {
+	return (
+	  <Provider store={store}>
+		<Root>
+		  <AppNavigatorRoot/>
+		</Root>
+	  </Provider>
+	)
+  }
 }

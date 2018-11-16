@@ -2,7 +2,7 @@
 * 动态
 * */
 import React from "react"
-import {StyleSheet, ImageBackground, View, Text, Image, FlatList, TouchableOpacity,BackHandler} from "react-native"
+import {StyleSheet, ImageBackground, View, Text, Image, FlatList, TouchableOpacity} from "react-native"
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import LinearGradient from 'react-native-linear-gradient';
 import Header from "../../components/Header"
@@ -13,30 +13,9 @@ import {
   itemHeadColor,
   whiteColor
 } from "../../common/styles";
-import {showToast} from "../../common/util";
 
 export default class DynamicIndex extends React.Component {
-    componentWillMount() {
-        BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
-    }
-
-
-    componentWillUnmount() {
-        BackHandler.addEventListener('hardwareBackPress', this._onBackAndroid);
-    }
-
-    _onBackAndroid = () => {
-    	console.log(this.props)
-        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-            BackHandler.exitApp()
-            return false;
-        }
-        this.lastBackPressed = Date.now();
-        showToast('再按一次退出!');
-        return true;
-    }
-
-    constructor() {
+  constructor() {
 	super()
 	this.state = {
 	  data: [{
@@ -66,8 +45,8 @@ export default class DynamicIndex extends React.Component {
 		  size={80}
 		  width={6}
 		  fill={98}
-          rotation={0}
-          tintColor="#FFF"
+		  rotation={0}
+		  tintColor="#FFF"
 		  onAnimationComplete={() => console.log('onAnimationComplete')}
 		  backgroundColor="rgba(0,0,0,0.1)"
 		  children={() => (
@@ -85,7 +64,7 @@ export default class DynamicIndex extends React.Component {
 		  size={80}
 		  width={6}
 		  fill={50}
-          rotation={0}
+		  rotation={0}
 		  tintColor="#FFF"
 		  onAnimationComplete={() => console.log('onAnimationComplete')}
 		  backgroundColor="rgba(0,0,0,0.1)"
@@ -104,7 +83,7 @@ export default class DynamicIndex extends React.Component {
 		  size={80}
 		  width={6}
 		  fill={95}
-          rotation={0}
+		  rotation={0}
 		  tintColor="#FFF"
 		  onAnimationComplete={() => console.log('onAnimationComplete')}
 		  backgroundColor="rgba(0,0,0,0.1)"
