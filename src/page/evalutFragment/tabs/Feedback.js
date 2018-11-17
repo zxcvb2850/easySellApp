@@ -21,36 +21,20 @@ export default class Feedback extends React.Component {
 
     _keyExtractor = (item) => item.id + '';
     _renderItem = ({item}) => (
-        <View style={styles.list}>
-            <View style={styles.top}>
-                <Text style={styles.top_txt}>当天</Text>
+        <View style={styles.item}>
+            <View style={styles.head}>
+                <View style={styles.line}/>
+                <Text style={styles.head_title}>南区1030店</Text>
+                <Text style={styles.eval_icon}>处理</Text>
             </View>
-            {
-                item.children.map(v => (
-                    <View style={styles.item} key={v.ids}>
-                        <View style={styles.head}>
-                            <View style={styles.line}/>
-                            <Text style={styles.head_title}>南区1030店</Text>
-                            {
-                                item.eval > 3 ?
-                                    <Image style={styles.eval_icon}
-                                           source={require("../../../assets/resource/evalut/icon_you.png")}/>
-                                    :
-                                    <Image style={styles.eval_icon}
-                                           source={require("../../../assets/resource/evalut/icon_lian.png")}/>
-                            }
-                        </View>
-                        <View style={styles.footer}>
-                            <View style={styles.center}>
-                                <Text style={styles.desc}>检查35项，全部合格</Text>
-                                <Text style={styles.time}>14:20:20</Text>
-                            </View>
-                            <Image style={{width: scaleSize(44), height: scaleSize(44)}}
-                                   source={require("../../../assets/resource/common/icon_back_black.png")}/>
-                        </View>
-                    </View>
-                ))
-            }
+            <View style={styles.footer}>
+                <View style={styles.center}>
+                    <Text style={styles.desc}>考评时间：2018-10-8日</Text>
+                    <Text style={styles.time}>考评内容荣：全部不合格项目(3项)</Text>
+                    <Text style={styles.time}>处理人：张麻子</Text>
+                    <Text style={styles.time}>完成时间：2018-10-10 11:12:23</Text>
+                </View>
+            </View>
         </View>
     )
 
@@ -72,26 +56,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f7f7',
     },
 
-    list: {
-        backgroundColor: whiteColor,
-        borderTopColor: lightGaryColor,
-        borderTopWidth: scaleSize(1),
-        borderStyle: 'solid',
-    },
     item: {
         marginBottom: scaleSize(10),
         borderTopColor: lightGaryColor,
         borderTopWidth: scaleSize(1),
         borderStyle: 'solid',
-    },
-    top: {
-        justifyContent: 'center',
-        height: scaleSize(78),
-        backgroundColor: '#c3d5fb',
-    },
-    top_txt: {
-        marginLeft: scaleSize(40),
-        color: mainColor,
     },
     head: {
         paddingHorizontal: scaleSize(28),
@@ -99,6 +68,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: scaleSize(88),
+        backgroundColor: '#0ff',
     },
     line: {
         marginHorizontal: scaleSize(8),
@@ -111,15 +81,13 @@ const styles = StyleSheet.create({
     },
     eval_icon: {
         marginHorizontal: scaleSize(14),
-        width: scaleSize(48),
         height: scaleSize(48)
     },
     footer: {
         marginBottom: scaleSize(24),
-        paddingHorizontal: scaleSize(30),
+        padding: scaleSize(30),
         flexDirection: 'row',
         alignItems: 'center',
-        height: scaleSize(150),
         borderTopColor: lightGaryColor,
         borderBottomColor: lightGaryColor,
         borderTopWidth: scaleSize(1),
@@ -134,7 +102,6 @@ const styles = StyleSheet.create({
         //fontSize: 16,
     },
     time: {
-        color: garyColor,
         fontSize: 13,
     }
 })

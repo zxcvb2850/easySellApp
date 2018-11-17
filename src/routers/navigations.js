@@ -98,9 +98,9 @@ const tabFragment = createBottomTabNavigator({
 })
 
 export const AppNavigator = createStackNavigator({
+    TabFragment: {screen: tabFragment},
     BootPage: {screen: BootPage},
-    Login: {screen: Login},
-    TabFragment: {screen: tabFragment}
+    Login: {screen: Login}
 }, {
     //路由参数
     header: null,

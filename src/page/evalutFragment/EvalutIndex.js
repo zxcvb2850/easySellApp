@@ -10,6 +10,7 @@ import HeaderAttach from "../../components/HeaderAttach"
 import {garyColor, mainColor, whiteColor} from "../../common/styles"
 import {scaleSize} from "../../common/screenUtil";
 import Feedback from "./tabs/Feedback";
+import Recording from "./tabs/Recording";
 
 
 export default class DynamicIndex extends React.Component {
@@ -99,7 +100,7 @@ export default class DynamicIndex extends React.Component {
                             renderItem={this._renderItem}
                         />
                         <Feedback tabLabel='整改反馈(2)'/>
-                        <Text style={styles.textStyle} tabLabel='考评记录'>project</Text>
+                        <Recording tabLabel='考评记录'/>
                     </ScrollableTabView>
 
                 </View>

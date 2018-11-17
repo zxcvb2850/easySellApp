@@ -90,6 +90,7 @@ export default class EvalutDetails extends React.Component {
                     </TouchableOpacity>
                 </Header>
                 <View style={styles.center}>
+                    {/*手风琴动画*/}
                     <Accordion
                         style={{backgroundColor: whiteColor}}
                         sections={this.state.data}
