@@ -3,7 +3,7 @@
 * xiaobai
 * */
 import React from "react";
-import {Image} from "react-native"
+import {Image, BackHandler} from "react-native"
 import {createStackNavigator, createTabNavigator, createBottomTabNavigator} from "react-navigation"
 
 /*路由指向的文件*/
@@ -20,7 +20,7 @@ import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
-import {tabImages} from "../common/util";
+import {showToast, tabImages} from "../common/util";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'
@@ -118,6 +118,31 @@ export default class AppNavigatorRoot extends React.Component {
     @action
     setRouter(route) {
         this.props.store.NavInfo.setRoute(route)
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    onBackPress = () => {
+        const {dispatch, nav} = this.props;
+        if (nav.index === 0) {
+            if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+                //将state设置成第一次启动一致，避免从哪个界面退出，
+                //启动时显示哪个界面的bug（杀掉进程启动无该问题）
+                dispatch({type: 'ExitApp'})
+                return false
+            }
+            showToast('再按一次退出!', 'info', 1000);
+            this.lastBackPressed = Date.now();
+            return true;
+        }
+        dispatch(NavigationActions.back());
+        return true;
     }
 
     render() {

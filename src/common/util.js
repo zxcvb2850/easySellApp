@@ -70,12 +70,12 @@ export function dialPhone(phone) {
 }
 
 /*对象转为get传参带&的url*/
-function objChangeUrl(obj) {
+export function objChangeUrl(obj) {
     if (typeof obj !== 'object' || Array.isArray(obj)) return;
 
     let arr = [];
     for (let i in obj) {
-        if (obj[i] != null) {
+        if (obj[i] != null && obj[i] !== '') {
             arr.push(`${i}=${obj[i]}`)
         }
     }

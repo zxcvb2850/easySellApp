@@ -2,57 +2,102 @@
 * 考评记录
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList} from "react-native"
+import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native"
 import {Separator} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
+import {getStoreHistory} from "../../../api/evaluReq";
 
 export default class Recording extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            list: [
-                {id: 1, eval: 5, children: [{ids: 10}, {ids: 11}]},
-                {id: 2, eval: 2, children: [{ids: 10}]},
-                {id: 3, eval: 5, children: [{ids: 10}, {ids: 11}]},
-                {id: 4, eval: 2, children: [{ids: 11}]}]
+            list: [{
+                storeId: 1,
+                storeName: '南区1303店',
+                projectTotle: 30,
+                qualifiedTotle: 10,
+                qualifiedRate: '33.3 %',
+                reviewLevel: 3
+            }, {
+                storeId: 2,
+                storeName: '南区1303店',
+                projectTotle: 30,
+                qualifiedTotle: 10,
+                qualifiedRate: '33.3%',
+                reviewLevel: 3
+            }, {
+                storeId: 3,
+                storeName: '南区1303店',
+                projectTotle: 30,
+                qualifiedTotle: 10,
+                qualifiedRate: '33.3%',
+                reviewLevel: 3
+            }, {
+                storeId: 4,
+                storeName: '南区1303店',
+                projectTotle: 30,
+                qualifiedTotle: 10,
+                qualifiedRate: '33.3%',
+                reviewLevel: 3
+            }],
+            filter: props.filter,//过滤的条件
+            page: 1,//当前页码
+            refreshing: false,//是否在加载数据
+            isStatus: true,
+            isLoreTextStatus: true,
+            isLoreText: '正在加载中...',//上拉加载提示文字
+        }
+        //this._getStoreHistory()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.filter !== this.props.filter) {
+            if (nextProps.index === 2) {
+                this.setState({filter: nextProps.filter})
+                this._getPlanList()
+            }
         }
     }
 
-    _keyExtractor = (item) => item.id + '';
-    _renderItem = ({item}) => (
-        <View style={styles.list}>
-            <View style={styles.top}>
-                <Text style={styles.top_txt}>当天</Text>
-            </View>
-            {
-                item.children.map(v => (
-                    <View style={styles.item} key={v.ids}>
-                        <View style={styles.head}>
-                            <View style={styles.line}/>
-                            <Text style={styles.head_title}>南区1030店</Text>
-                            {
-                                item.eval > 3 ?
-                                    <Image style={styles.eval_icon}
-                                           source={require("../../../assets/resource/evalut/icon_you.png")}/>
-                                    :
-                                    <Image style={styles.eval_icon}
-                                           source={require("../../../assets/resource/evalut/icon_lian.png")}/>
-                            }
-                        </View>
-                        <View style={styles.footer}>
-                            <View style={styles.center}>
-                                <Text style={styles.desc}>检查35项，全部合格</Text>
-                                <Text style={styles.time}>14:20:20</Text>
-                            </View>
-                            <Image style={{width: scaleSize(44), height: scaleSize(44)}}
-                                   source={require("../../../assets/resource/common/icon_back_black.png")}/>
-                        </View>
-                    </View>
-                ))
+    //获取列表
+    _getStoreHistory = async (page = 1) => {
+
+        /*此处请求有点小问题*/
+        let result = await getStoreHistory(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
+        console.log(result);
+        if (page === 1) {
+            if (result.page.list.length) {
+                this.setState({list: result.page.list});
+            } else {
+                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
             }
-        </View>
-    )
+        } else if (result.page.list.length) {
+            this.setState({list: this.state.list.concat(result.page.list)})
+        } else {
+            this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+        }
+        this.setState({isStatus: false, isLoreTextStatus: false})
+        if (isRefresh) {
+            this.setState({refreshing: false})
+        }
+    }
+    //上拉加载更多
+    getMoreList = () => {
+        if (!this.state.isStatus && this.state.isLoreTextStatus) {
+            this.setState({isStatus: true, page: this.state.page + 1})
+            this._getStoreHistory(this.state.page + 1)
+        }
+    }
+    //下拉刷新
+    Refresh = () => {
+        this.setState({
+            page: 1,
+            refreshing: true,
+            isLoreText: '正在加载...'
+        });
+        this._getStoreHistory(1, true)
+    }
 
     render() {
         return (
@@ -60,7 +105,59 @@ export default class Recording extends React.Component {
                 <FlatList
                     data={this.state.list}
                     keyExtractor={this._keyExtractor}
-                    renderItem={this._renderItem}/>
+                    onEndReachedThreshold={0.1}//执行上啦的时候10%执行
+                    onEndReached={this.getMoreList}//获取更多数据
+                    ListFooterComponent={this._renderFooter}//尾部
+                    renderItem={this._renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.Refresh}
+                            title="刷新中..."/>}
+                />
+            </View>
+        )
+    }
+
+    _keyExtractor = (item) => item.storeId + '';
+    _renderItem = ({item}) => (
+        <View style={styles.list}>
+            <View style={styles.top}>
+                <Text style={styles.top_txt}>当天</Text>
+            </View>
+            <View style={styles.item} key={item.ids}>
+                <View style={styles.head}>
+                    <View style={styles.line}/>
+                    <Text style={styles.head_title}>{item.storeName}</Text>
+                    {
+                        item.eval > 3 ?
+                            <Image style={styles.eval_icon}
+                                   source={require("../../../assets/resource/evalut/icon_you.png")}/>
+                            :
+                            <Image style={styles.eval_icon}
+                                   source={require("../../../assets/resource/evalut/icon_lian.png")}/>
+                    }
+                </View>
+                <View style={styles.footer}>
+                    <View style={styles.center}>
+                        <Text
+                            style={styles.desc}>检查{item.projectTotle}项,{item.qualifiedTotle}项合格，{item.qualifiedRate}合格率</Text>
+                        <Text style={styles.time}>14:20:20</Text>
+                    </View>
+                    <Image style={{width: scaleSize(44), height: scaleSize(44)}}
+                           source={require("../../../assets/resource/common/icon_back_black.png")}/>
+                </View>
+            </View>
+        </View>
+    )
+    _renderFooter = () => {
+        return (
+            <View style={{
+                height: 44,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Text>{this.state.isLoreText}</Text>
             </View>
         )
     }
