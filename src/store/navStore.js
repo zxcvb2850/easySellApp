@@ -1,5 +1,9 @@
+/**
+ * 路由相关的信息
+ * */
 import {observable, computed, action} from 'mobx'
-import navInfo from "./navInfo"
+
+const navInfo = 0;
 
 class RootStore {
   constructor() {
@@ -12,14 +16,18 @@ class NavInfo {
   @observable
   navList = "";
 
-  constructor(route, store) {
+  constructor(route) {
 	this.navList = route
-	this.rootStore = store
   }
 
   @action
-  setRoute(route) {
-	this.navList = route
+  addRoute(route) {
+	this.navList = route + 1
+  }
+
+  @action
+  delRoute(route) {
+	this.navList = route - 1
   }
 
   @action
