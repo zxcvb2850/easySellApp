@@ -138,7 +138,6 @@ export default class AppNavigatorRoot extends React.Component {
   }
 
   onBackPress = () => {
-	console.log(this.routerIndex)
 	if (this.routerIndex === 1 || this.routerIndex === 2) {
 	  if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
 		BackHandler.exitApp()

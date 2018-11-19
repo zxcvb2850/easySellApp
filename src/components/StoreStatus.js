@@ -7,20 +7,17 @@ import {headerColor, successColor, warringColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
 
 /*
-* 1 在线
-* 2 离线
-* 3 不妨
+* 0 在线
+* 1 离线
 * */
-const status = (props) => (
+const StoreStatus = (props) => (
     <View style={[styles.body, props.style]}>
         <Text style={styles.dot}>●</Text>
         {
-            props.status == 1 ?
+            props.status === 0 ?
                 <Text style={{color: successColor}}>在线</Text>
-                : props.status == '2' ?
-                <Text style={{color: warringColor}}>离线</Text>
                 :
-                <Text style={{color: headerColor}}>布防</Text>
+                <Text style={{color: warringColor}}>离线</Text>
         }
         <Text style={styles.dot}>●</Text>
     </View>
@@ -36,4 +33,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default status
+export default StoreStatus

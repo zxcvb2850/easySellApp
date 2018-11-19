@@ -6,31 +6,6 @@ import {objChangeUrl} from "../common/util";
 import qs from "qs";
 
 /**
- * 获取店铺列表
- * page 页码
- * limit 每页数量
- * sidx 排序字段
- * order 排序方式 asc、desc
- * storeCode 门店编号
- * storeName 门店名称
- * */
-export function getStoreList(page = 1, sidx, order, storeCode, storeName, limit = 10) {
-    let url = '/app/store/list';
-    let data = {params: 1, page, sidx, order, storeCode, storeName, limit};
-    return BaseServer.get(url, objChangeUrl(data))
-}
-
-/**
- * 获取店铺详情
- * params
- * */
-export function getStoreDetails(params) {
-    let url = '/app/store/details';
-    let data = {params};
-    return BaseServer.get(url, objChangeUrl(data))
-}
-
-/**
  * 获取列外考评列表
  * page 页码
  * limit 每页数量
@@ -92,8 +67,7 @@ export function getStoreHistory(page = 1, sidx, order, storeCode, storeName, lim
 export function getPlanList(page = 1, sidx, order, storeCode, storeName, limit = 10) {
     let url = '/app/review/planList';
     let data = {page, sidx, order, storeCode, storeName, limit}
-    console.log(url, objChangeUrl(data));
-    return BaseServer.post(url, data);
+    return BaseServer.get(url, data);
 }
 
 /**
@@ -114,4 +88,69 @@ export function saveSingle() {
     let url = '/app/review/save';
     let data = {}
     return BaseServer.post(url, data);
+}
+
+/**
+ * 已完结的考评
+ * reviewId 考评记录ID
+ * */
+export function evaluEnd(id) {
+    let url = '/app/review/end';
+    return BaseServer.get(url, {reviewId: id})
+}
+
+/**
+ * 考评记录提交
+ * projectlList 考评项目列表->JSON {reviewProjectd,projectCode，projectType,projectRequire,checkResult,checkResult,exception,photos}
+ * projectId 考评项目ID
+ * reviewId 考评记录ID
+ * storeId 门店ID
+ * projectCode 项目编号
+ * projectType 项目分类
+ * projectRequire 项目要求
+ * checkResult 检查结果
+ * exception 例外描述
+ * photos 例外证据
+ * */
+export function evalSubmit(projectList, projectId, reviewId, storeId, projectCode, projectType, projectRequire, checkResult, exception, photos) {
+    let url = '/app/review/submit';
+    let data = {
+        projectlList: projectList,
+        reviewProjectId: projectId,
+        reviewId,
+        storeId,
+        projectCode,
+        projectType,
+        projectRequire,
+        checkResult,
+        exception,
+        photos
+    }
+    return BaseServer.post(url, data)
+}
+
+/**
+ * 获取计划考评详情
+ * reviewId 考评记录ID
+ * */
+export function getPlanDetails(reviewId) {
+    let url = '/app/review/view';
+    return BaseServer.get(url, {reviewId})
+}
+
+/**
+ * 在线考评
+ * */
+export function reviewPlanStat() {
+    let url = '/app/stat/reviewPlanStat';
+    return BaseServer.get(url)
+}
+
+/**
+ * 获取考评报表
+ * page 页码
+ * */
+export function reviewRecordStat(page = 1) {
+    let url = '/app/stat/reviewRecordStat';
+    return BaseServer.get(url, {page})
 }

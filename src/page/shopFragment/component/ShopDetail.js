@@ -8,7 +8,7 @@ import Header from "../../../components/Header"
 import {scaleSize} from "../../../common/screenUtil"
 import {garyColor, lightGaryColor, minFontSize, whiteColor} from "../../../common/styles"
 import {dialPhone} from "../../../common/util"
-import Status from "../../../components/Status";
+import Status from "../../../components/DeployStatus";
 
 export default class ShopDetail extends React.Component {
     constructor() {

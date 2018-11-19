@@ -43,7 +43,6 @@ export default class Login extends React.Component {
 	  return
 	}
 	let result = await login(this.state.name, this.state.pwd);
-	console.log(result);
 	showToast('登录成功', 'success');
 	await AsyncStorage.setItem('shop_token', result.token);
 	let res = await getInfo()

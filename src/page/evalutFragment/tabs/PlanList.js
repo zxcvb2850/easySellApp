@@ -60,10 +60,10 @@ export default class PlanList extends React.Component {
         }
     }
     getMoreList = () => {
-        if (!this.state.isStatus && this.state.isLoreTextStatus) {
+        //if (!this.state.isStatus && this.state.isLoreTextStatus) {
             this.setState({isStatus: true, page: this.state.page + 1})
             this._getPlanList(this.state.page + 1)
-        }
+        //}
     }
 
     render() {

@@ -12,9 +12,21 @@ import {postLogout} from "../../api/HttpSend";
 import {showToast} from "../../common/util";
 
 export default class MineIndex extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            userInfo: {}
+        }
+    }
+
+    async componentDidMount() {
+        let userInfo = await AsyncStorage.getItem('shop_info');
+        this.setState({userInfo: JSON.parse(userInfo)})
+    }
+
+
     logout = async () => {
         let result = await postLogout();
-        console.log(result);
         await AsyncStorage.removeItem('shop_token')
         await AsyncStorage.removeItem('shop_info')
         this.props.navigation.navigate("Login");
@@ -37,7 +49,7 @@ export default class MineIndex extends React.Component {
                         <Text style={{color: garyColor}}>昵称</Text>
                     </Left>
                     <Body>
-                    <Text style={{color: "#000", fontSize: maxFontSize}}>张麻子</Text>
+                    <Text style={{color: "#000", fontSize: maxFontSize}}>{this.state.userInfo.fullname}</Text>
                     </Body>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ForgetPwd')}>

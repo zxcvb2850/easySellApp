@@ -25,15 +25,10 @@ export function postLogout() {
 
 //修改密码
 export async function resetPassword(password, newPassword) {
-    let userInfo = await AsyncStorage.getItem('shop_info');
     let url = '/app/user/password';
     let data = {
-        form: {
-            "newPassword": newPassword,
-            "password": password
-        },
-        user: JSON.parse(userInfo)
+        "newPassword": newPassword,
+        "password": password
     }
-    console.log(data);
     return BaseServer.post(url, data);
 }

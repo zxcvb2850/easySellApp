@@ -2,29 +2,71 @@
 * 店铺
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from "react-native"
+import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl} from "react-native"
 import Header from "../../components/Header"
-import {garyColor, headColor, lightGaryColor, successColor, warringColor, whiteColor} from "../../common/styles"
+import {garyColor, headColor, whiteColor} from "../../common/styles"
 import {Drawer, Button, Icon, Content} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
 import {scaleSize} from "../../common/screenUtil";
 import {showToast} from "../../common/util"
-import Status from "../../components/Status";
-import {getStoreList} from "../../api/evaluReq";
+import DeployStatus from "../../components/DeployStatus";
+import StoreStatus from "../../components/StoreStatus";
+import {getStoreList} from "../../api/shopReq";
 
 export default class DynamicIndex extends React.Component {
     constructor() {
         super()
         this.state = {
-            data: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}]
+            list: [],
+            filter: {
+                sidx: '',
+                order: '',
+                storeCode: '',
+                storeName: '',
+            },
+            page: 1,//当前页码
+            refreshing: false,//是否在加载数据
+            isStatus: true,
+            isLoreTextStatus: true,
+            isLoreText: '正在加载中...',//上拉加载提示文字
         }
 
         this._getStoreList();
     }
 
-    _getStoreList = async () => {
-        let reult = await getStoreList();
-        console.log('------------', reult);
+    Refresh = () => {
+        this.setState({
+            page: 1,
+            refreshing: true,
+            isLoreText: '正在加载...'
+        });
+        this._getStoreList(1, true)
+    }
+
+    _getStoreList = async (page = 1, isRefresh = false) => {
+        let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
+        if (page === 1) {
+            if (result.page.list.length) {
+                this.setState({list: result.page.list});
+            } else {
+                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+            }
+        } else if (result.page.list.length) {
+            this.setState({list: this.state.list.concat(result.page.list)})
+        } else {
+            this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+        }
+        this.setState({isStatus: false, isLoreTextStatus: false})
+        if (isRefresh) {
+            this.setState({refreshing: false})
+        }
+    }
+
+    getMoreList = () => {
+        if (!this.state.isStatus && this.state.isLoreTextStatus) {
+            this.setState({isStatus: true, page: this.state.page + 1})
+            this._getStoreList(this.state.page + 1)
+        }
     }
 
     allClick = () => {
@@ -40,8 +82,17 @@ export default class DynamicIndex extends React.Component {
         this.openDrawer();
     }
 
+    itemIconLick = () => {
+        console.log("点赞");
+    }
+    itemIconTrend = () => {
+        console.log("趋势");
+    }
+    itemIconPhone = () => {
+        console.log("打电话");
+    }
     itemHeadIcon = () => {
-        //console.log("icon");
+        console.log("点赞");
     }
 
     closeDrawer = () => {
@@ -59,7 +110,7 @@ export default class DynamicIndex extends React.Component {
             showToast('视频不能播放');
         }
     }
-    _keyExtractor = (item) => item.id + ''
+    _keyExtractor = (item) => item.storeId + ''
 
     _renderItem = ({item}) => (
         <TouchableOpacity
@@ -70,25 +121,30 @@ export default class DynamicIndex extends React.Component {
             }}
         >
             <View style={styles.item_header}>
-                <Text style={styles.item_head_title}>南区1030店</Text>
+                <Text style={styles.item_head_title}>{item.storeName}</Text>
                 <View style={styles.item_head_icon}>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
-                        onPress={this.itemHeadIcon}>
-                        <Image style={styles.icon}
-                               source={require("../../assets/resource/shop/icon_collection_not.png")}/>
+                        onPress={this.itemIconLick}>
+                        {
+                            item.isCollection ?
+                                <Image style={styles.icon}
+                                       source={require("../../assets/resource/shop/icon_collection_yes.png")}/>
+                                : <Image style={styles.icon}
+                                         source={require("../../assets/resource/shop/icon_collection_not.png")}/>
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
-                        onPress={this.itemHeadIcon}>
+                        onPress={this.itemIconTrend}>
                         <Image style={styles.icon} source={require("../../assets/resource/shop/icon_trend.png")}/>
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
-                        onPress={this.itemHeadIcon}>
+                        onPress={() => this.itemIconPhone(item.storeTel)}>
                         <Image style={styles.icon} source={require("../../assets/resource/shop/icon_phone.png")}/>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -106,7 +162,7 @@ export default class DynamicIndex extends React.Component {
                 }]}>
                     <View style={styles.body_left}>
                         <Text>视频监控</Text>
-                        <Status status={2}/>
+                        <StoreStatus status={Number(item.videoState)}/>
                     </View>
                     <Text style={{color: garyColor}} onPress={() => {
                         //console.log("更多监控")
@@ -141,7 +197,7 @@ export default class DynamicIndex extends React.Component {
                 }]}>
                     <View style={styles.body_left}>
                         <Text>视频监控</Text>
-                        <Status status={1}/>
+                        <DeployStatus status={Number(item.armingState)}/>
                     </View>
                     <Text style={{color: garyColor}}>信息 ></Text>
                 </View>
@@ -168,11 +224,34 @@ export default class DynamicIndex extends React.Component {
                     </Header>
                     <FlatList
                         style={styles.list}
-                        data={this.state.data}
+                        data={this.state.list}
+                        extraData={this.state}
                         keyExtractor={this._keyExtractor}
-                        renderItem={this._renderItem}/>
+                        renderItem={this._renderItem}
+                        onEndReachedThreshold={0.1}//执行上啦的时候10%执行
+                        onEndReached={this.getMoreList}//获取更多数据
+                        ListFooterComponent={this._renderFooter}//尾部
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.Refresh}
+                                title="刷新中..."/>
+                        }
+                    />
                 </View>
             </Drawer>
+        )
+    }
+
+    _renderFooter = () => {
+        return (
+            <View style={{
+                height: 44,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <Text>{this.state.isLoreText}</Text>
+            </View>
         )
     }
 }
@@ -187,10 +266,10 @@ const styles = StyleSheet.create({
         height: scaleSize(48),
     },
     list: {
-        paddingHorizontal: scaleSize(22),
         flex: 1,
     },
     list_item: {
+        marginHorizontal: scaleSize(22),
         marginVertical: scaleSize(12),
         borderRadius: scaleSize(16),
         overflow: 'hidden',

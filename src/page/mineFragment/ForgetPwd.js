@@ -2,15 +2,25 @@
 * 忘记密码
 * */
 import React from "react";
-import {StyleSheet, View, Text} from "react-native";
+import {StyleSheet, View, Text, AsyncStorage} from "react-native";
 import {Item, Icon, Input, Button} from "native-base";
 import Header from "../../components/Header"
 import {scaleSize} from "../../common/screenUtil";
 import {successColor, warringColor, whiteColor} from "../../common/styles";
 import {showToast} from "../../common/util";
 import {resetPassword} from "../../api/HttpSend";
+/*mobx*/
+import {observer, inject} from 'mobx-react'
+import {action} from 'mobx'
 
+@inject('store')
+@observer
 export default class ForgetPwd extends React.Component {
+    @action//修改密码则直接跳转到登录页面
+    setRouter(router) {
+        this.props.store.NavInfo.setRoute(router)
+    }
+
     constructor() {
         super()
         this.state = {
@@ -35,7 +45,10 @@ export default class ForgetPwd extends React.Component {
         } else {
             //传递结果
             await resetPassword(this.state.lodPassword, this.state.newPassword)
-            showToast('修改成功，你需要重新登录');
+            showToast('修改成功，你需要重新登录', 'warning');
+            this.setRouter(1)
+            await AsyncStorage.removeItem('shop_token');
+            await AsyncStorage.removeItem('shop_info');
             this.props.navigation.navigate('Login');
         }
     }

@@ -18,7 +18,6 @@ class Header extends React.Component {
   }
 
   back = () => {
-	console.log('++++++++++++++++++', this.props.navigation)
 	this.props.navigation.goBack();
   }
 
