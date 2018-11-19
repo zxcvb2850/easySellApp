@@ -13,8 +13,12 @@ import {
     itemHeadColor,
     whiteColor
 } from "../../common/styles";
+import {storeStat} from "../../api/storeReq";
 
 export default class DynamicIndex extends React.Component {
+    componentDidMount() {
+    }
+
     constructor() {
         super()
         this.state = {
@@ -33,7 +37,42 @@ export default class DynamicIndex extends React.Component {
             }, {
                 id: 7
             }],
+            arming: {
+                rate: 0,
+                total: 0
+            },//布防总数
+            store: {
+                rate: 0,
+                total: 0
+            },//门店总数
+            video: {
+                rate: 0,
+                total: 0,
+            },//视频总数
+            text: 0.98 * 100,
         }
+        this._storeStat();
+    }
+
+    _storeStat = async () => {
+        let result = await storeStat()
+        this.setState({arming: result.arming, store: result.store, video: result.video})
+        console.log('------------', result);
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Header title={"碧桂园-保安部"}/>
+                <FlatList
+                    style={styles.list}
+                    data={this.state.data}
+                    extraData={this.state}
+                    keyExtractor={this._keyExtractor}
+                    ListHeaderComponent={this._listHeaderComponent}
+                    renderItem={this._renderItem}/>
+            </View>
+        )
     }
 
     _keyExtractor = (item) => item.id + '';
@@ -44,58 +83,65 @@ export default class DynamicIndex extends React.Component {
                 <AnimatedCircularProgress
                     size={80}
                     width={6}
-                    fill={98}
+                    fill={this.state.video.rate * 100}
                     rotation={0}
                     tintColor="#FFF"
                     onAnimationComplete={() => console.log('onAnimationComplete')}
                     backgroundColor="rgba(0,0,0,0.1)"
                     children={() => (
                         <View>
-                            <Text style={styles.gary_color}>可视</Text><Text style={styles.color_white}>98%</Text>
+                            <Text style={styles.gary_color}>可视</Text><Text
+                            style={styles.color_white}>{this.state.video.rate * 100}%</Text>
                         </View>)}/>
                 <View style={styles.desc_title}>
-                    <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_video.png")}/>
+                    <Image style={styles.icon_min}
+                           source={require("../../assets/resource/dynamic/icon_video.png")}/>
                     <Text style={styles.gary_color}>视频总数</Text>
                 </View>
-                <Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
+                <Text onPress={() => {
+                    this.setState({text: 50})
+                }} style={[styles.color_white, {fontSize: 20}]}>{this.state.video.total}</Text>
             </View>
             <View style={[styles.cols, styles.borderLeftRight]}>
                 <AnimatedCircularProgress
                     size={80}
                     width={6}
-                    fill={50}
+                    fill={this.state.store.rate * 100}
                     rotation={0}
                     tintColor="#FFF"
                     onAnimationComplete={() => console.log('onAnimationComplete')}
                     backgroundColor="rgba(0,0,0,0.1)"
                     children={() => (
                         <View>
-                            <Text style={styles.gary_color}>在线</Text><Text style={styles.color_white}>50%</Text>
+                            <Text style={styles.gary_color}>在线</Text><Text
+                            style={styles.color_white}>{this.state.store.rate * 100}%</Text>
                         </View>)}/>
                 <View style={styles.desc_title}>
                     <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_shop.png")}/>
                     <Text style={styles.gary_color}>门店总数</Text>
                 </View>
-                <Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
+                <Text style={[styles.color_white, {fontSize: 20}]}>{this.state.store.total}</Text>
             </View>
             <View style={styles.cols}>
                 <AnimatedCircularProgress
                     size={80}
                     width={6}
-                    fill={95}
+                    fill={this.state.arming.rate * 100}
                     rotation={0}
                     tintColor="#FFF"
                     onAnimationComplete={() => console.log('onAnimationComplete')}
                     backgroundColor="rgba(0,0,0,0.1)"
                     children={() => (
                         <View>
-                            <Text style={styles.gary_color}>布防</Text><Text style={styles.color_white}>95%</Text>
+                            <Text style={styles.gary_color}>布防</Text><Text
+                            style={styles.color_white}>{this.state.arming.rate * 100}%</Text>
                         </View>)}/>
                 <View style={styles.desc_title}>
-                    <Image style={styles.icon_min} source={require("../../assets/resource/dynamic/icon_bufan.png")}/>
+                    <Image style={styles.icon_min}
+                           source={require("../../assets/resource/dynamic/icon_bufan.png")}/>
                     <Text style={styles.gary_color}>布防总数</Text>
                 </View>
-                <Text style={[styles.color_white, {fontSize: 20}]}>8100</Text>
+                <Text style={[styles.color_white, {fontSize: 20}]}>{this.state.arming.total}</Text>
             </View>
         </LinearGradient>
     )
@@ -131,21 +177,6 @@ export default class DynamicIndex extends React.Component {
             </View>
         </TouchableOpacity>
     )
-
-    render() {
-        return (
-            <View style={styles.container}>
-                <Header title={"碧桂园-保安部"}/>
-                <FlatList
-                    style={styles.list}
-                    data={this.state.data}
-                    extraData={this.state.data}
-                    keyExtractor={this._keyExtractor}
-                    ListHeaderComponent={this._listHeaderComponent}
-                    renderItem={this._renderItem}/>
-            </View>
-        )
-    }
 }
 
 const styles = StyleSheet.create({

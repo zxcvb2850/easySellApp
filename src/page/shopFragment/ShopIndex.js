@@ -11,7 +11,7 @@ import {scaleSize} from "../../common/screenUtil";
 import {showToast} from "../../common/util"
 import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
-import {getStoreList} from "../../api/shopReq";
+import {getStoreList} from "../../api/storeReq";
 
 export default class DynamicIndex extends React.Component {
     constructor() {
