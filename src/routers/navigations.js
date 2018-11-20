@@ -3,7 +3,7 @@
 * xiaobai
 * */
 import React from "react";
-import {Image, BackHandler} from "react-native"
+import {Image, BackHandler, DeviceEventEmitter} from "react-native"
 import {createStackNavigator, createTabNavigator, createBottomTabNavigator} from "react-navigation"
 
 /*路由指向的文件*/
@@ -117,23 +117,33 @@ export const routerRule = ['TabDynamic', 'TabShop', 'TabEvalut', 'TabMine', 'Tab
 export default class AppNavigatorRoot extends React.Component {
   @action
   addRouter() {
+	/**/
 	this.props.store.NavInfo.addRoute(this.routerIndex)
   }
 
   @action
   delRouter() {
+	/**/
 	this.props.store.NavInfo.delRoute(this.routerIndex)
   }
 
   @computed get routerIndex() {
+	/**/
 	return this.props.store.NavInfo.navList
   }
 
   componentDidMount() {
+	/*监听路由跳转*/
+	DeviceEventEmitter.addListener('gotoRouter', (val) => {
+	  console.log('监听到跳转路由-----', val)
+	  this.props.navigation.navigate(val)
+	})
+	/*监听返回按钮*/
 	BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
   }
 
   componentWillUnmount() {
+	/*移除监听返回按钮*/
 	BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
   }
 
