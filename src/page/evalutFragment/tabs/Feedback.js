@@ -12,11 +12,7 @@ export default class Feedback extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: [
-                {id: 1, eval: 5, children: [{ids: 10}, {ids: 11}]},
-                {id: 2, eval: 2, children: [{ids: 10}]},
-                {id: 3, eval: 5, children: [{ids: 10}, {ids: 11}]},
-                {id: 4, eval: 2, children: [{ids: 11}]}],
+            list: [],
             filter: props.filter,//过滤的条件
             page: 1,//当前页码
             refreshing: false,//是否在加载数据
@@ -36,7 +32,7 @@ export default class Feedback extends React.Component {
         }
     }
 
-    _exceptionList = async (page = 1) => {
+    _exceptionList = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await exceptionList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
         console.log(result);
@@ -44,7 +40,7 @@ export default class Feedback extends React.Component {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
             } else {
-                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+                this.setState({list: [], isLoreText: '没有更多数据了...', isLoreTextStatus: false})
             }
         } else if (result.page.list.length) {
             this.setState({list: this.state.list.concat(result.page.list)})

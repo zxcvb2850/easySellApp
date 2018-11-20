@@ -52,7 +52,7 @@ export function exceptionSave() {
 export function getStoreHistory(page = 1, sidx, order, storeCode, storeName, limit = 20) {
     let url = '/app/review/history';
     let data = {page, sidx, order, storeCode, storeName, limit}
-    return BaseServer.get(url, objChangeUrl(data));
+    return BaseServer.post(url, data);
 }
 
 /**
@@ -67,7 +67,7 @@ export function getStoreHistory(page = 1, sidx, order, storeCode, storeName, lim
 export function getPlanList(page = 1, sidx, order, storeCode, storeName, limit = 10) {
     let url = '/app/review/planList';
     let data = {page, sidx, order, storeCode, storeName, limit}
-    return BaseServer.get(url, data);
+    return BaseServer.post(url, data);
 }
 
 /**
@@ -134,8 +134,8 @@ export function evalSubmit(projectList, projectId, reviewId, storeId, projectCod
  * reviewId 考评记录ID
  * */
 export function getPlanDetails(reviewId) {
-    let url = '/app/review/view';
-    return BaseServer.get(url, {reviewId})
+    let url = `/app/review/view/${reviewId}`;
+    return BaseServer.get(url)
 }
 
 /**
@@ -152,5 +152,8 @@ export function reviewPlanStat() {
  * */
 export function reviewRecordStat(page = 1) {
     let url = '/app/stat/reviewRecordStat';
-    return BaseServer.get(url, {page})
+    let data = {
+        "page": page
+    }
+    return BaseServer.get(url, data)
 }

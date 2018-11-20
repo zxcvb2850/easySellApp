@@ -8,6 +8,10 @@ import {whiteColor} from "../../../common/styles";
 import {getPlanList} from "../../../api/evaluReq";
 
 export default class PlanList extends React.Component {
+    componentDidMount() {
+        console.log('-----------', this.props)
+    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -61,8 +65,8 @@ export default class PlanList extends React.Component {
     }
     getMoreList = () => {
         //if (!this.state.isStatus && this.state.isLoreTextStatus) {
-            this.setState({isStatus: true, page: this.state.page + 1})
-            this._getPlanList(this.state.page + 1)
+        this.setState({isStatus: true, page: this.state.page + 1})
+        this._getPlanList(this.state.page + 1)
         //}
     }
 
@@ -92,7 +96,8 @@ export default class PlanList extends React.Component {
         <ListItem icon style={{backgroundColor: whiteColor}}
                   key={item.reviewId}
                   onPress={() => {
-                      this.props.navigate('EvalutDetails')
+                      console.log(item);
+                      this.props.navigate('EvalutDetails', {reviewId: item.reviewId})
                   }}
         >
             <Left>

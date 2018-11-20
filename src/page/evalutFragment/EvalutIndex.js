@@ -35,9 +35,9 @@ export default class DynamicIndex extends React.Component {
     closeDrawer = () => {
         this.drawer._root.close()
     };
-    gotoNavigate = (val) => {
+    gotoNavigate = (val, data) => {
         if (val !== '') {
-            this.props.navigation.navigate(val);
+            this.props.navigation.navigate(val, data);
         }
     }
     onChangeTab = ({i}) => {

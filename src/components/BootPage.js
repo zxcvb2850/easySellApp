@@ -44,9 +44,10 @@ export default class BootPage extends React.Component {
                 this.down();
             }, 2000)
         } else {
-            const value = await AsyncStorage.getItem('shop_token');
+            const token = await AsyncStorage.getItem('shop_token');
             const userInfo = await AsyncStorage.getItem('shop_info');
-            if (value !== null) {
+            console.log('-----token----', token)
+            if (token !== null) {
                 let result = await getInfo()
                 await AsyncStorage.setItem('shop_info', JSON.stringify(result.user))
                 this.addRouter()

@@ -2,7 +2,17 @@
 * 动态
 * */
 import React from "react"
-import {StyleSheet, ImageBackground, View, Text, Image, FlatList, TouchableOpacity, AsyncStorage} from "react-native"
+import {
+    StyleSheet,
+    ImageBackground,
+    RefreshControl,
+    View,
+    Text,
+    Image,
+    FlatList,
+    TouchableOpacity,
+    AsyncStorage
+} from "react-native"
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import LinearGradient from 'react-native-linear-gradient';
 import Header from "../../components/Header"
@@ -14,6 +24,7 @@ import {
     whiteColor
 } from "../../common/styles";
 import {storeStat} from "../../api/storeReq";
+import {exceptionList, reviewRecordStat} from "../../api/evaluReq";
 
 export default class DynamicIndex extends React.Component {
     componentDidMount() {
@@ -49,15 +60,34 @@ export default class DynamicIndex extends React.Component {
                 rate: 0,
                 total: 0,
             },//视频总数
-            text: 0.98 * 100,
+            page: 1,//当前页码
+            refreshing: false,//是否在加载数据
+            isStatus: true,
+            isLoreTextStatus: true,
+            isLoreText: '正在加载中...',//上拉加载提示文字
         }
         this._storeStat();
+        this._reviewRecordStat()
     }
 
     _storeStat = async () => {
         let result = await storeStat()
-        this.setState({arming: result.arming, store: result.store, video: result.video})
-        console.log('------------', result);
+        this.setState({arming: result.arming, store: result.store, video: result.video, refreshing: false})
+    }
+    _reviewRecordStat = async (page = 1, isRefresh = false) => {
+        let result = await reviewRecordStat(page);
+        console.log('--------------', result);
+        this.setState({reviewRecord: result.reviewRecord})
+    }
+    //下拉刷新
+    Refresh = () => {
+        this.setState({
+            page: 1,
+            refreshing: true,
+            isLoreText: '正在加载...'
+        });
+        this._storeStat();
+        this._reviewRecordStat();
     }
 
     render() {
@@ -70,7 +100,13 @@ export default class DynamicIndex extends React.Component {
                     extraData={this.state}
                     keyExtractor={this._keyExtractor}
                     ListHeaderComponent={this._listHeaderComponent}
-                    renderItem={this._renderItem}/>
+                    renderItem={this._renderItem}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.Refresh}
+                            title="刷新中..."/>}
+                />
             </View>
         )
     }
