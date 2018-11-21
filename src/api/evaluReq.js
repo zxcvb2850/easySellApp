@@ -157,3 +157,23 @@ export function reviewRecordStat(page = 1) {
     }
     return BaseServer.get(url, data)
 }
+
+/**
+ * 上传图片
+ * file 文件
+ * */
+export function uploadImage(file) {
+    let url = '/app/store/imgUpload';
+    let formData = new FormData()
+    formData.append('img', file)
+    return BaseServer.putImage(url, formData)
+}
+
+/**
+ * 报告问题
+ * */
+export function problemReport(imgUrl, reviewProjectId, checkResult, exception) {
+    let url = '/app/store/problemReport';
+    let data = {imgUrl, reviewProjectId, checkResult, exception}
+    return BaseServer.put(url, data)
+}

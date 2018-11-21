@@ -151,4 +151,29 @@ export default class BaseServer {
         })
     }
 
+    /*上传图片*/
+    static async putImage(url, params, isShowError = false) {
+        console.log('-----put-------', params)
+        return new Promise((resolve, reject) => {
+            axios.put(BASE_URL + url, params, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            })
+                .then((res) => {
+                    console.log(res)
+                    if (res != null) {
+                        res = res.data;
+                        if (isShowError) {
+                            resolve(res)
+                        } else {
+                            if (res.code !== 0) {
+                                reject(res.msg);
+                            } else {
+                                resolve(res);
+                            }
+                        }
+                    }
+                })
+        })
+    }
+
 }

@@ -61,8 +61,7 @@ export default class Recording extends React.Component {
     }
 
     //获取列表
-    _getStoreHistory = async (page = 1) => {
-
+    _getStoreHistory = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await getStoreHistory(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
         console.log(result);

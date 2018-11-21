@@ -22,8 +22,8 @@ export function getStoreList(page = 1, sidx, order, storeCode, storeName, limit 
  * storeId 店铺ID
  * */
 export function getStoreDetails(id) {
-    let url = '/app/store/details';
-    return BaseServer.get(url, {storeId: id})
+    let url = `/app/store/details${id}`;
+    return BaseServer.get(url)
 }
 
 /**

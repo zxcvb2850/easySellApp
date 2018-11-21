@@ -8,18 +8,27 @@ import Header from "../../../components/Header"
 import {scaleSize} from "../../../common/screenUtil"
 import {garyColor, lightGaryColor, minFontSize, whiteColor} from "../../../common/styles"
 import {dialPhone} from "../../../common/util"
-import Status from "../../../components/DeployStatus";
+import StoreStatus from "../../../components/StoreStatus";
+import DeployStatus from "../../../components/DeployStatus";
+import {getStoreDetails} from "../../../api/storeReq";
 
 export default class ShopDetail extends React.Component {
-    constructor() {
+    constructor(props) {
         super()
         this.state = {
-            shopId: 0,
+            shopData: {}//店铺信息
         }
+
+        this._getShopDetail(props.navigation.state.params.storeId)
     }
 
     componentDidMount() {
         //console.log(this.props.navigation.state.params)
+    }
+
+    _getShopDetail = async (id) => {
+        let result = await getStoreDetails(id)
+        console.log(result)
     }
 
     render() {
@@ -36,7 +45,7 @@ export default class ShopDetail extends React.Component {
                             <Image style={styles.icon} source={require("../../../assets/resource/shop/icon_addr.png")}/>
                             <View style={styles.txt_wrap}>
                                 <Text style={styles.item_txt}>地址：</Text>
-                                <Text style={[styles.item_txt, {color: garyColor}]}>深证市深蓝大道321</Text>
+                                <Text style={[styles.item_txt, {color: garyColor}]}>{this.state.shopData.address}</Text>
                             </View>
                             <TouchableOpacity
                                 activeOpacity={0.9}
@@ -53,12 +62,30 @@ export default class ShopDetail extends React.Component {
                             <View style={styles.txt_wrap}>
                                 <Text style={styles.item_txt}>电话：</Text>
                                 <Text style={[styles.item_txt, {color: garyColor}]}
-                                      onPress={() => dialPhone('020-63212341')}>020-63212341</Text>
+                                      onPress={() => dialPhone(this.state.shopData.storeTel)}>{this.state.shopData.storeTel}</Text>
                             </View>
                         </View>
+                        {
+                            this.state.linkmanList.map(item => (
+                                <View style={[styles.list_item]}>
+                                    {
+                                        item.position === '店长' ?
+                                            <Image style={styles.icon}
+                                                   source={require("../../../assets/resource/shop/icon_leader.png")}/>
+                                            :
+                                            <Image style={styles.icon}
+                                                   source={require("../../../assets/resource/shop/icon_leader.png")}/>
+                                    }
+                                    <View style={styles.txt_wrap}>
+                                        <Text style={styles.item_txt}>{item.position}：</Text>
+                                        <Text style={[styles.item_txt, {color: garyColor}]}
+                                              onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
+                                    </View>
+                                </View>
+                            ))
+                        }
                         <View style={[styles.list_item]}>
-                            <Image style={styles.icon}
-                                   source={require("../../../assets/resource/shop/icon_leader.png")}/>
+
                             <View style={styles.txt_wrap}>
                                 <Text style={styles.item_txt}>店长：</Text>
                                 <Text style={[styles.item_txt, {color: garyColor}]}
@@ -91,7 +118,8 @@ export default class ShopDetail extends React.Component {
                     </View>
                     <View style={[styles.info_list, styles.borderTopBottom]}>
                         <Text style={styles.color_back}>视频监控</Text>
-                        <Status style={{flex: 1, paddingHorizontal: scaleSize(10)}} status={1}/>
+                        <StoreStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
+                                     status={this.state.videoState}/>
                         <Button bordered style={styles.more_btn}
                                 onPress={() => {
                                     this.props.navigation.navigate('ShopVideo', {name: '1030店铺'})
@@ -100,8 +128,9 @@ export default class ShopDetail extends React.Component {
                         </Button>
                     </View>
                     <View style={[styles.info_list, styles.borderTopBottom]}>
-                        <Text style={styles.color_back}>视频监控</Text>
-                        <Status style={{flex: 1, paddingHorizontal: scaleSize(10)}} status={3}/>
+                        <Text style={styles.color_back}>报警联网</Text>
+                        <DeployStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
+                                      status={this.state.armingState}/>
                         <Button bordered style={styles.more_btn}
                                 onPress={() => {
                                     this.props.navigation.navigate('ShopVideo', {name: '1030店铺'})

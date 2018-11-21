@@ -9,7 +9,9 @@ import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"
 import {scaleSize} from "../../../common/screenUtil";
 import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles";
-import {getPlanDetails} from "../../../api/evaluReq";
+import {getPlanDetails, problemReport, uploadImage} from "../../../api/evaluReq";
+import ImagePicker from "react-native-image-picker"
+import {showToast} from "../../../common/util";
 
 
 //图片选择器参数设置
@@ -32,14 +34,13 @@ export default class EvalutDetails extends React.Component {
         this.state = {
             activeSections: [],
             data: [],
-            showValue: '',
-            avatarSource: null,//图片地址
         }
         this._getPlanDetails(props.navigation.state.params.reviewId)
     }
 
-    choosePic = () => {
-        ImagePicker.showImagePicker(options, (response) => {
+    choosePic = (index) => {
+        console.log(index)
+        ImagePicker.showImagePicker(options, async (response) => {
             console.log('Response = ', response);
 
             if (response.didCancel) {
@@ -53,25 +54,51 @@ export default class EvalutDetails extends React.Component {
             }
             else {
                 let source = {uri: response.uri};
+                let list = this.state.data
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                this.setState({
-                    avatarSource: source
-                });
+                // await uploadImage(response);
+                // showToast('上传成功', 'success')
+                console.log(source)
+                console.log('---------------', list)
+
+                list[index].imgs.push(source.uri)
+                this.setState({data: list})
             }
         });
     }
+    /*提交报告*/
+    confirmReport = async (section) => {
+        let imgs = ""
+        let msg = ""
+        if (section.imgs.length) {
+            imgs = section.imgs.join(',')
+        }
+        if (section.msg) {
+            msg = section.msg
+        }
+        console.log(imgs, section.reviewProjectId, true, msg)
+        await problemReport(imgs, section.reviewProjectId, true, msg);
+        showToast('提交成功', 'success')
+    }
 
-    _onChangeText(inputData) {
+    _onChangeText(inputData, index) {
         console.log("输入的内容", inputData);
         //把获取到的内容，设置给showValue
-        this.setState({showValue: inputData});
+        let list = this.state.data
+        list[index].msg = inputData
+        this.setState({data: list})
     }
 
     _getPlanDetails = async (reviewId) => {
         let result = await getPlanDetails(reviewId)
         console.log(result);
-        this.setState({data: result.storeReview.projectList})
+        let list = result.storeReview.projectList
+        list.map(item => {
+            item.imgs = [];
+            item.msg = ""
+        })
+        this.setState({data: list})
     }
 
     _renderHeader = (section, index, isActive, sections) => {
@@ -101,16 +128,27 @@ export default class EvalutDetails extends React.Component {
                     </View>
                 </View>
                 <View style={styles.comment}>
-                    <View>
-                        <Text style={styles.item} onPress={this.choosePic}>选择照片</Text>
-                        <Image source={this.state.avatarSource} style={styles.image}/>
+                    <View style={styles.image_wrap}>
+                        {
+                            section.imgs.map((item, index) => (
+                                <Image key={index} source={{uri: item}} style={styles.image}/>
+                            ))
+                        }
+                        <TouchableOpacity
+                            activeOpacity={0.9}
+                            style={styles.image}
+                            onPress={() => this.choosePic(index)}
+                        >
+                            <Image source={require("../../../assets/resource/evalut/icon_add.png")}
+                                   style={styles.image}/>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.input_wrap}>
                         <TextInput
-                            placeholder="请输入用户名"
+                            placeholder="请输入备注"
                             editable={true}//是否可编辑
                             style={styles.inputStyle}//input框的基本样式
-                            onChangeText={this._onChangeText}//输入框改变触发的函数
+                            onChangeText={(value) => this._onChangeText(value, index)}//输入框改变触发的函数
                         />
                         <Image style={{width: scaleSize(48), height: scaleSize(48)}}
                                source={require("../../../assets/resource/evalut/icon_comment.png")}/>
@@ -121,6 +159,7 @@ export default class EvalutDetails extends React.Component {
                         activeOpacity={0.9}
                         style={[styles.icon_submit, styles.icon_margin]}
                         onPress={() => {
+                            this.confirmReport(section)
                         }}>
                         <Image style={styles.icon_submit}
                                source={require("../../../assets/resource/evalut/icon_confirm_yes.png")}/>
@@ -233,6 +272,15 @@ const styles = StyleSheet.create({
     },
 
     comment: {},
+    image_wrap: {
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    image: {
+        margin: scaleSize(10),
+        width: scaleSize(170),
+        height: scaleSize(95)
+    },
     input_wrap: {
         flexDirection: 'row',
         alignItems: 'center',
