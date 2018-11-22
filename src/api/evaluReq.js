@@ -175,5 +175,5 @@ export function uploadImage(file) {
 export function problemReport(imgUrl, reviewProjectId, checkResult, exception) {
     let url = '/app/store/problemReport';
     let data = {imgUrl, reviewProjectId, checkResult, exception}
-    return BaseServer.put(url, data)
+    return BaseServer.post(url, data)
 }
