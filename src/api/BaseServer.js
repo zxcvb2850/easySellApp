@@ -153,10 +153,10 @@ export default class BaseServer {
     }
 
     /*上传图片*/
-    static async putImage(url, params, isShowError = false) {
-        console.log('-----put-------', params)
+    static async postImage(url, data, isShowError = false) {
+        console.log('-----post-------', data)
         return new Promise((resolve, reject) => {
-            axios.put(BASE_URL + url, params, {
+            axios.post(BASE_URL + url, data, {
                 headers: {'Content-Type': 'multipart/form-data'}
             })
                 .then((res) => {
@@ -176,5 +176,4 @@ export default class BaseServer {
                 })
         })
     }
-
 }
