@@ -55,35 +55,13 @@ export default class EvalutDetails extends React.Component {
                 alert("自定义按钮点击：" + response.customButton);
             }
             else {
-                let source = {uri: response.uri};
                 let list = this.state.data
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                /*let file = {uri: response.uri, type: 'multipart/form-data', name: 'image.png'};
-                let formData = new FormData()
-                formData.append('img', file)
-                fetch(BASE_URL + '/app/store/imgUpload', {
-                    method: 'POST',
-                    headers: {
-                        'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNTQyNzIxMzg3LCJleHAiOjE1NDMzMjYxODd9.saSJTyO0_ZfMuvYraN5PFk0N9E3xWz0HIvvotprus6DaThalhDtLUi2XnQFv9PrjKie3r53SCviwweTIbU1x2w',
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    body: formData,
-                })
-                    .then((response) => response.json())
-                    .then((responseData) => {
-                        console.log('+++++++++++', responseData)
-
-                    })
-                    .catch((error) => {
-                        console.error('error', error)
-                    });*/
-                await uploadImage(response.uri);
+                let uri = await uploadImage(response.uri);
+                console.log(BASE_URL + uri.imgUrl)
                 showToast('上传成功', 'success')
-                console.log(source)
-                console.log('---------------', list)
-
-                list[index].imgs.push(source.uri)
+                list[index].imgs.push(BASE_URL + uri.imgUrl)
                 this.setState({data: list})
             }
         });

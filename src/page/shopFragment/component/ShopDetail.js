@@ -33,10 +33,11 @@ export default class ShopDetail extends React.Component {
 
     render() {
         const {params} = this.props.navigation.state;
+        console.log('++++++',params)
         return (
             <View style={styles.container}>
-                <Header isBack title={`店铺${params.shopName}详情`}/>
-                <Content style={{flex: 1}}>
+                <Header isBack title={`店铺${params.storeName}详情`}/>
+                {/*<Content style={{flex: 1}}>
                     <View style={styles.list}>
                         <View style={[styles.list_item, styles.first]}>
                             <Text style={styles.color_back}>基本信息</Text>
@@ -137,7 +138,7 @@ export default class ShopDetail extends React.Component {
                                 }}><Text
                             style={{fontSize: minFontSize}}>列表</Text></Button>
                     </View>
-                </Content>
+                </Content>*/}
             </View>
         )
     }

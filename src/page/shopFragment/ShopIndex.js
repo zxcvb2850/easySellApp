@@ -101,7 +101,7 @@ export default class DynamicIndex extends React.Component {
 
   itemHeadIcon = (item) => {
 	console.log("更多");
-	this.props.navigation.navigate('ShopDetail', {storeId: item.storeId})
+	this.props.navigation.navigate('ShopDetail', {storeId: item.storeId,storeName:item.storeName})
   }
 
   closeDrawer = () => {
@@ -164,9 +164,7 @@ export default class DynamicIndex extends React.Component {
 	<TouchableOpacity
 	  activeOpacity={0.9}
 	  style={styles.list_item}
-	  onPress={() => {
-		this.props.navigation.navigate('ShopDetail', {storeId: item.storeId})
-	  }}
+	  onPress={()=>this.itemHeadIcon(item)}
 	>
 	  <View style={styles.item_header}>
 		<Text style={styles.item_head_title}>{item.storeName}</Text>
