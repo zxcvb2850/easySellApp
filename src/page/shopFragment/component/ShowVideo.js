@@ -7,23 +7,40 @@ import {Button} from "native-base"
 import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
 import Header from "../../../components/Header";
 import {scaleSize} from "../../../common/screenUtil";
+import {getVideoList} from "../../../api/storeReq";
 
 export default class ShowVideo extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            videoList: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}, {id: 11}, {id: 12}, {id: 13}]
+            videoList: [],//视频列表
+            nowVideo: {},//当前视频信息
         }
+
+        this._getVideoList(props.navigation.state.params.storeId)
     }
 
-    _keyExtractor = (item) => item.id
+    _getVideoList = async (id) => {
+        let {params} = this.props.navigation.state
+        let result = await getVideoList(id)
+        console.log(result)
+        this.setState({
+            videoList: result.video.channelList,
+            nowVideo: params.videoInfo ? params.videoInfo : result.video.channelList[0]//当前是否接受到视频信息
+        })
+    }
+
+    _keyExtractor = (item) => item.channelId + ''
     _renderItem = ({item}) => (
         <View style={styles.video_item}>
-            <Button block light style={styles.center_item} onPress={() => {
-            }}>
+            <Button block light style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
+                    onPress={() => {
+                        this.setState({nowVideo: item})
+                        console.log(item.channelId)
+                    }}>
                 <Image style={{width: scaleSize(43), height: scaleSize(43)}}
                        source={require("../../../assets/resource/shop/icon_video_online.png")}/>
-                <Text>收银台</Text>
+                <Text>{item.remark}</Text>
             </Button>
         </View>
     )
@@ -38,7 +55,7 @@ export default class ShowVideo extends React.Component {
                     <View style={styles.video_wrapper}>
                         <View style={styles.video_txt_wrap}>
                             <Text style={styles.video_txt}>当前视频：</Text>
-                            <Text style={styles.video_txt}>收银台</Text>
+                            <Text style={styles.video_txt}>{this.state.nowVideo.remark || ''}</Text>
                         </View>
                         <View style={styles.video_options}>
                             <TouchableOpacity

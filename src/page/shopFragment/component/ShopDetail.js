@@ -7,16 +7,17 @@ import {List, ListItem, Button, Content} from "native-base"
 import Header from "../../../components/Header"
 import {scaleSize} from "../../../common/screenUtil"
 import {garyColor, lightGaryColor, minFontSize, whiteColor} from "../../../common/styles"
-import {dialPhone} from "../../../common/util"
+import {dialPhone, showToast} from "../../../common/util"
 import StoreStatus from "../../../components/StoreStatus";
 import DeployStatus from "../../../components/DeployStatus";
-import {getStoreDetails} from "../../../api/storeReq";
+import {getStoreDetails, getAlarmList} from "../../../api/storeReq";
 
 export default class ShopDetail extends React.Component {
     constructor(props) {
         super()
         this.state = {
-            shopData: {}//店铺信息
+            shopData: {},//店铺信息
+            linkmanList: [],//店员信息
         }
 
         this._getShopDetail(props.navigation.state.params.storeId)
@@ -26,18 +27,33 @@ export default class ShopDetail extends React.Component {
         //console.log(this.props.navigation.state.params)
     }
 
+    /*店铺详情查询*/
     _getShopDetail = async (id) => {
         let result = await getStoreDetails(id)
         console.log(result)
+        this.setState({shopData: result.storeDetails, linkmanList: result.storeDetails.linkmanList})
+    }
+    /*报警信息获取*/
+    _getAlarmList = async () => {
+        let result = await getAlarmList(this.state.shopData.storeId)
+        console.log(result)
+        if (!result.alarm.length) {
+            this.props.navigation.navigate('alarmList', {
+                data: result.data,
+                storeName: this.props.navigation.state.params.storeName
+            })
+        } else {
+            showToast('暂无报警信息')
+        }
     }
 
     render() {
         const {params} = this.props.navigation.state;
-        console.log('++++++',params)
+        console.log('++++++', params)
         return (
             <View style={styles.container}>
                 <Header isBack title={`店铺${params.storeName}详情`}/>
-                {/*<Content style={{flex: 1}}>
+                <Content style={{flex: 1}}>
                     <View style={styles.list}>
                         <View style={[styles.list_item, styles.first]}>
                             <Text style={styles.color_back}>基本信息</Text>
@@ -67,47 +83,26 @@ export default class ShopDetail extends React.Component {
                             </View>
                         </View>
                         {
-                            this.state.linkmanList.map(item => (
+                            this.state.linkmanList.length ? this.state.linkmanList.map(item => (
+                                    <View style={[styles.list_item]}>
+                                        <Image style={styles.icon}
+                                               source={require("../../../assets/resource/shop/icon_number.png")}/>
+                                        <View style={styles.txt_wrap}>
+                                            <Text style={styles.item_txt}>店员：</Text>
+                                            <Text style={[styles.item_txt, {color: garyColor}]}
+                                                  onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
+                                        </View>
+                                    </View>
+                                ))
+                                :
                                 <View style={[styles.list_item]}>
-                                    {
-                                        item.position === '店长' ?
-                                            <Image style={styles.icon}
-                                                   source={require("../../../assets/resource/shop/icon_leader.png")}/>
-                                            :
-                                            <Image style={styles.icon}
-                                                   source={require("../../../assets/resource/shop/icon_leader.png")}/>
-                                    }
+                                    <Image style={styles.icon}
+                                           source={require("../../../assets/resource/shop/icon_number.png")}/>
                                     <View style={styles.txt_wrap}>
-                                        <Text style={styles.item_txt}>{item.position}：</Text>
-                                        <Text style={[styles.item_txt, {color: garyColor}]}
-                                              onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
+                                        <Text style={styles.item_txt}>店员：</Text>
                                     </View>
                                 </View>
-                            ))
                         }
-                        <View style={[styles.list_item]}>
-
-                            <View style={styles.txt_wrap}>
-                                <Text style={styles.item_txt}>店长：</Text>
-                                <Text style={[styles.item_txt, {color: garyColor}]}
-                                      onPress={() => dialPhone(13212345678)}>张麻子-13212345678</Text>
-                            </View>
-                        </View>
-                        <View style={[styles.list_item]}>
-                            <Image style={styles.icon}
-                                   source={require("../../../assets/resource/shop/icon_number.png")}/>
-                            <View style={styles.txt_wrap}>
-                                <Text style={styles.item_txt}>店员：</Text>
-                                <Text style={[styles.item_txt, {color: garyColor}]}
-                                      onPress={() => dialPhone(13212345678)}>张麻子-13212345678</Text>
-                            </View>
-                        </View>
-                        <View style={[styles.list_item]}>
-                            <View style={[styles.txt_wrap, styles.one]}>
-                                <Text style={[styles.item_txt, {color: garyColor}]}
-                                      onPress={() => dialPhone(13212345678)}>张麻子-13212345678</Text>
-                            </View>
-                        </View>
                     </View>
                     <View style={[styles.info, styles.borderTopBottom]}>
                         <View style={[styles.first, styles.title]}>
@@ -123,7 +118,10 @@ export default class ShopDetail extends React.Component {
                                      status={this.state.videoState}/>
                         <Button bordered style={styles.more_btn}
                                 onPress={() => {
-                                    this.props.navigation.navigate('ShopVideo', {name: '1030店铺'})
+                                    this.props.navigation.navigate('ShopVideo', {
+                                        storeId: params.storeId,
+                                        storeName: params.storeName
+                                    })
                                 }}>
                             <Text style={{fontSize: minFontSize}}>查看</Text>
                         </Button>
@@ -133,12 +131,10 @@ export default class ShopDetail extends React.Component {
                         <DeployStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
                                       status={this.state.armingState}/>
                         <Button bordered style={styles.more_btn}
-                                onPress={() => {
-                                    this.props.navigation.navigate('ShopVideo', {name: '1030店铺'})
-                                }}><Text
+                                onPress={this._getAlarmList}><Text
                             style={{fontSize: minFontSize}}>列表</Text></Button>
                     </View>
-                </Content>*/}
+                </Content>
             </View>
         )
     }
