@@ -113,7 +113,7 @@ export default class DynamicIndex extends React.Component {
     };
 
     gotoVideo = (item, val) => {
-        if (item) {
+        if (!item.inUse) {
             this.props.navigation.navigate('ShopVideo', {
                 videoInfo: val,//当前视频信息
                 storeId: item.storeId,
@@ -225,9 +225,15 @@ export default class DynamicIndex extends React.Component {
                                 <Button key={value.channelId} light
                                         style={[styles.center_item, {borderColor: value.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
                                         onPress={() => this.gotoVideo(item, value)}>
-                                    <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                                           source={require("../../assets/resource/shop/icon_video_online.png")}/>
-                                    <Text>{value.remark}</Text>
+                                    {
+                                        value.inUse ?
+                                            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                                                   source={require("../../assets/resource/shop/icon_video_offine.png")}/>
+                                            :
+                                            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                                                   source={require("../../assets/resource/shop/icon_video_online.png")}/>
+                                    }
+                                    <Text style={{color: value.inUse ? garyColor : '#000'}}>{value.remark}</Text>
                                 </Button>
                             ))
                             : <Text>暂无摄像信息</Text>

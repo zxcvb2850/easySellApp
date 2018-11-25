@@ -33,14 +33,21 @@ export default class ShowVideo extends React.Component {
     _keyExtractor = (item) => item.channelId + ''
     _renderItem = ({item}) => (
         <View style={styles.video_item}>
-            <Button block light style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
+            <Button block light
+                    style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
                     onPress={() => {
                         this.setState({nowVideo: item})
                         console.log(item.channelId)
                     }}>
-                <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                       source={require("../../../assets/resource/shop/icon_video_online.png")}/>
-                <Text>{item.remark}</Text>
+                {
+                    item.inUse ?
+                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                               source={require("../../../assets/resource/shop/icon_video_offine.png")}/>
+                        :
+                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                               source={require("../../../assets/resource/shop/icon_video_online.png")}/>
+                }
+                <Text style={{color: item.inUse ? garyColor : '#000'}}>{item.remark}</Text>
             </Button>
         </View>
     )

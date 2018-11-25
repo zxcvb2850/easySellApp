@@ -37,7 +37,7 @@ export default class ShopDetail extends React.Component {
     _getAlarmList = async () => {
         let result = await getAlarmList(this.state.shopData.storeId)
         console.log(result)
-        if (!result.alarm.length) {
+        if (result.alarm.length) {
             this.props.navigation.navigate('alarmList', {
                 data: result.data,
                 storeName: this.props.navigation.state.params.storeName

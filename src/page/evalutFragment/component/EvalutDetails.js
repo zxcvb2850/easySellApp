@@ -314,6 +314,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: scaleSize(20),
     },
     content_item: {
+        padding: scaleSize(20),
         flexDirection: 'row',
         borderBottomColor: lightGaryColor,
         borderBottomWidth: scaleSize(1),
