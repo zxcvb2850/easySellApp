@@ -1,12 +1,12 @@
 /**
-* 整改反馈
-* */
+ * 例外考评记录
+ * */
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native"
 import {Separator} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
-import {exceptionList} from "../../../api/evaluReq";
+import {exceptionList, getExportFollowList} from "../../../api/evaluReq";
 
 export default class Feedback extends React.Component {
     constructor(props) {
@@ -34,7 +34,7 @@ export default class Feedback extends React.Component {
 
     _exceptionList = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
-        let result = await exceptionList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
+        let result = await getExportFollowList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
         console.log(result);
         if (page === 1) {
             if (result.page.list.length) {
@@ -50,11 +50,12 @@ export default class Feedback extends React.Component {
         this.setState({isStatus: false, isLoreTextStatus: false})
         if (isRefresh) {
             this.setState({refreshing: false})
+            this.getMoreList();
         }
     }
     //上拉加载更多
     getMoreList = () => {
-        if (!this.state.isStatus && this.state.isLoreTextStatus) {
+        if (!this.state.isStatus) {
             this.setState({isStatus: true, page: this.state.page + 1})
             this._exceptionList(this.state.page + 1)
         }

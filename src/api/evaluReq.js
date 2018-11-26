@@ -82,12 +82,49 @@ export function getExportFollowList() {
 
 /**
  * 保存单个考评记录
- * storeReviewProject
+ * reviewProjectId  考评项目ID
+ * reviewId  考评记录ID
+ * storeId  门店ID
+ * projectCode  项目编号
+ * projectType  项目分类
+ * projectRequire  项目要求
+ * checkResult  检查结果
+ * exception  例外描述
+ * photos 例外证据
  * */
-export function saveSingle() {
+export function saveSingle(reviewProjectId, reviewId, storeId, projectCode, projectType, projectRequire, checkResult, exception, photos) {
     let url = '/app/review/save';
-    let data = {}
+    let data = {
+        reviewProjectId,
+        reviewId,
+        storeId,
+        projectCode,
+        projectType,
+        projectRequire,
+        checkResult,
+        exception,
+        photos
+    }
     return BaseServer.post(url, data);
+}
+
+/**
+ * 批量保存考评记录
+ * projectlList  考评项目列表
+ * reviewProjectId  考评项目ID
+ * reviewId  考评记录ID
+ * storeId  门店ID
+ * projectCode  项目编号
+ * projectType  项目分类
+ * projectRequire  项目要求
+ * checkResult  检查结果
+ * exception  例外描述
+ * photos  例外证据
+ * */
+export function saveAll(projectlList) {
+    let url = '/app/review/saveAll';
+    let data = {projectlList}
+    return BaseServer.post(url, data, true);
 }
 
 /**
@@ -163,7 +200,7 @@ export function reviewRecordStat(page = 1) {
  * file 文件
  * */
 export function uploadImage(file) {
-    console.log('++++++++++++++++',file)
+    console.log('++++++++++++++++', file)
     let url = '/app/store/imgUpload';
     let fileInfo = {uri: file, type: 'multipart/form-data', name: 'image.png'};
     let formData = new FormData()

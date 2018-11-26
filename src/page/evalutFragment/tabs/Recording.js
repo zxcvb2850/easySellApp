@@ -79,11 +79,12 @@ export default class Recording extends React.Component {
         this.setState({isStatus: false, isLoreTextStatus: false})
         if (isRefresh) {
             this.setState({refreshing: false})
+            this.getMoreList();
         }
     }
     //上拉加载更多
     getMoreList = () => {
-        if (!this.state.isStatus && this.state.isLoreTextStatus) {
+        if (!this.state.isStatus) {
             this.setState({isStatus: true, page: this.state.page + 1})
             this._getStoreHistory(this.state.page + 1)
         }
