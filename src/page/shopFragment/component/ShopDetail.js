@@ -84,11 +84,11 @@ export default class ShopDetail extends React.Component {
                         </View>
                         {
                             this.state.linkmanList.length ? this.state.linkmanList.map(item => (
-                                    <View style={[styles.list_item]}>
+                                    <View style={[styles.list_item]} key={item.storeLinkmanId}>
                                         <Image style={styles.icon}
                                                source={require("../../../assets/resource/shop/icon_number.png")}/>
                                         <View style={styles.txt_wrap}>
-                                            <Text style={styles.item_txt}>店员：</Text>
+                                            <Text style={styles.item_txt}>{item.position}：</Text>
                                             <Text style={[styles.item_txt, {color: garyColor}]}
                                                   onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
                                         </View>

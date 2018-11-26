@@ -100,7 +100,7 @@ export default class PlanList extends React.Component {
 			  key={item.reviewId}
 			  onPress={() => {
 				console.log(item);
-				this.props.navigate('EvalutDetails', {reviewId: item.reviewId})
+				this.props.navigate('EvalutDetails', {reviewId: item.reviewId,storeName:item.storeName})
 			  }}
 	>
 	  <Left>
