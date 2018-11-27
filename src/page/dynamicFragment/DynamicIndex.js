@@ -66,7 +66,7 @@ export default class DynamicIndex extends React.Component {
 
     _reviewRecordStat = async (page = 1, isRefresh = false) => {
         let result = await reviewRecordStat(page);
-        console.log('--------------', result);
+        //console.log('--------------', result);
         this.setState({reviewRecord: result})
     }
 
@@ -119,7 +119,7 @@ export default class DynamicIndex extends React.Component {
                         fill={this.state.video.rate * 100}
                         rotation={0}
                         tintColor="#FFF"
-                        onAnimationComplete={() => console.log('onAnimationComplete')}
+                        //onAnimationComplete={() => console.log('onAnimationComplete')}
                         backgroundColor="rgba(0,0,0,0.1)"
                         children={() => (
                             <View>
@@ -142,7 +142,7 @@ export default class DynamicIndex extends React.Component {
                         fill={this.state.store.rate * 100}
                         rotation={0}
                         tintColor="#FFF"
-                        onAnimationComplete={() => console.log('onAnimationComplete')}
+                        //onAnimationComplete={() => console.log('onAnimationComplete')}
                         backgroundColor="rgba(0,0,0,0.1)"
                         children={() => (
                             <View>
@@ -162,7 +162,7 @@ export default class DynamicIndex extends React.Component {
                         fill={this.state.arming.rate * 100}
                         rotation={0}
                         tintColor="#FFF"
-                        onAnimationComplete={() => console.log('onAnimationComplete')}
+                        //onAnimationComplete={() => console.log('onAnimationComplete')}
                         backgroundColor="rgba(0,0,0,0.1)"
                         children={() => (
                             <View>

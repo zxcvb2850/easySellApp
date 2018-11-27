@@ -83,7 +83,7 @@ export default class DynamicIndex extends React.Component {
     }
 
     itemIconLick = async (item, index) => {
-        console.log("点赞", item);
+        //console.log("点赞", item);
         await isCollection(item.storeId)
         let list = this.state.list
         list[index].isCollection = !item.isCollection
@@ -91,16 +91,16 @@ export default class DynamicIndex extends React.Component {
     }
 
     itemIconTrend = () => {
-        console.log("趋势");
+        //console.log("趋势");
     }
 
     itemIconPhone = (phoen) => {
-        console.log("打电话", phoen);
+        //console.log("打电话", phoen);
         dialPhone(phoen)
     }
 
     itemHeadIcon = (item) => {
-        console.log("更多");
+        //console.log("更多");
         this.props.navigation.navigate('ShopDetail', {storeId: item.storeId, storeName: item.storeName})
     }
 

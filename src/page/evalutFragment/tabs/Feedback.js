@@ -35,7 +35,7 @@ export default class Feedback extends React.Component {
     _exceptionList = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await getExportFollowList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
-        console.log(result);
+        //console.log(result);
         if (page === 1) {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});

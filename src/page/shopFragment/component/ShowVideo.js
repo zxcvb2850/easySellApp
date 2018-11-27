@@ -23,7 +23,7 @@ export default class ShowVideo extends React.Component {
     _getVideoList = async (id) => {
         let {params} = this.props.navigation.state
         let result = await getVideoList(id)
-        console.log(result)
+        //console.log(result)
         this.setState({
             videoList: result.video.channelList,
             nowVideo: params.videoInfo ? params.videoInfo : result.video.channelList[0]//当前是否接受到视频信息
@@ -37,7 +37,7 @@ export default class ShowVideo extends React.Component {
                     style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
                     onPress={() => {
                         this.setState({nowVideo: item})
-                        console.log(item.channelId)
+                        //console.log(item.channelId)
                     }}>
                 {
                     item.inUse ?

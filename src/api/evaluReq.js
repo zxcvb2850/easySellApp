@@ -200,7 +200,7 @@ export function reviewRecordStat(page = 1) {
  * file 文件
  * */
 export function uploadImage(file) {
-    console.log('++++++++++++++++', file)
+    //console.log('++++++++++++++++', file)
     let url = '/app/store/imgUpload';
     let fileInfo = {uri: file, type: 'multipart/form-data', name: 'image.png'};
     let formData = new FormData()

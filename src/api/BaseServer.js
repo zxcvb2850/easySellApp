@@ -27,7 +27,7 @@ axios.interceptors.request.use(async config => {//拦截器处理
 })
 
 axios.interceptors.response.use(response => {//请求返回数据处理
-  console.log('+++++++++++++++++', response)
+  //console.log('+++++++++++++++++', response)
   // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
   // 否则的话抛出错误
   if (response.status === 200) {
@@ -88,10 +88,10 @@ axios.interceptors.response.use(response => {//请求返回数据处理
 //请求的封装
 export default class BaseServer {
   static async get(url, params, isShowError = false) {
-	console.log('------get------', params)
+	//console.log('------get------', params)
 	return new Promise((resolve, reject) => {
 	  axios.get(BASE_URL + url, params).then((res) => {
-		console.log('++++++++++', res, isShowError);
+		//console.log('++++++++++', res, isShowError);
 		if (res != null) {
 		  res = res.data;
 		  if (isShowError) {
@@ -109,7 +109,7 @@ export default class BaseServer {
   }
 
   static async post(url, params, isShowError = false) {
-	console.log('------post------', params)
+	//console.log('------post------', params)
 	return new Promise((resolve, reject) => {
 	  axios.post(BASE_URL + url, params, {
 		headers: {
@@ -134,11 +134,11 @@ export default class BaseServer {
   }
 
   static async put(url, params, isShowError = false) {
-	console.log('-----put-------', params)
+	//console.log('-----put-------', params)
 	return new Promise((resolve, reject) => {
 	  axios.put(BASE_URL + url, params)
 		.then((res) => {
-		  console.log(res)
+		  //console.log(res)
 		  if (res != null) {
 			res = res.data;
 			if (isShowError) {
@@ -157,13 +157,13 @@ export default class BaseServer {
 
   /*上传图片*/
   static async postImage(url, data, isShowError = false) {
-	console.log('-----post-------', data)
+	//console.log('-----post-------', data)
 	return new Promise((resolve, reject) => {
 	  axios.post(BASE_URL + url, data, {
 		headers: {'Content-Type': 'multipart/form-data'}
 	  })
 		.then((res) => {
-		  console.log(res)
+		  //console.log(res)
 		  if (res != null) {
 			res = res.data;
 			if (isShowError) {

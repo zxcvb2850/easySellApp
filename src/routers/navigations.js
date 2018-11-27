@@ -137,7 +137,7 @@ export default class AppNavigatorRoot extends React.Component {
     componentDidMount() {
         /*监听路由跳转*/
         DeviceEventEmitter.addListener('gotoRouter', (val) => {
-            console.log('监听到跳转路由-----', val)
+            //console.log('监听到跳转路由-----', val)
             this.props.navigation.navigate(val)
         })
         /*监听返回按钮*/

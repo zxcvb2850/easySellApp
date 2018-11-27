@@ -42,12 +42,12 @@ export default class EvalutDetails extends React.Component {
 
     /*上传图片*/
     choosePic = (index) => {
-        console.log(index)
+        //console.log(index)
         ImagePicker.showImagePicker(options, async (response) => {
-            console.log('Response = ', response);
+            //console.log('Response = ', response);
 
             if (response.didCancel) {
-                console.log('用户取消了选择！');
+                //console.log('用户取消了选择！');
             }
             else if (response.error) {
                 alert("ImagePicker发生错误：" + response.error);
@@ -60,7 +60,7 @@ export default class EvalutDetails extends React.Component {
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let uri = await uploadImage(response.uri);
-                console.log(BASE_URL + uri.imgUrl)
+                //console.log(BASE_URL + uri.imgUrl)
                 showToast('上传成功', 'success')
                 list[index].imgs.push(BASE_URL + uri.imgUrl)
                 this.setState({data: list})
@@ -70,7 +70,7 @@ export default class EvalutDetails extends React.Component {
 
     /*提交报告*/
     confirmReport = async (section, bool) => {
-        console.log(section, bool)
+        //console.log(section, bool)
         /*if (section.checkResult == 1) {
             if (!bool) {
                 return false;
@@ -103,7 +103,7 @@ export default class EvalutDetails extends React.Component {
     confirmAll = async () => {
         let list = []
         this.state.data.forEach(item => {
-            console.log(item)
+            //console.log(item)
             list.push({
                 reviewProjectId: item.reviewProjectId,
                 reviewId: item.reviewId,

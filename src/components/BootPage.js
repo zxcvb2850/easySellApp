@@ -50,7 +50,7 @@ export default class BootPage extends React.Component {
 	} else {
 	  const token = await AsyncStorage.getItem('shop_token');
 	  const userInfo = await AsyncStorage.getItem('shop_info');
-	  console.log('-----token----', token)
+	  //console.log('-----token----', token)
 	  if (token !== null) {
 		let result = await getInfo(true)
 		if (result.code === 401) {

@@ -13,7 +13,7 @@ export function login(username, password) {
 
 //获取个人信息
 export function getInfo(bool = false) {
-  console.log('*********', bool)
+  //console.log('*********', bool)
   let url = "/app/user/info";
   return BaseServer.get(url, {}, bool)
 }

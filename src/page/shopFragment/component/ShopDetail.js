@@ -30,13 +30,13 @@ export default class ShopDetail extends React.Component {
     /*店铺详情查询*/
     _getShopDetail = async (id) => {
         let result = await getStoreDetails(id)
-        console.log(result)
+        //console.log(result)
         this.setState({shopData: result.storeDetails, linkmanList: result.storeDetails.linkmanList})
     }
     /*报警信息获取*/
     _getAlarmList = async () => {
         let result = await getAlarmList(this.state.shopData.storeId)
-        console.log(result)
+        //console.log(result)
         if (result.alarm.length) {
             this.props.navigation.navigate('alarmList', {
                 data: result.data,
@@ -49,7 +49,7 @@ export default class ShopDetail extends React.Component {
 
     render() {
         const {params} = this.props.navigation.state;
-        console.log('++++++', params)
+        //console.log('++++++', params)
         return (
             <View style={styles.container}>
                 <Header isBack title={`店铺${params.storeName}详情`}/>
@@ -67,7 +67,7 @@ export default class ShopDetail extends React.Component {
                             <TouchableOpacity
                                 activeOpacity={0.9}
                                 style={styles.goto_icon}
-                                onPress={() => console.log("打开地图")}
+                                // onPress={() => console.log("打开地图")}
                             >
                                 <Image style={styles.goto_icon}
                                        source={require("../../../assets/resource/shop/icon_map.png")}/>

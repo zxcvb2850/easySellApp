@@ -10,7 +10,7 @@ import {scaleSize} from "../../../common/screenUtil"
 
 export default class PlanList extends React.Component {
     componentDidMount() {
-        console.log('-----------', this.props)
+        //console.log('-----------', this.props)
     }
 
     constructor(props) {
@@ -100,7 +100,7 @@ export default class PlanList extends React.Component {
         <ListItem avatar style={{backgroundColor: whiteColor}}
                   key={item.reviewId}
                   onPress={() => {
-                      console.log(item);
+                      //console.log(item);
                       this.props.navigate('EvalutDetails', {reviewId: item.reviewId, storeName: item.storeName})
                   }}
         >
