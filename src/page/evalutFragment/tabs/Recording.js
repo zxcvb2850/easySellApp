@@ -2,45 +2,18 @@
 * 考评记录
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native"
+import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
 import {Separator} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
 import {getStoreHistory} from "../../../api/evaluReq";
+import EvalutEnd from "../component/EvalutEnd";
 
 export default class Recording extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            list: [{
-                storeId: 1,
-                storeName: '南区1303店',
-                projectTotle: 30,
-                qualifiedTotle: 10,
-                qualifiedRate: '33.3 %',
-                reviewLevel: 3
-            }, {
-                storeId: 2,
-                storeName: '南区1303店',
-                projectTotle: 30,
-                qualifiedTotle: 10,
-                qualifiedRate: '33.3%',
-                reviewLevel: 3
-            }, {
-                storeId: 3,
-                storeName: '南区1303店',
-                projectTotle: 30,
-                qualifiedTotle: 10,
-                qualifiedRate: '33.3%',
-                reviewLevel: 3
-            }, {
-                storeId: 4,
-                storeName: '南区1303店',
-                projectTotle: 30,
-                qualifiedTotle: 10,
-                qualifiedRate: '33.3%',
-                reviewLevel: 3
-            }],
+            list: [],
             filter: props.filter,//过滤的条件
             page: 1,//当前页码
             refreshing: false,//是否在加载数据
@@ -48,7 +21,7 @@ export default class Recording extends React.Component {
             isLoreTextStatus: true,
             isLoreText: '正在加载中...',//上拉加载提示文字
         }
-        //this._getStoreHistory()
+        this._getStoreHistory()
     }
 
     componentWillReceiveProps(nextProps) {
@@ -64,7 +37,7 @@ export default class Recording extends React.Component {
     _getStoreHistory = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await getStoreHistory(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
-        //console.log(result);
+        console.log(result);
         if (page === 1) {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
@@ -123,14 +96,14 @@ export default class Recording extends React.Component {
     _renderItem = ({item}) => (
         <View style={styles.list}>
             <View style={styles.top}>
-                <Text style={styles.top_txt}>当天</Text>
+                <Text style={styles.top_txt}>{item.planTime}</Text>
             </View>
-            <View style={styles.item} key={item.ids}>
+            <View style={styles.item}>
                 <View style={styles.head}>
                     <View style={styles.line}/>
                     <Text style={styles.head_title}>{item.storeName}</Text>
                     {
-                        item.eval > 3 ?
+                        item.reviewLevel === '优' ?
                             <Image style={styles.eval_icon}
                                    source={require("../../../assets/resource/evalut/icon_you.png")}/>
                             :
@@ -138,7 +111,12 @@ export default class Recording extends React.Component {
                                    source={require("../../../assets/resource/evalut/icon_lian.png")}/>
                     }
                 </View>
-                <View style={styles.footer}>
+                <TouchableOpacity
+                    activeOpacity={0.9}
+                    style={styles.footer}
+                    onPress={() => {
+                        this.props.navigate('EvalutEnd', {storeName: item.storeName, reviewerId: item.reviewerId})
+                    }}>
                     <View style={styles.center}>
                         <Text
                             style={styles.desc}>检查{item.projectTotle}项,{item.qualifiedTotle}项合格，{item.qualifiedRate}合格率</Text>
@@ -146,7 +124,7 @@ export default class Recording extends React.Component {
                     </View>
                     <Image style={{width: scaleSize(44), height: scaleSize(44)}}
                            source={require("../../../assets/resource/common/icon_back_black.png")}/>
-                </View>
+                </TouchableOpacity>
             </View>
         </View>
     )

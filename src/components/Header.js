@@ -25,7 +25,7 @@ class Header extends React.Component {
 	const {backgroundColor, statusColor} = this.props;
 	return (
 	  <View style={[this.props.style, styles.container]}>
-		<StatusBar backgroundColor={statusColor ? statusColor : headerColor}/>
+		<StatusBar backgroundColor={statusColor ? statusColor : headerColor} hidden={false}/>
 		{
 		  this.props.isBack ?
 			<TouchableOpacity

@@ -18,6 +18,7 @@ import ShopDetail from "../page/shopFragment/component/ShopDetail"
 import alarmList from "../page/shopFragment/component/alarmList"
 import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
+import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
@@ -49,6 +50,7 @@ const shopIndex = createStackNavigator({
 const evalutIndex = createStackNavigator({
     EvalutIndex: {screen: EvalutIndex},
     EvalutDetails: {screen: EvalutDetails},
+    EvalutEnd: {screen: EvalutEnd},
 }, {
     header: null,
     headerMode: 'none',
