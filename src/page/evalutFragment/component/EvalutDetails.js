@@ -141,6 +141,14 @@ export default class EvalutDetails extends React.Component {
 
     _getPlanDetails = async (reviewId) => {
         let result = await getPlanDetails(reviewId)
+        /*
+        *checkResult
+        * 1新建
+        * 2完成
+        * 3例外
+        * 4
+        * */
+        console.log(result)
         let list = result.storeReview.projectList
         list.map(item => {
             item.imgs = [];

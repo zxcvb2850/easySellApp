@@ -6,8 +6,9 @@ import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from "react-n
 import {Button} from "native-base"
 import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
 import Header from "../../../components/Header";
-import {scaleSize} from "../../../common/screenUtil";
+import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {getVideoList} from "../../../api/storeReq";
+import Player from "../../../common/Player";
 
 export default class ShowVideo extends React.Component {
     constructor(props) {
@@ -15,8 +16,10 @@ export default class ShowVideo extends React.Component {
         this.state = {
             videoList: [],//视频列表
             nowVideo: {},//当前视频信息
+            videoPath: "",//视频地址
+            videoStatus: 0,//视频状态
         }
-
+        console.log('-----------------')
         this._getVideoList(props.navigation.state.params.storeId)
     }
 
@@ -36,7 +39,10 @@ export default class ShowVideo extends React.Component {
             <Button block light
                     style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
                     onPress={() => {
-                        this.setState({nowVideo: item})
+                        this.setState({
+                            nowVideo: item,
+                            videoPath: "118.186.224.167@port:7002@callid:144115213845659729@resid:58"
+                        })
                         //console.log(item.channelId)
                     }}>
                 {
@@ -59,6 +65,23 @@ export default class ShowVideo extends React.Component {
             <View style={styles.container}>
                 <Header isBack={true} title={params.name}/>
                 <View style={styles.video}>
+                    {/*视频播放*/}
+                    <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
+                        {
+                            this.state.videoPath !== "" ?
+                                <Player
+                                    style={{width: DEVICE_WIDTH, height: 456}}
+                                    path={this.state.videoPath}
+                                    status={this.state.videoStatus}
+                                />
+                                : null
+                        }
+                        {/*<Player
+                            style={{width: 500, height: 456}}
+                            path="118.186.224.167@port:7002@callid:144115213845659729@resid:58"
+                            status={this.state.videoStatus}
+                        />*/}
+                    </View>
                     <View style={styles.video_wrapper}>
                         <View style={styles.video_txt_wrap}>
                             <Text style={styles.video_txt}>当前视频：</Text>
@@ -108,6 +131,12 @@ const styles = StyleSheet.create({
         position: 'relative',
         height: scaleSize(456),
         backgroundColor: '#000',
+    },
+    video_center: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
     },
     video_wrapper: {
         position: 'absolute',

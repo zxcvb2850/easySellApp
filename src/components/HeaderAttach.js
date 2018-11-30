@@ -5,9 +5,6 @@ import {whiteColor} from "../common/styles";
 
 const HeaderAttach = (props) => (
 	<View style={styles.head_children}>
-		<View style={styles.head_left}>
-			<Text style={styles.head_left_text} onPress={this.allClick}>全部</Text>
-		</View>
 		<View style={styles.head_right}>
 			<TouchableOpacity
 				activeOpacity={0.9}

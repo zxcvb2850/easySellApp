@@ -68,12 +68,12 @@ export default class DynamicIndex extends React.Component {
                         renderTabBar={() => <DefaultTabBar style={styles.tab}/>}
                     >
                         <PlanList
-                            tabLabel='计划考评(20)'
+                            tabLabel='计划考评'
                             navigate={this.gotoNavigate}
                             filter={this.state.filterText}
                             index={this.state.index}/>
                         <Feedback
-                            tabLabel='例外追踪(2)'
+                            tabLabel='例外追踪'
                             navigate={this.gotoNavigate}
                             filter={this.state.filterText}
                             index={this.state.index}/>

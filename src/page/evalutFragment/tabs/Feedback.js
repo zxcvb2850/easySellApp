@@ -6,7 +6,7 @@ import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-nat
 import {Separator} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
-import {exceptionList, getExportFollowList} from "../../../api/evaluReq";
+import {exceptionList, getExceptionList} from "../../../api/evaluReq";
 
 export default class Feedback extends React.Component {
     constructor(props) {
@@ -33,9 +33,8 @@ export default class Feedback extends React.Component {
     }
 
     _exceptionList = async (page = 1, isRefresh = false) => {
-        /*此处请求有点小问题*/
-        let result = await getExportFollowList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
-        //console.log(result);
+        let result = await getExceptionList(page);
+        console.log(result);
         if (page === 1) {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
@@ -90,20 +89,19 @@ export default class Feedback extends React.Component {
         )
     }
 
-    _keyExtractor = (item) => item.id + '';
+    _keyExtractor = (item) => item.reviewId + '';
     _renderItem = ({item}) => (
         <View style={styles.item}>
             <View style={styles.head}>
                 <View style={styles.line}/>
-                <Text style={styles.head_title}>南区1030店</Text>
+                <Text style={styles.head_title}>{item.storeName}</Text>
                 <Text style={styles.eval_icon}>处理</Text>
             </View>
             <View style={styles.footer}>
                 <View style={styles.center}>
-                    <Text style={styles.desc}>考评时间：2018-10-8日</Text>
-                    <Text style={styles.time}>考评内容荣：全部不合格项目(3项)</Text>
-                    <Text style={styles.time}>处理人：张麻子</Text>
-                    <Text style={styles.time}>完成时间：2018-10-10 11:12:23</Text>
+                    <Text style={styles.time}>考评内容荣：全部不合格项目({item.projectList.length}项)</Text>
+                    <Text style={styles.time}>处理人：{item.reviewer}</Text>
+                    <Text style={styles.time}>考评时间：{item.updateTime}</Text>
                 </View>
             </View>
         </View>

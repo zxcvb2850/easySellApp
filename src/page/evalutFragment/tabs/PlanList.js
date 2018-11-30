@@ -48,6 +48,7 @@ export default class PlanList extends React.Component {
     _getPlanList = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await getPlanList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
+        console.log(result)
         if (page === 1) {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});

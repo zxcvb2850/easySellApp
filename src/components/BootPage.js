@@ -46,11 +46,11 @@ export default class BootPage extends React.Component {
 	  this.timer = setTimeout(() => {
 		this.setState({downTimer: this.state.downTimer - 1})
 		this.down();
-	  }, 2000)
+	  }, 1000)
 	} else {
 	  const token = await AsyncStorage.getItem('shop_token');
 	  const userInfo = await AsyncStorage.getItem('shop_info');
-	  //console.log('-----token----', token)
+	  console.log('-----token----', token)
 	  if (token !== null) {
 		let result = await getInfo(true)
 		if (result.code === 401) {

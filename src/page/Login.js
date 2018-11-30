@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import {Container, Item, Input, Form, Label, Thumbnail, Button} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
-import {mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
+import {headerColor, mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 import {observer, inject} from 'mobx-react'
 import {computed, action} from 'mobx'
@@ -54,6 +54,7 @@ export default class Login extends React.Component {
     render() {
         return (
             <Container style={styles.container}>
+                <StatusBar backgroundColor={'#000'} hidden={false}/>
                 <View style={styles.content}>
                     <View style={{alignItems: "center"}}>
                         <Image style={{width: scaleSize(236), height: scaleSize(236)}}

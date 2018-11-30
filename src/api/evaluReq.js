@@ -72,12 +72,13 @@ export function getPlanList(page = 1, sidx, order, storeCode, storeName, limit =
 
 /**
  * 获取例外跟踪列表
- * params
+ * page 页码
+ * limit 每页数量
  * */
-export function getExportFollowList() {
-    let url = '/app/review/projectFollow'
-    let data = {}
-    return BaseServer.get(url, objChangeUrl(data))
+export function getExceptionList(page = 1, limit = 10) {
+    let url = '/app/review/exceptionList'
+    let data = {page, limit}
+    return BaseServer.post(url, data)
 }
 
 /**
