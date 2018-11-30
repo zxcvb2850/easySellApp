@@ -149,12 +149,32 @@ export default class EvalutDetails extends React.Component {
         * 4
         * */
         console.log(result)
+
         let list = result.storeReview.projectList
-        list.map(item => {
-            item.imgs = [];
-            item.msg = ""
-        })
-        this.setState({data: list})
+
+        let map = {},
+            dest = [];
+        for (let i = 0; i < list.length; i++) {
+            let ai = list[i];
+            if (!map[ai.projectType]) {
+                dest.push({
+                    reviewProjectId: ai.reviewProjectId,
+                    projectType: ai.projectType,
+                    data: [ai]
+                });
+                map[ai.projectType] = ai;
+            } else {
+                for (let j = 0; j < dest.length; j++) {
+                    let dj = dest[j];
+                    if (dj.projectType === ai.projectType) {
+                        dj.data.push(ai);
+                        break;
+                    }
+                }
+            }
+        }
+        console.log('----------------', dest)
+        this.setState({data: dest})
     }
 
     _updateSections = activeSections => {
@@ -223,6 +243,7 @@ export default class EvalutDetails extends React.Component {
     }
 
     _renderHeader = (section, index, isActive, sections) => {
+        console.log('**************', section)
         return (
             <View
                 style={[styles.header, commonStyle.borderTopBottom, {
@@ -238,17 +259,18 @@ export default class EvalutDetails extends React.Component {
     };
 
     _renderContent = (section, index, isActive, sections) => {
-        return (
-            <View style={[styles.content, {
+        console.log('++++++++++++++++++', section)
+        return section.data.map(item => (
+            <View key={item.reviewProjectId} style={[styles.content, {
                 marginBottom: isActive ? scaleSize(20) : scaleSize(0)
             }]}>
                 <View style={styles.content_item}>
-                    <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{section.projectCode}</Text>
+                    <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
                     <View style={styles.content_desc}>
-                        <Text>{section.projectData}</Text>
+                        <Text>{item.projectData}</Text>
                     </View>
                 </View>
-                <View style={styles.comment}>
+                {/*<View style={styles.comment}>
                     <View style={styles.image_wrap}>
                         {
                             section.imgs.map((item, index) => (
@@ -306,9 +328,9 @@ export default class EvalutDetails extends React.Component {
                                        source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>
                         }
                     </TouchableOpacity>
-                </View>
+                </View>*/}
             </View>
-        );
+        ))
     };
 }
 

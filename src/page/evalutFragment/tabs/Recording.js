@@ -92,7 +92,7 @@ export default class Recording extends React.Component {
         )
     }
 
-    _keyExtractor = (item) => item.storeId + '';
+    _keyExtractor = (item) => item.reviewId + '';
     _renderItem = ({item}) => (
         <View style={styles.list}>
             <View style={styles.top}>
