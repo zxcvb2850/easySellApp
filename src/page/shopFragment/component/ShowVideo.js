@@ -2,12 +2,12 @@
 * 监控页面
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList} from "react-native"
-import {Button} from "native-base"
-import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
+import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from "react-native"
+import { Button } from "native-base"
+import { backgroundColor, garyColor, headerColor, whiteColor } from "../../../common/styles";
 import Header from "../../../components/Header";
-import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
-import {getVideoList} from "../../../api/storeReq";
+import { DEVICE_WIDTH, scaleSize } from "../../../common/screenUtil";
+import { getVideoList } from "../../../api/storeReq";
 import Player from "../../../common/Player";
 
 export default class ShowVideo extends React.Component {
@@ -24,7 +24,7 @@ export default class ShowVideo extends React.Component {
     }
 
     _getVideoList = async (id) => {
-        let {params} = this.props.navigation.state
+        let { params } = this.props.navigation.state
         let result = await getVideoList(id)
         //console.log(result)
         this.setState({
@@ -34,43 +34,43 @@ export default class ShowVideo extends React.Component {
     }
 
     _keyExtractor = (item) => item.channelId + ''
-    _renderItem = ({item}) => (
+    _renderItem = ({ item }) => (
         <View style={styles.video_item}>
             <Button block light
-                    style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
-                    onPress={() => {
-                        this.setState({
-                            nowVideo: item,
-                            videoPath: "118.186.224.167@port:7002@callid:144115213845659729@resid:58"
-                        })
-                        //console.log(item.channelId)
-                    }}>
+                style={[styles.center_item, { borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor }]}
+                onPress={() => {
+                    this.setState({
+                        nowVideo: item,
+                        videoPath: "118.186.224.167@port:7002@callid:144115213845659729@resid:58"
+                    })
+                    //console.log(item.channelId)
+                }}>
                 {
                     item.inUse ?
-                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                               source={require("../../../assets/resource/shop/icon_video_offine.png")}/>
+                        <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
+                            source={require("../../../assets/resource/shop/icon_video_offine.png")} />
                         :
-                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                               source={require("../../../assets/resource/shop/icon_video_online.png")}/>
+                        <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
+                            source={require("../../../assets/resource/shop/icon_video_online.png")} />
                 }
-                <Text style={{color: item.inUse ? garyColor : '#000'}}>{item.remark}</Text>
+                <Text style={{ color: item.inUse ? garyColor : '#000' }}>{item.remark}</Text>
             </Button>
         </View>
     )
 
 
     render() {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         return (
             <View style={styles.container}>
-                <Header isBack={true} title={params.name}/>
+                <Header isBack={true} title={"视频详情"} />
                 <View style={styles.video}>
                     {/*视频播放*/}
-                    <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
+                    <View style={[styles.video_center, { width: DEVICE_WIDTH }]}>
                         {
                             this.state.videoPath !== "" ?
                                 <Player
-                                    style={{width: DEVICE_WIDTH, height: 456}}
+                                    style={{ width: DEVICE_WIDTH, height: 456 }}
                                     path={this.state.videoPath}
                                     status={this.state.videoStatus}
                                 />
@@ -90,11 +90,11 @@ export default class ShowVideo extends React.Component {
                         <View style={styles.video_options}>
                             <TouchableOpacity
                                 activeOpacity={0.9}
-                                style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
+                                style={[styles.video_icon, { marginHorizontal: scaleSize(30) }]}
                                 onPress={() => {
                                 }}>
                                 <Image style={styles.video_icon}
-                                       source={require("../../../assets/resource/shop/icon_screen.png")}/>
+                                    source={require("../../../assets/resource/shop/icon_screen.png")} />
                             </TouchableOpacity>
                             <TouchableOpacity
                                 activeOpacity={0.9}
@@ -102,7 +102,7 @@ export default class ShowVideo extends React.Component {
                                 onPress={() => {
                                 }}>
                                 <Image style={styles.video_icon}
-                                       source={require("../../../assets/resource/shop/icon_full_screen.png")}/>
+                                    source={require("../../../assets/resource/shop/icon_full_screen.png")} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -113,9 +113,9 @@ export default class ShowVideo extends React.Component {
                     numColumns={2}
                     columnWrapperStyle={styles.video_item}
                     keyExtractor={this._keyExtractor}
-                    renderItem={this._renderItem}/>
+                    renderItem={this._renderItem} />
                 <Button block style={styles.footer_btn}>
-                    <Text style={{color: whiteColor}}>进入考评</Text>
+                    <Text style={{ color: whiteColor }}>进入考评</Text>
                 </Button>
             </View>
         )

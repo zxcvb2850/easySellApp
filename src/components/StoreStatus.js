@@ -2,9 +2,9 @@
 * 物品的状态
 * */
 import React from "react"
-import {StyleSheet, View, Text} from "react-native"
-import {headerColor, successColor, warringColor} from "../common/styles";
-import {scaleSize} from "../common/screenUtil";
+import { StyleSheet, View, Text } from "react-native"
+import { headerColor, successColor, warringColor } from "../common/styles";
+import { scaleSize } from "../common/screenUtil";
 
 /*
 * 0 在线
@@ -12,14 +12,9 @@ import {scaleSize} from "../common/screenUtil";
 * */
 const StoreStatus = (props) => (
     <View style={[styles.body, props.style]}>
-        <Text style={styles.dot}>●</Text>
-        {
-            props.status === 0 ?
-                <Text style={{color: successColor}}>在线</Text>
-                :
-                <Text style={{color: warringColor}}>离线</Text>
-        }
-        <Text style={styles.dot}>●</Text>
+        <Text style={[styles.dot, { color: props.status === 0 ? successColor : warringColor }]}>●</Text>
+        <Text style={{ color: props.status === 0 ? successColor : warringColor }}>{props.status === 0 ? '在线' : '离线'}</Text>
+        <Text style={[styles.dot, { color: props.status === 0 ? successColor : warringColor }]}>●</Text>
     </View>
 )
 
