@@ -14,6 +14,10 @@ import ImagePicker from "react-native-image-picker"
 import {showToast} from "../../../common/util";
 import {BASE_URL} from "../../../config/config";
 
+/*mobx*/
+import {observer, inject} from 'mobx-react'
+import {action, computed} from 'mobx'
+
 
 //图片选择器参数设置
 const options = {
@@ -29,7 +33,25 @@ const options = {
         path: 'images'
     }
 };
+
+@inject("store")
+@observer
 export default class EvalutDetails extends React.Component {
+    @action//列表
+    setList(list) {
+        console.log('-----------------------', list);
+        this.props.store.EvalutList.setEvalutList(list)
+    }
+
+    @action//当前Index
+    setIndex(index) {
+        this.props.store.EvalutIndex.setEvalutIndex(index)
+    }
+
+    @computed get getEvalutList() {
+        return this.props.store.EvalutList.evalutList;
+    }
+
     constructor(props) {
         super()
         this.state = {
@@ -149,7 +171,6 @@ export default class EvalutDetails extends React.Component {
         * 4
         * */
         console.log(result)
-
         let list = result.storeReview.projectList
 
         let map = {},
@@ -173,7 +194,11 @@ export default class EvalutDetails extends React.Component {
                 }
             }
         }
-        console.log('----------------', dest)
+        let data = [];
+        dest.forEach(item => {
+            item.data.forEach(v => data.push(v))
+        })
+        this.setList(data);//mobx保存当前考评的列表
         this.setState({data: dest})
     }
 
@@ -243,7 +268,6 @@ export default class EvalutDetails extends React.Component {
     }
 
     _renderHeader = (section, index, isActive, sections) => {
-        console.log('**************', section)
         return (
             <View
                 style={[styles.header, commonStyle.borderTopBottom, {
@@ -259,15 +283,19 @@ export default class EvalutDetails extends React.Component {
     };
 
     _renderContent = (section, index, isActive, sections) => {
-        console.log('++++++++++++++++++', section)
-        return section.data.map(item => (
+        return section.data.map((item, i) => (
             <View key={item.reviewProjectId} style={[styles.content, {
                 marginBottom: isActive ? scaleSize(20) : scaleSize(0)
             }]}>
                 <View style={styles.content_item}>
                     <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
                     <View style={styles.content_desc}>
-                        <Text>{item.projectData}</Text>
+                        <Text onPress={() => {
+                            //console.log(this.state.data, section, index, item, i);
+                            let _index = this.getEvalutList.findIndex(v => v.reviewProjectId === item.reviewProjectId);
+                            this.setIndex(_index);
+                            this.props.navigation.navigate("EvalutItem")
+                        }}>{item.projectData}</Text>
                     </View>
                 </View>
                 {/*<View style={styles.comment}>

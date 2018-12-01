@@ -4,7 +4,7 @@ import AppNavigatorRoot from "./routers/navigations"
 // 全局注册并注入mobx，其他地方都可以使用store
 import {Provider} from 'mobx-react';
 // 获取store实例
-import store from './store/navStore';
+import store from './store/';
 
 export default class App extends React.Component {
   render() {

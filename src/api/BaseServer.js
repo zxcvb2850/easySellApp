@@ -2,7 +2,6 @@ import {AsyncStorage, DeviceEventEmitter} from "react-native";
 import axios from 'axios';
 import {BASE_URL} from '../config/config';
 import {showToast} from "../common/util";// 获取store实例
-import store from "../store/navStore"
 
 // store.setRoute(1)
 // DeviceEventEmitter.emit('gotoRouter', 'Login')

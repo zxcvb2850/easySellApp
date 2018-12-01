@@ -19,6 +19,7 @@ import alarmList from "../page/shopFragment/component/alarmList"
 import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
+import EvalutItem from "../page/evalutFragment/component/EvalutItem"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
@@ -105,6 +106,7 @@ export const AppNavigator = createStackNavigator({
     BootPage: {screen: BootPage},
     Login: {screen: Login},
     TabFragment: {screen: tabFragment},
+    EvalutItem: {screen: EvalutItem},
 }, {
     //路由参数
     header: null,

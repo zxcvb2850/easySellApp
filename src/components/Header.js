@@ -34,7 +34,7 @@ class Header extends React.Component {
 			  style={[styles.back_btn, {
 				alignItems: 'center',
 				justifyContent: 'center',
-				paddingLeft: scaleSize(40),
+                  paddingVertical: scaleSize(40),
 				height: scaleSize(90), zIndex: 10
 			  }]}>
 			  <Image style={styles.back_btn} source={require("../assets/resource/common/icon_back.png")}/>
