@@ -20,6 +20,7 @@ import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
 import EvalutItem from "../page/evalutFragment/component/EvalutItem"
+import screenFull from "../page/home/screenFull"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
@@ -42,7 +43,6 @@ const shopIndex = createStackNavigator({
     ShopIndex: {screen: ShopIndex},
     ShopDetail: {screen: ShopDetail},
     alarmList: {screen: alarmList},
-    ShopVideo: {screen: ShowVideo},
 }, {
     header: null,
     headerMode: 'none',
@@ -107,6 +107,8 @@ export const AppNavigator = createStackNavigator({
     Login: {screen: Login},
     TabFragment: {screen: tabFragment},
     EvalutItem: {screen: EvalutItem},
+    ShopVideo: {screen: ShowVideo},
+    screenFull: {screen: screenFull},
 }, {
     //路由参数
     header: null,

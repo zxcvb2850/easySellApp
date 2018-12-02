@@ -1,5 +1,6 @@
 package com.easysellapp;
 
+import com.easysellapp.manager.PlayerManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import manager.PlayerManager;
 
 public class MainPackage implements ReactPackage {
     @Override

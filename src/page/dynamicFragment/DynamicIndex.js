@@ -211,6 +211,7 @@ export default class DynamicIndex extends React.Component {
                 style={styles.list_item}
                 onPress={() => {
                     //this.props.navigation.navigate('EvalutDetails')
+                    //this.props.navigation.navigate('screenFull')
                 }}
             >
                 <View style={[styles.item_header, {backgroundColor: warringColor}]}>

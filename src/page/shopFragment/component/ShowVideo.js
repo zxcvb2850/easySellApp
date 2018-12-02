@@ -2,13 +2,14 @@
 * 监控页面
 * */
 import React from "react"
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList } from "react-native"
-import { Button } from "native-base"
-import { backgroundColor, garyColor, headerColor, whiteColor } from "../../../common/styles";
+import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, StatusBar} from "react-native"
+import {Button} from "native-base"
+import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
 import Header from "../../../components/Header";
-import { DEVICE_WIDTH, scaleSize } from "../../../common/screenUtil";
-import { getVideoList } from "../../../api/storeReq";
+import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
+import {getVideoList} from "../../../api/storeReq";
 import Player from "../../../common/Player";
+import Orientation from "react-native-orientation";
 
 export default class ShowVideo extends React.Component {
     constructor(props) {
@@ -18,13 +19,15 @@ export default class ShowVideo extends React.Component {
             nowVideo: {},//当前视频信息
             videoPath: "",//视频地址
             videoStatus: 0,//视频状态
+            isFull: false,//是否全屏
         }
         console.log('-----------------')
         this._getVideoList(props.navigation.state.params.storeId)
+        this.screenFull = this.screenFull.bind(this)
     }
 
     _getVideoList = async (id) => {
-        let { params } = this.props.navigation.state
+        let {params} = this.props.navigation.state
         let result = await getVideoList(id)
         //console.log(result)
         this.setState({
@@ -33,44 +36,36 @@ export default class ShowVideo extends React.Component {
         })
     }
 
-    _keyExtractor = (item) => item.channelId + ''
-    _renderItem = ({ item }) => (
-        <View style={styles.video_item}>
-            <Button block light
-                style={[styles.center_item, { borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor }]}
-                onPress={() => {
-                    this.setState({
-                        nowVideo: item,
-                        videoPath: "118.186.224.167@port:7002@callid:144115213845659729@resid:58"
-                    })
-                    //console.log(item.channelId)
-                }}>
-                {
-                    item.inUse ?
-                        <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
-                            source={require("../../../assets/resource/shop/icon_video_offine.png")} />
-                        :
-                        <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
-                            source={require("../../../assets/resource/shop/icon_video_online.png")} />
-                }
-                <Text style={{ color: item.inUse ? garyColor : '#000' }}>{item.remark}</Text>
-            </Button>
-        </View>
-    )
-
+    screenFull() {
+        Orientation.getOrientation((err, orientation) => {
+            console.log(orientation);
+            if (orientation === "LANDSCAPE") {
+                this.setState({isFull: false})
+                Orientation.lockToPortrait()
+            } else {
+                this.setState({isFull: true})
+                Orientation.lockToLandscape()
+            }
+        });
+    }
 
     render() {
-        const { params } = this.props.navigation.state;
+        const {params} = this.props.navigation.state;
         return (
             <View style={styles.container}>
-                <Header isBack={true} title={"视频详情"} />
-                <View style={styles.video}>
+                {
+                    this.state.isFull ?
+                        <StatusBar hidden={true}/>
+                        :
+                        <Header hidden={this.state.isFull} isBack={true} title={"视频详情"}/>
+                }
+                <View style={[styles.video, {height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)}]}>
                     {/*视频播放*/}
-                    <View style={[styles.video_center, { width: DEVICE_WIDTH }]}>
+                    <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
                         {
                             this.state.videoPath !== "" ?
                                 <Player
-                                    style={{ width: DEVICE_WIDTH, height: 456 }}
+                                    style={{width: DEVICE_WIDTH, height: 456}}
                                     path={this.state.videoPath}
                                     status={this.state.videoStatus}
                                 />
@@ -90,19 +85,18 @@ export default class ShowVideo extends React.Component {
                         <View style={styles.video_options}>
                             <TouchableOpacity
                                 activeOpacity={0.9}
-                                style={[styles.video_icon, { marginHorizontal: scaleSize(30) }]}
+                                style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
                                 onPress={() => {
                                 }}>
                                 <Image style={styles.video_icon}
-                                    source={require("../../../assets/resource/shop/icon_screen.png")} />
+                                       source={require("../../../assets/resource/shop/icon_screen.png")}/>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 activeOpacity={0.9}
                                 style={styles.video_icon}
-                                onPress={() => {
-                                }}>
+                                onPress={this.screenFull}>
                                 <Image style={styles.video_icon}
-                                    source={require("../../../assets/resource/shop/icon_full_screen.png")} />
+                                       source={require("../../../assets/resource/shop/icon_full_screen.png")}/>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -113,24 +107,52 @@ export default class ShowVideo extends React.Component {
                     numColumns={2}
                     columnWrapperStyle={styles.video_item}
                     keyExtractor={this._keyExtractor}
-                    renderItem={this._renderItem} />
+                    renderItem={this._renderItem}/>
                 <Button block style={styles.footer_btn}>
-                    <Text style={{ color: whiteColor }}>进入考评</Text>
+                    <Text style={{color: whiteColor}}>进入考评</Text>
                 </Button>
             </View>
         )
     }
+
+    _keyExtractor = (item) => item.channelId + ''
+    _renderItem = ({item}) => (
+        <View style={styles.video_item}>
+            <Button block light
+                    style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
+                    onPress={() => {
+                        this.setState({
+                            nowVideo: item,
+                            videoPath: "118.186.224.167@port:7002@callid:144115213845659729@resid:58"
+                        })
+                        //console.log(item.channelId)
+                    }}>
+                {
+                    item.inUse ?
+                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                               source={require("../../../assets/resource/shop/icon_video_offine.png")}/>
+                        :
+                        <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                               source={require("../../../assets/resource/shop/icon_video_online.png")}/>
+                }
+                <Text style={{color: item.inUse ? garyColor : '#000'}}>{item.remark}</Text>
+            </Button>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
+        position: 'relative',
         flex: 1,
         backgroundColor,
+        zIndex: 1,
     },
     video: {
         position: 'relative',
         height: scaleSize(456),
         backgroundColor: '#000',
+        zIndex: 1000
     },
     video_center: {
         position: 'absolute',
@@ -147,7 +169,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         height: scaleSize(80),
-        backgroundColor: 'rgba(72,123,225,0.3)'
+        backgroundColor: 'rgba(72,123,225,0.3)',
+        zIndex: 1001,
     },
     video_txt_wrap: {
         flex: 1,

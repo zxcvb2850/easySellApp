@@ -1,4 +1,4 @@
-package manager;
+package com.easysellapp.manager;
 
 import android.content.Context;
 import android.text.TextUtils;
