@@ -10,29 +10,12 @@ import commonStyle from "../../../common/commStyle"
 import {scaleSize} from "../../../common/screenUtil";
 import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles";
 import {getPlanDetails, saveAll, saveSingle, uploadImage} from "../../../api/evaluReq";
-import ImagePicker from "react-native-image-picker"
 import {showToast} from "../../../common/util";
 import {BASE_URL} from "../../../config/config";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'
 import {action, computed} from 'mobx'
-
-
-//图片选择器参数设置
-const options = {
-    title: '选择图片',
-    cancelButtonTitle: '取消',
-    takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '图片库',
-    cameraType: 'back',
-    mediaType: 'photo',
-    videoQuality: 'high',
-    storageOptions: {
-        skipBackup: true,
-        path: 'images'
-    }
-};
 
 @inject("store")
 @observer
@@ -60,34 +43,6 @@ export default class EvalutDetails extends React.Component {
             modalVisible: false,//确认提交全部弹窗
         }
         this._getPlanDetails(props.navigation.state.params.reviewId)
-    }
-
-    /*上传图片*/
-    choosePic = (index) => {
-        //console.log(index)
-        ImagePicker.showImagePicker(options, async (response) => {
-            //console.log('Response = ', response);
-
-            if (response.didCancel) {
-                //console.log('用户取消了选择！');
-            }
-            else if (response.error) {
-                alert("ImagePicker发生错误：" + response.error);
-            }
-            else if (response.customButton) {
-                alert("自定义按钮点击：" + response.customButton);
-            }
-            else {
-                let list = this.state.data
-                // You can also display the image using data:
-                // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                let uri = await uploadImage(response.uri);
-                //console.log(BASE_URL + uri.imgUrl)
-                showToast('上传成功', 'success')
-                list[index].imgs.push(BASE_URL + uri.imgUrl)
-                this.setState({data: list})
-            }
-        });
     }
 
     /*提交报告*/
@@ -153,14 +108,6 @@ export default class EvalutDetails extends React.Component {
         this.setState({modalVisible: false})
     }
 
-    /*当编辑内容发生变化时*/
-    _onChangeText(inputData, index) {
-        //把获取到的内容，设置给showValue
-        let list = this.state.data
-        list[index].msg = inputData
-        this.setState({data: list})
-    }
-
     _getPlanDetails = async (reviewId) => {
         let result = await getPlanDetails(reviewId)
         /*
@@ -194,11 +141,6 @@ export default class EvalutDetails extends React.Component {
                 }
             }
         }
-        let data = [];
-        dest.forEach(item => {
-            item.data.forEach(v => data.push(v))
-        })
-        this.setList(data);//mobx保存当前考评的列表
         this.setState({data: dest})
     }
 
@@ -207,10 +149,9 @@ export default class EvalutDetails extends React.Component {
     };
 
     render() {
-        const {params} = this.props.navigation.state
         return (
             <View style={styles.container}>
-                <Header isBack title={`${params.storeName}的考评`}>
+                <Header isBack title={"考评"}>
                     <TouchableOpacity
                         activeOpacity={0.8}
                         style={[styles.icon_confirm, styles.confirm_total]}
@@ -283,6 +224,7 @@ export default class EvalutDetails extends React.Component {
     };
 
     _renderContent = (section, index, isActive, sections) => {
+        const {params} = this.props.navigation.state
         return section.data.map((item, i) => (
             <View key={item.reviewProjectId} style={[styles.content, {
                 marginBottom: isActive ? scaleSize(20) : scaleSize(0)
@@ -291,72 +233,18 @@ export default class EvalutDetails extends React.Component {
                     <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
                     <View style={styles.content_desc}>
                         <Text onPress={() => {
+                            let data = [];
+                            this.state.data.forEach(v => {
+                                v.data.forEach(_v => data.push(_v))
+                            })
+                            this.setList(data);//mobx保存当前考评的列表
                             //console.log(this.state.data, section, index, item, i);
                             let _index = this.getEvalutList.findIndex(v => v.reviewProjectId === item.reviewProjectId);
                             this.setIndex(_index);
-                            this.props.navigation.navigate("EvalutItem")
+                            this.props.navigation.navigate("EvalutItem", {callback: () => this._getPlanDetails(params.reviewId)})
                         }}>{item.projectData}</Text>
                     </View>
                 </View>
-                {/*<View style={styles.comment}>
-                    <View style={styles.image_wrap}>
-                        {
-                            section.imgs.map((item, index) => (
-                                <Image key={index} source={{uri: item}} style={styles.image}/>
-                            ))
-                        }
-                        <TouchableOpacity
-                            activeOpacity={0.9}
-                            style={styles.image}
-                            onPress={() => this.choosePic(index)}
-                        >
-                            <Image source={require("../../../assets/resource/evalut/icon_add.png")}
-                                   style={styles.image}/>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.input_wrap}>
-                        <TextInput
-                            placeholder="请输入备注"
-                            editable={true}//是否可编辑
-                            style={styles.inputStyle}//input框的基本样式
-                            onChangeText={(value) => this._onChangeText(value, index)}//输入框改变触发的函数
-                        />
-                        <Image style={{width: scaleSize(48), height: scaleSize(48)}}
-                               source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                    </View>
-                </View>
-                <View style={styles.submit_wrap}>
-                    <TouchableOpacity
-                        activeOpacity={0.9}
-                        style={[styles.icon_submit, styles.icon_margin]}
-                        onPress={() => {
-                            this.confirmReport(section, 1)
-                        }}>
-                        {
-                            section.checkResult == 1 ?
-                                <Image style={styles.icon_submit}
-                                       source={require("../../../assets/resource/evalut/icon_confirm_yes.png")}/>
-                                :
-                                <Image style={styles.icon_submit}
-                                       source={require("../../../assets/resource/evalut/icon_confirm_not.png")}/>
-                        }
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={0.9}
-                        style={[styles.icon_submit, styles.icon_margin]}
-                        onPress={() => {
-                            this.confirmReport(section, 0)
-                        }}>
-                        {
-                            section.checkResult == 1 ?
-                                <Image style={styles.icon_submit}
-                                       source={require("../../../assets/resource/evalut/icon_error_not.png")}/>
-                                :
-                                <Image style={styles.icon_submit}
-                                       source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>
-                        }
-                    </TouchableOpacity>
-                </View>*/}
             </View>
         ))
     };
@@ -424,26 +312,6 @@ const styles = StyleSheet.create({
     icon_show: {
         width: scaleSize(45),
         height: scaleSize(45),
-    },
-
-    comment: {},
-    image_wrap: {
-        flexDirection: 'row',
-        flexWrap: 'wrap'
-    },
-    image: {
-        margin: scaleSize(10),
-        width: scaleSize(170),
-        height: scaleSize(95)
-    },
-    input_wrap: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        height: scaleSize(100),
-    },
-    inputStyle: {
-        paddingHorizontal: scaleSize(40),
-        flex: 1,
     },
 
     tips_text: {
