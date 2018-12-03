@@ -85,7 +85,7 @@ export default class EvalutItem extends React.Component {
 	  index: this.getEvalutIndex,
 	  list: this.getEvalutList,
 	  value: this.getEvalutList[this.getEvalutIndex].exception || "",
-	  radio: this.getEvalutList[this.getEvalutIndex].checkResult === 1 ? true : false,
+	  radio: this.getEvalutList[this.getEvalutIndex].checkResult,
 	})
 	this._startAnimated();
 	console.log(this.getEvalutList[this.getEvalutIndex])
@@ -103,7 +103,7 @@ export default class EvalutItem extends React.Component {
 	this.state = {
 	  index: 0,//当前考评
 	  list: [],//考评列表
-	  radio: true,//单选框
+	  radio: 2,//单选框
 	  value: "",
 	  animatedValue: new Animated.Value(0),
 	};
@@ -125,23 +125,16 @@ export default class EvalutItem extends React.Component {
 	}
 	this.setState({
 	  index: this.getEvalutIndex,
-	  radio: this.getEvalutList[this.getEvalutIndex].checkResult === 1 ? true : false,
+	  radio: this.getEvalutList[this.getEvalutIndex].checkResult,
 	  value: this.getEvalutList[this.getEvalutIndex].exception || ""
 	});
 	this._startAnimated();
   }
 
-  radioSelect = (bool) => {
-	if (bool) {
-	  if (!this.state.radio) {
-
-		this.setState({radio: !this.state.radio})
-	  }
-	} else {
-	  if (this.state.radio) {
-		this.setState({radio: !this.state.radio})
-	  }
-	}
+  radioSelect = (type) => {
+	console.log(type)
+	this.setState({radio: type})
+	this._startAnimated()
   }
 
   /*输入框发生变化*/
@@ -190,8 +183,12 @@ export default class EvalutItem extends React.Component {
   confirmReport = async () => {
 	console.log(this.state.list[this.state.index])
 	let data = this.state.list[this.state.index];
-	await saveSingle(data.reviewProjectId, data.reviewId, data.storeId, data.projectCode, data.projectType, data.projectRequire, this.state.radio ? 2 : 3, data.exception, data.photos);
+	await saveSingle(data.reviewProjectId, data.reviewId, data.storeId, data.projectCode, data.projectType, data.projectRequire, this.state.radio, data.exception, data.photos);
 	showToast('提交成功', 'success')
+	let list = this.getEvalutList
+	list[this.state.index] = data
+	list[this.state.index].checkResult = this.state.radio
+	this.setList(list)
   }
 
   render() {
@@ -227,7 +224,7 @@ export default class EvalutItem extends React.Component {
 			<Animated.View
 			  style={{
 				marginVertical: scaleSize(20),
-				height: this.state.radio ? heightSizeFalse : heightSizeTrue,
+				height: this.state.radio !== 3 ? heightSizeFalse : heightSizeTrue,
 				overflow: 'hidden'
 			  }}
 			>
@@ -261,32 +258,44 @@ export default class EvalutItem extends React.Component {
 		  </Content>
 		  <View style={styles.checkout_select}>
 			<ListItem onPress={() => {
-			  this.radioSelect(true);
-			  this._startAnimated()
-			}} selected={this.state.radio}>
+			  this.radioSelect(2);
+			}} selected={this.state.radio === 2}>
 			  <Left>
-				<Text>合格</Text>
+				<Text>正常</Text>
 			  </Left>
 			  <Right>
 				<Radio
 				  color={"#f0ad4e"}
 				  selectedColor={"#5cb85c"}
-				  selected={this.state.radio}
+				  selected={this.state.radio === 2}
 				/>
 			  </Right>
 			</ListItem>
 			<ListItem onPress={() => {
-			  this.radioSelect(false);
-			  this._startAnimated()
-			}} selected={!this.state.radio}>
+			  this.radioSelect(3);
+			}} selected={this.state.radio === 3}>
 			  <Left>
-				<Text>不合格</Text>
+				<Text>例外</Text>
 			  </Left>
 			  <Right>
 				<Radio
 				  color={"#f0ad4e"}
 				  selectedColor={"#5cb85c"}
-				  selected={!this.state.radio}
+				  selected={this.state.radio === 3}
+				/>
+			  </Right>
+			</ListItem>
+			<ListItem onPress={() => {
+			  this.radioSelect(4);
+			}} selected={this.state.radio === 4}>
+			  <Left>
+				<Text>不适用</Text>
+			  </Left>
+			  <Right>
+				<Radio
+				  color={"#f0ad4e"}
+				  selectedColor={"#5cb85c"}
+				  selected={this.state.radio === 4}
 				/>
 			  </Right>
 			</ListItem>

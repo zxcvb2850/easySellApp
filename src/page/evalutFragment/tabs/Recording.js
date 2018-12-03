@@ -115,7 +115,7 @@ export default class Recording extends React.Component {
                     activeOpacity={0.9}
                     style={styles.footer}
                     onPress={() => {
-                        this.props.navigate('EvalutEnd', {storeName: item.storeName, reviewerId: item.reviewerId})
+                        this.props.navigate('EvalutEnd', {storeName: item.storeName, reviewId: item.reviewId})
                     }}>
                     <View style={styles.center}>
                         <Text
