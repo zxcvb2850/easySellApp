@@ -20,6 +20,7 @@ import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
 import EvalutItem from "../page/evalutFragment/component/EvalutItem"
+import FeedbackDetail from "../page/evalutFragment/component/FeedbackDetail"
 import screenFull from "../page/home/screenFull"
 
 import {garyColor, mainColor} from "../common/styles";
@@ -50,8 +51,6 @@ const shopIndex = createStackNavigator({
 /*考评*/
 const evalutIndex = createStackNavigator({
     EvalutIndex: {screen: EvalutIndex},
-    EvalutDetails: {screen: EvalutDetails},
-    EvalutEnd: {screen: EvalutEnd},
 }, {
     header: null,
     headerMode: 'none',
@@ -106,8 +105,11 @@ export const AppNavigator = createStackNavigator({
     BootPage: {screen: BootPage},
     Login: {screen: Login},
     TabFragment: {screen: tabFragment},
-    EvalutItem: {screen: EvalutItem},
-    ShopVideo: {screen: ShowVideo},
+    ShopVideo: {screen: ShowVideo},//视频播放
+    EvalutItem: {screen: EvalutItem},//在线考评
+    EvalutDetails: {screen: EvalutDetails},//计划考评列表
+    EvalutEnd: {screen: EvalutEnd},//考评历史详情
+    FeedbackDetail: {screen: FeedbackDetail},//列外考评详情
     screenFull: {screen: screenFull},
 }, {
     //路由参数

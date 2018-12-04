@@ -2,7 +2,7 @@
  * 例外考评记录
  * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native"
+import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
 import {Separator} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
@@ -69,6 +69,17 @@ export default class Feedback extends React.Component {
         this._exceptionList(1, true)
     }
 
+    feedbackItem = (item) => {
+        console.log(item);
+        this.props.navigate('FeedbackDetail', {
+            storeName: item.storeName,
+            list: item.projectList,
+            callback: () => {
+                this._exceptionList()
+            }
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -91,7 +102,13 @@ export default class Feedback extends React.Component {
 
     _keyExtractor = (item) => item.reviewId + '';
     _renderItem = ({item}) => (
-        <View style={styles.item}>
+        <TouchableOpacity
+            activeOpacity={0.9}
+            style={styles.item}
+            onPress={() => {
+                this.feedbackItem(item)
+            }}
+        >
             <View style={styles.head}>
                 <View style={styles.line}/>
                 <Text style={styles.head_title}>{item.storeName}</Text>
@@ -104,7 +121,7 @@ export default class Feedback extends React.Component {
                     <Text style={styles.time}>考评时间：{item.updateTime}</Text>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
     _renderFooter = () => {
         return (

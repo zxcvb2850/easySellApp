@@ -2,16 +2,17 @@
 * 店铺
 * */
 import React from "react"
-import { StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl } from "react-native"
+import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl} from "react-native"
 import Header from "../../components/Header"
-import { garyColor, headColor, whiteColor } from "../../common/styles"
-import { Drawer, Button, Icon, Content } from "native-base"
+import {garyColor, headColor, mainColor, whiteColor} from "../../common/styles"
+import {Drawer, Button, Icon, Content} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
-import { scaleSize } from "../../common/screenUtil";
-import { dialPhone, showToast } from "../../common/util"
+import {scaleSize} from "../../common/screenUtil";
+import {dialPhone, showToast} from "../../common/util"
 import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
-import { getStoreList, isCollection } from "../../api/storeReq";
+import {getOrgList, getStoreList, isCollection} from "../../api/storeReq";
+import EvalutDetails from "../evalutFragment/component/EvalutDetails";
 
 export default class DynamicIndex extends React.Component {
     constructor() {
@@ -24,11 +25,13 @@ export default class DynamicIndex extends React.Component {
                 storeCode: '',
                 storeName: '',
             },
+            filterList: [],//筛选列表
             page: 1,//当前页码
             refreshing: false,//上拉是否在加载数据
             isStatus: true,//下拉是否在加载数据
             isLoreTextStatus: true,
             isLoreText: '正在加载中...',//上拉加载提示文字
+            isCollect: false,//是否收藏
         }
 
         this._getStoreList();
@@ -44,41 +47,52 @@ export default class DynamicIndex extends React.Component {
     }
 
     _getStoreList = async (page = 1, isRefresh = false) => {
-        let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
+        let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName, this.state.isCollect ? 1 : 0);
+        console.log(result.page.list);
         if (page === 1) {
             if (result.page.list.length) {
-                this.setState({ list: result.page.list });
+                this.setState({list: result.page.list});
             } else {
-                this.setState({ isLoreText: '没有更多数据了...', isLoreTextStatus: false })
+                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
             }
         } else if (result.page.list.length) {
-            this.setState({ list: this.state.list.concat(result.page.list) })
+            this.setState({list: this.state.list.concat(result.page.list)})
         } else {
-            this.setState({ isLoreText: '没有更多数据了...', isLoreTextStatus: false })
+            this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
         }
-        this.setState({ isStatus: false, isLoreTextStatus: false })
+        this.setState({isStatus: false, isLoreTextStatus: false})
         if (isRefresh) {
-            this.setState({ refreshing: false })
+            this.setState({refreshing: false})
+            this.getMoreList();
         }
     }
 
     getMoreList = () => {
         if (!this.state.isStatus) {
-            this.setState({ isStatus: true, page: this.state.page + 1 })
+            this.setState({isStatus: true, page: this.state.page + 1})
             this._getStoreList(this.state.page + 1)
         }
     }
 
-    allClick = () => {
-        //console.log("全部");
+    /*全部*/
+    allClick = async () => {
+        let filter = {
+            sidx: '',
+            order: '',
+            storeCode: '',
+            storeName: '',
+        }
+        await this.setState({filter})
+        this._getStoreList();
     }
-
     search = () => {
-        //console.log("搜索");
+        console.log("搜索");
     }
 
-    filter = () => {
-        //console.log("筛选");
+    filter = async () => {
+        let result = await getOrgList()
+        console.log("筛选", result.orgList);
+        this.setState({filterList: result.orgList})
         this.openDrawer();
     }
 
@@ -87,11 +101,12 @@ export default class DynamicIndex extends React.Component {
         await isCollection(item.storeId)
         let list = this.state.list
         list[index].isCollection = !item.isCollection
-        this.setState({ list })
+        this.setState({list})
     }
 
-    itemIconTrend = () => {
-        //console.log("趋势");
+    /*前往计划考评列表*/
+    itemIconTrend = (item) => {
+        this.props.navigation.navigate("EvalutDetails", {storeId: item.storeId})
     }
 
     itemIconPhone = (phoen) => {
@@ -101,7 +116,7 @@ export default class DynamicIndex extends React.Component {
 
     itemHeadIcon = (item) => {
         //console.log("更多");
-        this.props.navigation.navigate('ShopDetail', { storeId: item.storeId, storeName: item.storeName })
+        this.props.navigation.navigate('ShopDetail', {storeId: item.storeId, storeName: item.storeName})
     }
 
     closeDrawer = () => {
@@ -123,6 +138,30 @@ export default class DynamicIndex extends React.Component {
             showToast('视频不能播放');
         }
     }
+    /*点击筛选*/
+    clickFilterItem = (item) => {
+        if (item.parentId > -1) {
+            console.log(item.orgId)
+            let filter = {
+                sidx: '',
+                order: '',
+                storeCode: item.orgId,
+                storeName: item.name,
+            }
+            this.setState({filter})
+            setTimeout(() => {
+                this._getStoreList();
+                this.closeDrawer();
+            })
+        }
+    }
+
+    /*筛选是否收藏*/
+    collectHand = async () => {
+        await this.setState({isCollect: !this.state.isCollect})
+        this._getStoreList();
+        this.closeDrawer();
+    }
 
     render() {
         return (
@@ -133,13 +172,21 @@ export default class DynamicIndex extends React.Component {
                 side={"right"}
                 openDrawerOffset={0.6}
                 panCloseMask={0.6}
-                content={<View style={{ flex: 1, backgroundColor: '#FFF' }}><Text>122112222121</Text></View>}
+                content={
+                    <View style={{flex: 1, backgroundColor: '#FFF'}}>
+                        <View>
+                            <Text onPress={this.collectHand}
+                                  style={{color: this.state.isCollect ? mainColor : '#000'}}>收藏</Text>
+                        </View>
+                        {this.filterList(this.state.filterList)}
+                    </View>}
                 onClose={() => this.closeDrawer()}>
                 <View style={styles.container}>
                     <Header title={"店铺"}>
                         <HeaderAttach
+                            all={this.allClick}
                             search={this.search}
-                            filter={this.filter} />
+                            filter={this.filter}/>
                     </Header>
                     <FlatList
                         style={styles.list}
@@ -154,7 +201,7 @@ export default class DynamicIndex extends React.Component {
                             <RefreshControl
                                 refreshing={this.state.refreshing}
                                 onRefresh={this.Refresh}
-                                title="刷新中..." />
+                                title="刷新中..."/>
                         }
                     />
                 </View>
@@ -162,9 +209,20 @@ export default class DynamicIndex extends React.Component {
         )
     }
 
+    filterList = (arr) => arr.map(item => (
+        <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => this.clickFilterItem(item)}
+            key={item.orgId} style={{marginLeft: scaleSize((item.parentId + 1) * 10)}}>
+            <Text>{item.name}</Text>
+            {this.filterList(item.list)}
+        </TouchableOpacity>
+    ))
+
+
     _keyExtractor = (item) => item.storeId + ''
 
-    _renderItem = ({ item, index }) => (
+    _renderItem = ({item, index}) => (
         <TouchableOpacity
             activeOpacity={0.9}
             style={styles.list_item}
@@ -180,28 +238,28 @@ export default class DynamicIndex extends React.Component {
                         {
                             item.isCollection ?
                                 <Image style={styles.icon}
-                                    source={require("../../assets/resource/shop/icon_collection_yes.png")} />
+                                       source={require("../../assets/resource/shop/icon_collection_yes.png")}/>
                                 : <Image style={styles.icon}
-                                    source={require("../../assets/resource/shop/icon_collection_not.png")} />
+                                         source={require("../../assets/resource/shop/icon_collection_not.png")}/>
                         }
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
-                        onPress={this.itemIconTrend}>
-                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_trend.png")} />
+                        onPress={() => this.itemIconTrend(item)}>
+                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_trend.png")}/>
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
                         onPress={() => this.itemIconPhone(item.storeTel)}>
-                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_phone.png")} />
+                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_phone.png")}/>
                     </TouchableOpacity>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
                         onPress={() => this.itemHeadIcon(item)}>
-                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_more.png")} />
+                        <Image style={styles.icon} source={require("../../assets/resource/shop/icon_more.png")}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -212,7 +270,7 @@ export default class DynamicIndex extends React.Component {
                 }]}>
                     <View style={styles.body_left}>
                         <Text>视频监控</Text>
-                        <StoreStatus status={Number(item.videoState)} />
+                        <StoreStatus status={Number(item.videoState)}/>
                     </View>
                 </View>
                 <View style={styles.body_center}>
@@ -221,17 +279,17 @@ export default class DynamicIndex extends React.Component {
                             item.channelList.map((value, index) => {
                                 if (index < 4) {
                                     return <Button key={value.channelId} light
-                                        style={[styles.center_item, { borderColor: value.inUse ? 'rgba(0,0,0,.1)' : garyColor }]}
-                                        onPress={() => this.gotoVideo(item, value)}>
+                                                   style={[styles.center_item, {borderColor: value.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
+                                                   onPress={() => this.gotoVideo(item, value)}>
                                         {
                                             value.inUse ?
-                                                <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
-                                                    source={require("../../assets/resource/shop/icon_video_offine.png")} />
+                                                <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                                                       source={require("../../assets/resource/shop/icon_video_offine.png")}/>
                                                 :
-                                                <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
-                                                    source={require("../../assets/resource/shop/icon_video_online.png")} />
+                                                <Image style={{width: scaleSize(43), height: scaleSize(43)}}
+                                                       source={require("../../assets/resource/shop/icon_video_online.png")}/>
                                         }
-                                        <Text style={{ color: value.inUse ? garyColor : '#000' }}>{value.remark}</Text>
+                                        <Text style={{color: value.inUse ? garyColor : '#000'}}>{value.remark}</Text>
                                     </Button>
                                 }
                             })
@@ -254,9 +312,9 @@ export default class DynamicIndex extends React.Component {
                 }]}>
                     <View style={styles.body_left}>
                         <Text>通道信息</Text>
-                        <DeployStatus status={Number(item.armingState)} />
+                        <DeployStatus status={Number(item.armingState)}/>
                     </View>
-                    <Text style={{ color: garyColor }}>信息 ></Text>
+                    <Text style={{color: garyColor}}>信息 ></Text>
                 </View>
             </View>
         </TouchableOpacity>

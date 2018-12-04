@@ -20,7 +20,7 @@ export default class MineIndex extends React.Component {
     }
 
     async componentDidMount() {
-        let userInfo = await AsyncStorage.getItem('shop_info');
+        let userInfo = shop_info
         this.setState({userInfo: JSON.parse(userInfo)})
     }
 

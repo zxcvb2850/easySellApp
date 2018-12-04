@@ -181,7 +181,7 @@ export default class DynamicIndex extends React.Component {
                 activeOpacity={0.9}
                 style={styles.list_item}
                 onPress={() => {
-                    //this.props.navigation.navigate('EvalutDetails')
+                    this.props.navigation.navigate('TabEvalut')
                 }}
             >
                 <View style={styles.item_header}>

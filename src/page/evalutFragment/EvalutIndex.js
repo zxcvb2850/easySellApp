@@ -57,7 +57,7 @@ export default class DynamicIndex extends React.Component {
                 onClose={() => this.closeDrawer()}>
                 <View style={styles.container}>
                     <Header title={"考评"}>
-                        <HeaderAttach search={this.search} filter={this.filter}/>
+                        <HeaderAttach search={this.search}/>
                     </Header>
                     <ScrollableTabView
                         tabBarUnderlineStyle={{height: scaleSize(2), backgroundColor: mainColor}}
