@@ -59,7 +59,6 @@ const evalutIndex = createStackNavigator({
 /*我的*/
 const mineIndex = createStackNavigator({
     MineIndex: {screen: MineIndex},
-    ForgetPwd: {screen: ForgetPwd},
 }, {
     header: null,
     headerMode: 'none',
@@ -110,6 +109,7 @@ export const AppNavigator = createStackNavigator({
     EvalutDetails: {screen: EvalutDetails},//计划考评列表
     EvalutEnd: {screen: EvalutEnd},//考评历史详情
     FeedbackDetail: {screen: FeedbackDetail},//列外考评详情
+    ForgetPwd: {screen: ForgetPwd},//修改密码
     screenFull: {screen: screenFull},
 }, {
     //路由参数
@@ -126,28 +126,20 @@ export const routerRule = ['TabDynamic', 'TabShop', 'TabEvalut', 'TabMine', 'Tab
 @observer
 export default class AppNavigatorRoot extends React.Component {
     @action
-    addRouter() {
+    setIndex(index) {
         /**/
-        this.props.store.NavInfo.addRoute(this.routerIndex)
-    }
-
-    @action
-    delRouter() {
-        /**/
-        this.props.store.NavInfo.delRoute(this.routerIndex)
+        this.props.store.NavIndex.setRoute(index)
     }
 
     @computed get routerIndex() {
-        /**/
-        return this.props.store.NavInfo.navList
+        return this.props.store.NavIndex.navIndex
+    }
+
+    @computed get routerInfo() {
+        return this.props.store.NavInfo.navInfo
     }
 
     componentDidMount() {
-        /*监听路由跳转*/
-        DeviceEventEmitter.addListener('gotoRouter', (val) => {
-            //console.log('监听到跳转路由-----', val)
-            this.props.navigation.navigate(val)
-        })
         /*监听返回按钮*/
         BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
     }
@@ -158,7 +150,9 @@ export default class AppNavigatorRoot extends React.Component {
     }
 
     onBackPress = () => {
-        if (this.routerIndex === 1 || this.routerIndex === 2) {
+        let info = this.routerInfo;
+        let index = this.routerIndex
+        if (info ? index === 2 || index === 1 : index === 1) {
             if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
                 BackHandler.exitApp()
                 return false
@@ -171,23 +165,10 @@ export default class AppNavigatorRoot extends React.Component {
     }
 
     render() {
-        let isOne = true
         return (
             <AppNavigator
                 onNavigationStateChange={(prevState, newState, action) => {
-                    if (action.routeName) {
-                        if (routerRule.indexOf(action.routeName) !== -1) {
-                            if (isOne) {
-                                this.addRouter()
-                                isOne = false
-                            }
-                        } else {
-                            this.addRouter()
-                        }
-                    }
-                    if (action.type === 'Navigation/BACK') {
-                        this.delRouter()
-                    }
+                    this.setIndex(prevState.index)
                 }}/>
         )
     }

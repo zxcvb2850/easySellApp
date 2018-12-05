@@ -11,18 +11,7 @@ import {observer, inject} from 'mobx-react'
 import {action, computed} from 'mobx'
 import {showToast} from "../common/util"
 
-@inject('store')
-@observer
 export default class BootPage extends React.Component {
-  @action
-  addRouter() {
-	this.props.store.NavInfo.addRoute(this.routerIndex)
-  }
-
-  @computed get routerIndex() {
-	return this.props.store.NavInfo.navList
-  }
-
   componentWillUnmount() {
 	this.timer && clearInterval(this.timer)
   }
@@ -58,7 +47,6 @@ export default class BootPage extends React.Component {
 		  this.props.navigation.navigate('Login');
 		} else {
 		  await AsyncStorage.setItem('shop_info', JSON.stringify(result.user))
-		  this.addRouter()
 		  this.props.navigation.navigate('TabFragment');
 		}
 	  } else {

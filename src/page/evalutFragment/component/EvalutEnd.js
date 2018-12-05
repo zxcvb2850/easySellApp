@@ -115,7 +115,7 @@ export default class EvalutEnd extends React.Component {
                     <View style={styles.image_wrap}>
                         {
                             item.photos && item.photos.split(',').map(v => (
-                                <Image key={v} style={styles.image} source={{uri: `${BASE_URL}${v}`}}/>
+                                <Image key={v} style={styles.image} source={{uri: BASE_URL + v}}/>
                             ))
                         }
                     </View>

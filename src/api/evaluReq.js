@@ -44,7 +44,6 @@ export function exceptionFollow() {
 export function exceptionSave(reviewProjectId, reviewId, storeId, followerId, follower, followStatus, followDesc, followPhotos) {
     let url = '/app/review/followSave';
     let data = {reviewProjectId, reviewId, storeId, followerId, follower, followStatus, followDesc, followPhotos}
-    console.log(data)
     return BaseServer.post(url, data)
 }
 
@@ -60,6 +59,7 @@ export function exceptionSave(reviewProjectId, reviewId, storeId, followerId, fo
 export function getStoreHistory(page = 1, sidx, order, storeCode, storeName, limit = 20) {
     let url = '/app/review/history';
     let data = {page, sidx, order, storeCode, storeName, limit}
+    console.log(data);
     return BaseServer.post(url, data);
 }
 

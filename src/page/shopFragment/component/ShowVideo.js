@@ -10,6 +10,7 @@ import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil
 import {getVideoDetail, getVideoList} from "../../../api/storeReq";
 import Player from "../../../common/Player";
 import Orientation from "react-native-orientation";
+import {showToast} from "../../../common/util";
 
 export default class ShowVideo extends React.Component {
     componentWillUnmount() {
@@ -71,7 +72,11 @@ export default class ShowVideo extends React.Component {
     videoChannel = async (item) => {
         let result = await getVideoDetail(item.channelId)
         result = result.preview
-        this.setState({videoPath: `${result.address}@port:${result.port}@callid:${result.callid}@resid:${result.resource}`})
+        if (result.address) {
+            this.setState({videoPath: `${result.address}@port:${result.port}@callid:${result.callid}@resid:${result.resource}`})
+        } else {
+            showToast('暂无视频数据', 'error')
+        }
     }
 
     render() {

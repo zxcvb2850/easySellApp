@@ -10,8 +10,17 @@ import {scaleSize} from "../../common/screenUtil"
 import {garyColor, mainColor, maxFontSize, whiteColor} from "../../common/styles"
 import {postLogout} from "../../api/HttpSend";
 import {showToast} from "../../common/util";
+import {observer, inject} from 'mobx-react'
+import {action} from 'mobx'
 
+@inject('store')
+@observer
 export default class MineIndex extends React.Component {
+    @action
+    setRouter() {
+        this.props.store.NavInfo.setRoute(true);
+    }
+
     constructor() {
         super()
         this.state = {
@@ -20,13 +29,14 @@ export default class MineIndex extends React.Component {
     }
 
     async componentDidMount() {
-        let userInfo = shop_info
+        let userInfo = await AsyncStorage.getItem("shop_info")
         this.setState({userInfo: JSON.parse(userInfo)})
     }
 
 
     logout = async () => {
         let result = await postLogout();
+        this.setRouter();
         await AsyncStorage.removeItem('shop_token')
         await AsyncStorage.removeItem('shop_info')
         this.props.navigation.navigate("Login");

@@ -9,14 +9,6 @@ import {scaleSize} from "../common/screenUtil"
 import {headerColor, whiteColor} from "../common/styles";
 
 class Header extends React.Component {
-    constructor() {
-        super()
-    }
-
-    componentDidMount() {
-        //console.log(this.props);
-    }
-
     back = () => {
         this.props.navigation.goBack();
     }

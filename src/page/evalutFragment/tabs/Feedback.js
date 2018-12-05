@@ -23,11 +23,11 @@ export default class Feedback extends React.Component {
         this._exceptionList()
     }
 
-    componentWillReceiveProps(nextProps) {
+    async componentWillReceiveProps(nextProps) {
         if (nextProps.filter !== this.props.filter) {
             if (nextProps.index === 1) {
-                this.setState({filter: nextProps.filter})
-                this._getPlanList()
+                await this.setState({filter: nextProps.filter});
+                this._exceptionList();
             }
         }
     }

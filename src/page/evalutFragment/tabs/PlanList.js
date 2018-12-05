@@ -27,10 +27,11 @@ export default class PlanList extends React.Component {
         this._getPlanList();
     }
 
-    componentWillReceiveProps(nextProps) {
+    async componentWillReceiveProps(nextProps) {
         if (nextProps.filter !== this.props.filter) {
             if (nextProps.index === 0) {
-                this.setState({filter: nextProps.filter})
+                console.log(nextProps.filter)
+                await this.setState({filter: nextProps.filter})
                 this._getPlanList()
             }
         }
@@ -53,7 +54,7 @@ export default class PlanList extends React.Component {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
             } else {
-                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+                this.setState({isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false})
             }
         } else if (result.page.list.length) {
             this.setState({list: this.state.list.concat(result.page.list)})

@@ -15,14 +15,15 @@ import {scaleSize} from "../common/screenUtil";
 import {headerColor, mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 import {observer, inject} from 'mobx-react'
-import {computed, action} from 'mobx'
+import {action} from 'mobx'
 import {login, getData, getInfo} from "../api/HttpSend";
 
 @inject('store')
 @observer
 export default class Login extends React.Component {
-    @computed get getRouter() {
-        return this.props.store.NavInfo.navList
+    @action
+    setRouter() {
+        this.props.store.NavInfo.setRoute();
     }
 
     constructor() {
@@ -44,6 +45,7 @@ export default class Login extends React.Component {
         }
         let result = await login(this.state.name, this.state.pwd);
         showToast('登录成功', 'success');
+        this.setRouter();
         await AsyncStorage.setItem('shop_token', result.token);
         let res = await getInfo()
         await AsyncStorage.setItem('shop_info', JSON.stringify(res.user))

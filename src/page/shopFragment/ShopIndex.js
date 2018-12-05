@@ -2,10 +2,21 @@
 * 店铺
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, RefreshControl} from "react-native"
+import {
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    FlatList,
+    RefreshControl,
+    TextInput,
+    AsyncStorage,
+    BackHandler
+} from "react-native"
 import Header from "../../components/Header"
-import {garyColor, headColor, mainColor, whiteColor} from "../../common/styles"
-import {Drawer, Button, Icon, Content} from "native-base"
+import {garyColor, headColor, headerColor, mainColor, whiteColor} from "../../common/styles"
+import {Drawer, Button, List, ListItem, Left, Right, Icon, Content} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
 import {scaleSize} from "../../common/screenUtil";
 import {dialPhone, showToast} from "../../common/util"
@@ -13,8 +24,29 @@ import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
 import {getOrgList, getStoreList, isCollection} from "../../api/storeReq";
 import EvalutDetails from "../evalutFragment/component/EvalutDetails";
+import Modal from 'react-native-modalbox'
 
 export default class DynamicIndex extends React.Component {
+    componentWillUnmount() {
+        /*移除监听返回按钮*/
+        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    componentWillMount() {
+        /*监听返回按钮*/
+        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+    }
+
+    /*如果modal开启则需关闭*/
+    onBackPress = () => {
+        if (this.state.isOpen) {
+            this.setState({isOpen: false})
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     constructor() {
         super()
         this.state = {
@@ -23,7 +55,6 @@ export default class DynamicIndex extends React.Component {
                 sidx: '',
                 order: '',
                 storeCode: '',
-                storeName: '',
             },
             filterList: [],//筛选列表
             page: 1,//当前页码
@@ -32,6 +63,9 @@ export default class DynamicIndex extends React.Component {
             isLoreTextStatus: true,
             isLoreText: '正在加载中...',//上拉加载提示文字
             isCollect: false,//是否收藏
+            isOpen: false,//是否展示搜索框
+            value: "",//搜索框内容
+            historyList: [],
         }
 
         this._getStoreList();
@@ -47,7 +81,7 @@ export default class DynamicIndex extends React.Component {
     }
 
     _getStoreList = async (page = 1, isRefresh = false) => {
-        let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName, this.state.isCollect ? 1 : 0);
+        let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.value, this.state.isCollect ? 1 : 0);
         console.log(result.page.list);
         if (page === 1) {
             if (result.page.list.length) {
@@ -80,24 +114,53 @@ export default class DynamicIndex extends React.Component {
             sidx: '',
             order: '',
             storeCode: '',
-            storeName: '',
         }
-        await this.setState({filter})
+        await this.setState({filter, value: ""})
         this._getStoreList();
     }
-    search = () => {
+    /*打开搜索框*/
+    search = async () => {
         console.log("搜索");
+        let list = await AsyncStorage.getItem('shop_store_search')
+        this.setState({isOpen: true, historyList: JSON.parse(list)})
+    }
+    /*搜索内容*/
+    searchText = async () => {
+        if (this.state.value !== "") {
+            let searchContent = await AsyncStorage.getItem("shop_store_search") || "[]";
+            searchContent = JSON.parse(searchContent);
+            let index = searchContent.findIndex(item => item === this.state.value);
+            if (index !== -1) {
+                searchContent.splice(index, 1)
+                searchContent.unshift(this.state.value);
+            } else {
+                if (searchContent.length > 15) {
+                    searchContent.pop();
+                }
+                searchContent.unshift(this.state.value);
+            }
+            this.setState({isOpen: false})
+            this._getStoreList();
+            AsyncStorage.setItem("shop_store_search", JSON.stringify(searchContent))
+        }
+    }
+    /*删除历史的Item*/
+    deleteSearchHistory = async (index) => {
+        let result = await AsyncStorage.getItem("shop_store_search");
+        result = JSON.parse(result);
+        result.splice(index, 1);
+        this.setState({historyList: result});
+        AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
     }
 
     filter = async () => {
         let result = await getOrgList()
-        console.log("筛选", result.orgList);
         this.setState({filterList: result.orgList})
         this.openDrawer();
     }
 
+    /*点赞*/
     itemIconLick = async (item, index) => {
-        //console.log("点赞", item);
         await isCollection(item.storeId)
         let list = this.state.list
         list[index].isCollection = !item.isCollection
@@ -146,9 +209,8 @@ export default class DynamicIndex extends React.Component {
                 sidx: '',
                 order: '',
                 storeCode: item.orgId,
-                storeName: item.name,
             }
-            this.setState({filter})
+            this.setState({filter, value: item.name})
             setTimeout(() => {
                 this._getStoreList();
                 this.closeDrawer();
@@ -176,13 +238,13 @@ export default class DynamicIndex extends React.Component {
                     <View style={{flex: 1, backgroundColor: '#FFF'}}>
                         <View>
                             <Text onPress={this.collectHand}
-                                  style={{color: this.state.isCollect ? mainColor : '#000'}}>收藏</Text>
+                                  style={[styles.drawer_text, {color: this.state.isCollect ? mainColor : '#000'}]}>收藏</Text>
                         </View>
                         {this.filterList(this.state.filterList)}
                     </View>}
                 onClose={() => this.closeDrawer()}>
                 <View style={styles.container}>
-                    <Header title={"店铺"}>
+                    <Header title={"店铺"} statusColor={this.state.isOpen ? garyColor : headerColor}>
                         <HeaderAttach
                             all={this.allClick}
                             search={this.search}
@@ -205,6 +267,27 @@ export default class DynamicIndex extends React.Component {
                         }
                     />
                 </View>
+                <Modal isOpen={this.state.isOpen} onClosed={() => this.setState({isOpen: false})}
+                       style={[styles.modal, {backgroundColor: 'rgba(0,0,0,.3)'}]} position={"center"}>
+                    <View style={styles.modal_center}>
+                        <TextInput
+                            placeholder="请输入备注"
+                            placeholderTextColor={whiteColor}
+                            editable={true}//是否可编辑
+                            style={styles.inputStyle}//input框的基本样式
+                            value={this.state.value}
+                            onChangeText={(value) => {
+                                this.setState({value})
+                            }}//输入框改变触发的函数
+                        />
+                        <Button style={styles.search_btn} light onPress={this.searchText}>
+                            <Icon name="search"/>
+                        </Button>
+                    </View>
+                    <Content style={styles.search_history}>
+                        <List>{this.searchHistory()}</List>
+                    </Content>
+                </Modal>
             </Drawer>
         )
     }
@@ -214,9 +297,25 @@ export default class DynamicIndex extends React.Component {
             activeOpacity={0.9}
             onPress={() => this.clickFilterItem(item)}
             key={item.orgId} style={{marginLeft: scaleSize((item.parentId + 1) * 10)}}>
-            <Text>{item.name}</Text>
+            <Text style={styles.drawer_text}>{item.name}</Text>
             {this.filterList(item.list)}
         </TouchableOpacity>
+    ))
+
+    searchHistory = () => this.state.historyList && this.state.historyList.map((item, index) => (
+        <ListItem key={item} onPress={async () => {
+            await this.setState({value: item})
+            this.searchText();
+        }}>
+            <Left>
+                <Text style={styles.whiteColor}>{item}</Text>
+            </Left>
+            <Right>
+                <Icon style={{color: mainColor}} onPress={() => {
+                    this.deleteSearchHistory(index)
+                }} name="trash"/>
+            </Right>
+        </ListItem>
     ))
 
 
@@ -334,6 +433,10 @@ export default class DynamicIndex extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    whiteColor: {
+        color: whiteColor
+    },
+
     container: {
         flex: 1,
     },
@@ -404,4 +507,32 @@ const styles = StyleSheet.create({
         borderWidth: scaleSize(2),
     },
     body_footer: {},
+
+    modal_center: {
+        marginVertical: scaleSize(20),
+        paddingHorizontal: scaleSize(20),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputStyle: {
+        flex: 1,
+        color: whiteColor,
+        fontSize: 18,
+    },
+    search_btn: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: scaleSize(150),
+        height: scaleSize(80),
+        borderRadius: scaleSize(100),
+        backgroundColor: mainColor,
+    },
+    search_history: {
+        flex: 1,
+    },
+    drawer_text: {
+        fontSize: 18,
+        paddingHorizontal: scaleSize(20),
+    }
 })

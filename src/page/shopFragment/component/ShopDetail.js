@@ -24,10 +24,6 @@ export default class ShopDetail extends React.Component {
         this._getShopDetail(props.navigation.state.params.storeId)
     }
 
-    componentDidMount() {
-        //console.log(this.props.navigation.state.params)
-    }
-
     /*店铺详情查询*/
     _getShopDetail = async (id) => {
         let result = await getStoreDetails(id)
