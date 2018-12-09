@@ -2,7 +2,17 @@
 * 监控页面
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, FlatList, StatusBar, BackHandler} from "react-native"
+import {
+    StyleSheet,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    FlatList,
+    StatusBar,
+    BackHandler,
+    DeviceEventEmitter
+} from "react-native"
 import {Button} from "native-base"
 import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
 import Header from "../../../components/Header";
@@ -21,6 +31,14 @@ export default class ShowVideo extends React.Component {
     componentWillMount() {
         /*监听返回按钮*/
         BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+
+        DeviceEventEmitter.addListener('screenshots', (photo) => {
+            showToast('----------' + photo)
+            this.setState({isScreen: 0})
+            /*if (photo) {
+
+            }*/
+        })
     }
 
     onBackPress = () => {
@@ -41,6 +59,7 @@ export default class ShowVideo extends React.Component {
             videoPath: "",//视频地址
             videoStatus: 0,//视频状态
             isFull: false,//是否全屏
+            isScreen: 0,//是否截屏
         }
         this._getVideoList(props.navigation.state.params.storeId)
         this.screenFull = this.screenFull.bind(this)
@@ -96,9 +115,10 @@ export default class ShowVideo extends React.Component {
                             this.state.videoPath !== "" ?
                                 <Player
                                     style={{
-                                        width: DEVICE_WIDTH,
+                                        width: this.state.isFull ? DEVICE_HEIGHT : DEVICE_WIDTH,
                                         height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)
                                     }}
+                                    snapshot={this.state.isScreen}
                                     path={this.state.videoPath}
                                     status={this.state.videoStatus}
                                 />
@@ -115,6 +135,7 @@ export default class ShowVideo extends React.Component {
                                 activeOpacity={0.9}
                                 style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
                                 onPress={() => {
+                                    this.setState({isScreen: 100})
                                 }}>
                                 <Image style={styles.video_icon}
                                        source={require("../../../assets/resource/shop/icon_screen.png")}/>

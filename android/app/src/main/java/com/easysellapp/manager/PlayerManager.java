@@ -1,10 +1,14 @@
 package com.easysellapp.manager;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.csst.nvms.player.StreamView;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
@@ -13,7 +17,7 @@ import static com.facebook.react.common.ReactConstants.TAG;
 
 public class PlayerManager extends SimpleViewManager<StreamView> {
 
-    Context context;
+    ReactContext context;
 
     @Override
     public String getName() {
@@ -21,9 +25,24 @@ public class PlayerManager extends SimpleViewManager<StreamView> {
     }
 
     @Override
-    protected StreamView createViewInstance(ThemedReactContext reactContext) {
+    protected StreamView createViewInstance(final ThemedReactContext reactContext) {
         context = reactContext;
-        return new StreamView(reactContext);
+        StreamView v = new StreamView(reactContext);
+        v.setListenerSnapshot(new StreamView.ListenerSnapshot() {
+            @Override
+            public void onSnapshot(StreamView streamView, String s) {
+                sendEvent(context, "screenshots", s);
+            }
+        });
+        return v;
+    }
+
+    private void sendEvent(ReactContext reactContext,
+                           String eventName,
+                           @Nullable String params) {
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit(eventName, params);
     }
 
     @ReactProp(name = "path")
@@ -45,6 +64,16 @@ public class PlayerManager extends SimpleViewManager<StreamView> {
         }
     }
 
+    @ReactProp(name = "snapshot")
+    public void setSnapshot(StreamView view, int snapshot) {
+        if (snapshot == 100) {
+            int ret = view.snapShot();
+            if (ret != 0) {
+                sendEvent(context, "screenshots", null);
+            }
+        }
+    }
+
     @ReactProp(name = "voice")
     public void setVoice(StreamView view, int voice) {
         view.stopVoice();
@@ -56,4 +85,6 @@ public class PlayerManager extends SimpleViewManager<StreamView> {
             view.startVoice(voicepath);
         }
     }
+
+
 }
