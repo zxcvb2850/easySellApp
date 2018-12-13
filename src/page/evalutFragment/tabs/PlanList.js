@@ -2,11 +2,11 @@
  * 计划考评
  * */
 import React from "react";
-import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native";
-import {ListItem, Left, Icon, Body, Right, Thumbnail} from "native-base";
-import {whiteColor} from "../../../common/styles";
-import {getPlanList} from "../../../api/evaluReq";
-import {scaleSize} from "../../../common/screenUtil"
+import { StyleSheet, View, Text, Image, FlatList, RefreshControl } from "react-native";
+import { ListItem, Left, Icon, Body, Right, Thumbnail } from "native-base";
+import { whiteColor } from "../../../common/styles";
+import { getPlanList } from "../../../api/evaluReq";
+import { scaleSize } from "../../../common/screenUtil"
 
 export default class PlanList extends React.Component {
     componentDidMount() {
@@ -31,7 +31,7 @@ export default class PlanList extends React.Component {
         if (nextProps.filter !== this.props.filter) {
             if (nextProps.index === 0) {
                 console.log(nextProps.filter)
-                await this.setState({filter: nextProps.filter})
+                await this.setState({ filter: nextProps.filter })
                 this._getPlanList()
             }
         }
@@ -52,33 +52,34 @@ export default class PlanList extends React.Component {
         console.log(result)
         if (page === 1) {
             if (result.page.list.length) {
-                this.setState({list: result.page.list});
+                this.setState({ list: result.page.list });
             } else {
-                this.setState({isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false})
+                this.setState({ isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false })
             }
         } else if (result.page.list.length) {
-            this.setState({list: this.state.list.concat(result.page.list)})
+            this.setState({ list: this.state.list.concat(result.page.list) })
         } else {
-            this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+            this.setState({ isLoreText: '没有更多数据了...', isLoreTextStatus: false })
         }
-        this.setState({isStatus: false, isLoreTextStatus: false})
+        this.setState({ isStatus: false, isLoreTextStatus: false })
         if (isRefresh) {
-            this.setState({refreshing: false})
+            this.setState({ refreshing: false })
             this.getMoreList();
         }
     }
 
     getMoreList = () => {
         if (!this.state.isStatus) {
-            this.setState({isStatus: true, page: this.state.page + 1})
+            this.setState({ isStatus: true, page: this.state.page + 1 })
             this._getPlanList(this.state.page + 1)
         }
     }
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <FlatList
+                    style={styles.container}
                     data={this.state.list}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}
@@ -89,7 +90,7 @@ export default class PlanList extends React.Component {
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this.Refresh}
-                            title="刷新中..."/>
+                            title="刷新中..." />
                     }
                 />
             </View>
@@ -98,24 +99,24 @@ export default class PlanList extends React.Component {
 
     _keyExtractor = (item) => item.reviewId + '';
 
-    _renderItem = ({item}) => (
-        <ListItem avatar style={{backgroundColor: whiteColor}}
-                  key={item.reviewId}
-                  onPress={() => {
-                      //console.log(item);
-                      this.props.navigate('EvalutDetails', {reviewId: item.reviewId, storeName: item.storeName})
-                  }}
+    _renderItem = ({ item }) => (
+        <ListItem avatar style={{ backgroundColor: whiteColor }}
+            key={item.reviewId}
+            onPress={() => {
+                //console.log(item);
+                this.props.navigate('EvalutDetails', { reviewId: item.reviewId, storeName: item.storeName })
+            }}
         >
             <Left>
                 <Thumbnail square
-                           style={{width: scaleSize(48), height: scaleSize(48)}}
-                           source={require("../../../assets/resource/evalut/icon_shop.png")}/>
+                    style={{ width: scaleSize(48), height: scaleSize(48) }}
+                    source={require("../../../assets/resource/evalut/icon_shop.png")} />
             </Left>
             <Body>
-            <Text>{item.storeName}</Text>
+                <Text>{item.storeName}</Text>
             </Body>
             <Right>
-                <Icon name="arrow-forward"/>
+                <Icon name="arrow-forward" />
             </Right>
         </ListItem>
     )
@@ -132,3 +133,9 @@ export default class PlanList extends React.Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    }
+})

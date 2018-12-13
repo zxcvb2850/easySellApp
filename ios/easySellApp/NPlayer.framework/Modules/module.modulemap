@@ -1,0 +1,6 @@
+framework module NPlayer {
+  umbrella header "NPlayer.h"
+
+  export *
+  module * { export * }
+}

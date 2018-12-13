@@ -1,0 +1,6 @@
+framework module MClient {
+  umbrella header "MClient.h"
+
+  export *
+  module * { export * }
+}
