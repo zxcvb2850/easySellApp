@@ -8,30 +8,29 @@ import Header from "../../../components/Header";
 import {scaleSize} from "../../../common/screenUtil";
 import {lightGaryColor, whiteColor} from "../../../common/styles";
 
-const alarmList = ({navigation}) => {
+const AlarmList = ({navigation}) => {
     const {params} = navigation.state;
+    console.log(params)
     return (
         <View style={styles.container}>
-            <Header isBack title={`${params.storeName}报警列表`}/>
+            <Header isBack title={'报警列表'}/>
+            <View style={styles.title}>
+                <Text style={styles.title_text}>店铺：{params.storeName}</Text>
+            </View>
             <Content style={{flex: 1}}>
                 {
                     params.data ? params.data.map(item => (
-                        <View key={item.id} style={styles.content}>
+                        <View key={item.alarmId} style={styles.content}>
                             <View style={styles.desc_wrap}>
-                                <Text style={[styles.text, styles.left_text]}>{item.alarmTime}</Text>
-                                {
-                                    item.alarmCode ?
-                                        <Text style={[styles.text, styles.right_text]}>报警码:{item.alarmCode}</Text>
-                                        :
-                                        <Text style={[styles.text, styles.right_text]}>防区号:{item.alarmCode}</Text>
-                                }
+                                <Text style={[styles.text, styles.left_text]}>{item.createTime}</Text>
+                                <Text style={[styles.text, styles.right_text]}>{item.alarmDetail}</Text>
                             </View>
                             <View style={styles.options}>
                                 {
-                                    item.alarmCode ?
-                                        <Text>{item.alarmDetail}</Text>
+                                    item.protectAdderss ?
+                                        <Text>操作员：{item.protectCode}</Text>
                                         :
-                                        <Text>{item.protectAddress}</Text>
+                                        <Text>防区号：{item.protectCode}</Text>
                                 }
                             </View>
                         </View>
@@ -47,6 +46,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
+    title: {
+        padding: scaleSize(20),
+    },
+    title_text: {
+        fontSize: 18,
+    },
     content: {
         paddingHorizontal: scaleSize(30),
         height: scaleSize(130),
@@ -71,5 +76,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default alarmList;
+export default AlarmList;
 

@@ -134,6 +134,7 @@ export function saveSingle(reviewProjectId, reviewId, storeId, projectCode, proj
 export function saveAll(projectlList) {
     let url = '/app/review/saveAll';
     let data = {projectlList}
+    console.log(data);
     return BaseServer.post(url, data, true);
 }
 

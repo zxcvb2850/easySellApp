@@ -119,7 +119,7 @@ export default class Recording extends React.Component {
                     }}>
                     <View style={styles.center}>
                         <Text
-                            style={styles.desc}>检查{item.projectTotle}项,{item.qualifiedTotle}项合格，{item.qualifiedRate}合格率</Text>
+                            style={styles.desc}>检查{item.projectTotle}项,{item.qualifiedTotle}项合格，{item.qualifiedRate * 100}%合格率</Text>
                         <Text style={styles.time}>14:20:20</Text>
                     </View>
                     <Image style={{width: scaleSize(44), height: scaleSize(44)}}

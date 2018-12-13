@@ -9,10 +9,6 @@ import { getPlanList } from "../../../api/evaluReq";
 import { scaleSize } from "../../../common/screenUtil"
 
 export default class PlanList extends React.Component {
-    componentDidMount() {
-        //console.log('-----------', this.props)
-    }
-
     constructor(props) {
         super(props)
         this.state = {

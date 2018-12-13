@@ -18,13 +18,13 @@ import Header from "../../components/Header"
 import {garyColor, headColor, headerColor, mainColor, whiteColor} from "../../common/styles"
 import {Drawer, Button, List, ListItem, Left, Right, Icon, Content} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
-import {scaleSize} from "../../common/screenUtil";
+import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../common/screenUtil";
 import {dialPhone, showToast} from "../../common/util"
 import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
 import {getOrgList, getStoreList, isCollection} from "../../api/storeReq";
 import EvalutDetails from "../evalutFragment/component/EvalutDetails";
-import Modal from 'react-native-modalbox'
+import SearchModal from "../../components/SearchModal"
 
 export default class DynamicIndex extends React.Component {
     componentWillUnmount() {
@@ -87,7 +87,7 @@ export default class DynamicIndex extends React.Component {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
             } else {
-                this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
+                this.setState({isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false})
             }
         } else if (result.page.list.length) {
             this.setState({list: this.state.list.concat(result.page.list)})
@@ -120,37 +120,16 @@ export default class DynamicIndex extends React.Component {
     }
     /*打开搜索框*/
     search = async () => {
-        console.log("搜索");
-        let list = await AsyncStorage.getItem('shop_store_search')
-        this.setState({isOpen: true, historyList: JSON.parse(list)})
+        this.setState({isOpen: true})
     }
     /*搜索内容*/
-    searchText = async () => {
-        if (this.state.value !== "") {
-            let searchContent = await AsyncStorage.getItem("shop_store_search") || "[]";
-            searchContent = JSON.parse(searchContent);
-            let index = searchContent.findIndex(item => item === this.state.value);
-            if (index !== -1) {
-                searchContent.splice(index, 1)
-                searchContent.unshift(this.state.value);
-            } else {
-                if (searchContent.length > 15) {
-                    searchContent.pop();
-                }
-                searchContent.unshift(this.state.value);
-            }
-            this.setState({isOpen: false})
-            this._getStoreList();
-            AsyncStorage.setItem("shop_store_search", JSON.stringify(searchContent))
-        }
+    searchText = async value => {
+        await this.setState({value, isOpen: false});
+        this._getStoreList();
     }
-    /*删除历史的Item*/
-    deleteSearchHistory = async (index) => {
-        let result = await AsyncStorage.getItem("shop_store_search");
-        result = JSON.parse(result);
-        result.splice(index, 1);
-        this.setState({historyList: result});
-        AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
+    /*关闭搜索框*/
+    closeModal = () => {
+        this.setState({isOpen: false})
     }
 
     filter = async () => {
@@ -172,35 +151,19 @@ export default class DynamicIndex extends React.Component {
         this.props.navigation.navigate("EvalutDetails", {storeId: item.storeId})
     }
 
-    itemIconPhone = (phoen) => {
-        //console.log("打电话", phoen);
-        dialPhone(phoen)
-    }
-
     itemHeadIcon = (item) => {
-        //console.log("更多");
         this.props.navigation.navigate('ShopDetail', {storeId: item.storeId, storeName: item.storeName})
     }
 
+    /*关闭筛选列表*/
     closeDrawer = () => {
         this.drawer._root.close()
     };
 
+    /*打开筛选列表*/
     openDrawer = () => {
         this.drawer._root.open()
     };
-
-    gotoVideo = (item, val) => {
-        if (!item.inUse) {
-            this.props.navigation.navigate('ShopVideo', {
-                videoInfo: val,//当前视频信息
-                storeId: item.storeId,
-                storeName: item.storeName
-            });
-        } else {
-            showToast('视频不能播放');
-        }
-    }
     /*点击筛选*/
     clickFilterItem = (item) => {
         if (item.parentId > -1) {
@@ -217,12 +180,24 @@ export default class DynamicIndex extends React.Component {
             })
         }
     }
-
     /*筛选是否收藏*/
     collectHand = async () => {
         await this.setState({isCollect: !this.state.isCollect})
         this._getStoreList();
         this.closeDrawer();
+    }
+
+    /*前往视频*/
+    gotoVideo = (item, val) => {
+        if (!item.inUse) {
+            this.props.navigation.navigate('ShopVideo', {
+                videoInfo: val,//当前视频信息
+                storeId: item.storeId,
+                storeName: item.storeName
+            });
+        } else {
+            showToast('视频不能播放');
+        }
     }
 
     render() {
@@ -267,27 +242,13 @@ export default class DynamicIndex extends React.Component {
                         }
                     />
                 </View>
-                <Modal isOpen={this.state.isOpen} onClosed={() => this.setState({isOpen: false})}
-                       style={[styles.modal, {backgroundColor: 'rgba(0,0,0,.3)'}]} position={"center"}>
-                    <View style={styles.modal_center}>
-                        <TextInput
-                            placeholder="请输入备注"
-                            placeholderTextColor={whiteColor}
-                            editable={true}//是否可编辑
-                            style={styles.inputStyle}//input框的基本样式
-                            value={this.state.value}
-                            onChangeText={(value) => {
-                                this.setState({value})
-                            }}//输入框改变触发的函数
-                        />
-                        <Button style={styles.search_btn} light onPress={this.searchText}>
-                            <Icon name="search"/>
-                        </Button>
-                    </View>
-                    <Content style={styles.search_history}>
-                        <List>{this.searchHistory()}</List>
-                    </Content>
-                </Modal>
+                <SearchModal
+                    isOpen={this.state.isOpen}
+                    close={this.closeModal}
+                    search={(value) => {
+                        this.searchText(value)
+                    }}
+                />
             </Drawer>
         )
     }
@@ -301,23 +262,6 @@ export default class DynamicIndex extends React.Component {
             {this.filterList(item.list)}
         </TouchableOpacity>
     ))
-
-    searchHistory = () => this.state.historyList && this.state.historyList.map((item, index) => (
-        <ListItem key={item} onPress={async () => {
-            await this.setState({value: item})
-            this.searchText();
-        }}>
-            <Left>
-                <Text style={styles.whiteColor}>{item}</Text>
-            </Left>
-            <Right>
-                <Icon style={{color: mainColor}} onPress={() => {
-                    this.deleteSearchHistory(index)
-                }} name="trash"/>
-            </Right>
-        </ListItem>
-    ))
-
 
     _keyExtractor = (item) => item.storeId + ''
 
@@ -351,7 +295,7 @@ export default class DynamicIndex extends React.Component {
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.head_icon}
-                        onPress={() => this.itemIconPhone(item.storeTel)}>
+                        onPress={() => dialPhone(item.storeTel)}>
                         <Image style={styles.icon} source={require("../../assets/resource/shop/icon_phone.png")}/>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -508,29 +452,6 @@ const styles = StyleSheet.create({
     },
     body_footer: {},
 
-    modal_center: {
-        marginVertical: scaleSize(20),
-        paddingHorizontal: scaleSize(20),
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputStyle: {
-        flex: 1,
-        color: whiteColor,
-        fontSize: 18,
-    },
-    search_btn: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: scaleSize(150),
-        height: scaleSize(80),
-        borderRadius: scaleSize(100),
-        backgroundColor: mainColor,
-    },
-    search_history: {
-        flex: 1,
-    },
     drawer_text: {
         fontSize: 18,
         paddingHorizontal: scaleSize(20),

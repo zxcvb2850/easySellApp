@@ -38,10 +38,10 @@ export default class ShopDetail extends React.Component {
     /*报警信息获取*/
     _getAlarmList = async () => {
         let result = await getAlarmList(this.state.shopData.storeId)
-        //console.log(result)
+        console.log(result)
         if (result.alarm.length) {
-            this.props.navigation.navigate('alarmList', {
-                data: result.data,
+            this.props.navigation.navigate('AlarmList', {
+                data: result.alarm,
                 storeName: this.props.navigation.state.params.storeName
             })
         } else {
@@ -52,6 +52,15 @@ export default class ShopDetail extends React.Component {
     /*点击table每行*/
     clickTableItem = (item) => {
         console.log(item);
+        if (item.reviewStatus === 3) {
+            this.props.navigation.navigate("EvalutEnd", {
+                reviewId: item.reviewId
+            })
+        } else {
+            this.props.navigation.navigate("EvalutDetails", {
+                reviewId: item.reviewId
+            })
+        }
     }
 
     render() {

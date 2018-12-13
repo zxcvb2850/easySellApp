@@ -2,17 +2,17 @@
 * 考评
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, TextInput} from "react-native"
+import {StyleSheet, View, Text, Image, FlatList, TextInput, AsyncStorage} from "react-native"
 import {Content, ListItem, List, Left, Right, Icon, Button} from "native-base"
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar,} from 'react-native-scrollable-tab-view';
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"
 import {garyColor, mainColor, whiteColor} from "../../common/styles"
-import {scaleSize} from "../../common/screenUtil";
+import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../common/screenUtil";
 import PlanList from "./tabs/PlanList";
 import Feedback from "./tabs/Feedback";
 import Recording from "./tabs/Recording";
-import Modal from 'react-native-modalbox'
+import SearchModal from "../../components/SearchModal";
 
 export default class DynamicIndex extends React.Component {
     constructor() {
@@ -27,12 +27,10 @@ export default class DynamicIndex extends React.Component {
             },
             isOpen: false,//是否展示搜索框
             value: "",//搜索框内容
+            historyList: [],
         }
     }
 
-    search = () => {
-        this.setState({isOpen: true})
-    }
     allClick = () => {
         let filterText = {
             sidx: '',
@@ -50,17 +48,27 @@ export default class DynamicIndex extends React.Component {
     onChangeTab = ({i}) => {
         this.setState({index: i})
     }
-    searchText = () => {
-        if (this.state.value !== "") {
-            console.log(this.state.value)
-            let filterText = {
-                sidx: '',
-                order: '',
-                storeCode: '',
-                storeName: this.state.value,
-            }
-            this.setState({filterText, isOpen: false});
-        }
+    /*打开搜索框*/
+    search = async () => this.setState({isOpen: true})
+    /*搜索内容*/
+    searchText = async value => {
+        let filterText = {
+            sidx: '',
+            order: '',
+            storeCode: '',
+            storeName: value,
+        };
+        this.setState({filterText, isOpen: false})
+    }
+    closeModal = () => this.setState({isOpen: false})
+
+    /*删除历史的Item*/
+    deleteSearchHistory = async (index) => {
+        let result = await AsyncStorage.getItem("shop_store_search");
+        result = JSON.parse(result);
+        result.splice(index, 1);
+        this.setState({historyList: result});
+        AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
     }
 
     render() {
@@ -93,24 +101,13 @@ export default class DynamicIndex extends React.Component {
                         filter={this.state.filterText}
                         index={this.state.index}/>
                 </ScrollableTabView>
-                <Modal isOpen={this.state.isOpen} onClosed={() => this.setState({isOpen: false})}
-                       style={[styles.modal, {backgroundColor: 'rgba(0,0,0,.3)'}]} position={"center"}>
-                    <View style={styles.modal_center}>
-                        <TextInput
-                            placeholder="请输入店铺名称"
-                            placeholderTextColor={whiteColor}
-                            editable={true}//是否可编辑
-                            style={styles.inputStyle}//input框的基本样式
-                            value={this.state.value}
-                            onChangeText={(value) => {
-                                this.setState({value})
-                            }}//输入框改变触发的函数
-                        />
-                        <Button style={styles.search_btn} light onPress={this.searchText}>
-                            <Icon name="search"/>
-                        </Button>
-                    </View>
-                </Modal>
+                <SearchModal
+                    isOpen={this.state.isOpen}
+                    close={this.closeModal}
+                    search={(value) => {
+                        this.searchText(value)
+                    }}
+                />
             </View>
         )
     }
@@ -126,21 +123,36 @@ const styles = StyleSheet.create({
         backgroundColor: whiteColor,
     },
 
+    modal: {
+        position: 'relative',
+        justifyContent: "flex-end",
+        margin: 0
+    },
     modal_center: {
-        marginVertical: scaleSize(20),
         paddingHorizontal: scaleSize(20),
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: DEVICE_HEIGHT / 2,
+        width: DEVICE_WIDTH,
+        backgroundColor: 'rgba(0,0,0,.3)',
+    },
+    modal_text_input: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        height: scaleSize(140),
     },
     inputStyle: {
+        paddingHorizontal: scaleSize(20),
         flex: 1,
         color: whiteColor,
         fontSize: 18,
     },
     search_btn: {
-        alignItems: 'center',
+        marginTop: scaleSize(30),
         justifyContent: 'center',
+        alignItems: 'center',
         width: scaleSize(150),
         height: scaleSize(80),
         borderRadius: scaleSize(100),
@@ -148,5 +160,6 @@ const styles = StyleSheet.create({
     },
     search_history: {
         flex: 1,
+        width: DEVICE_WIDTH,
     },
 });

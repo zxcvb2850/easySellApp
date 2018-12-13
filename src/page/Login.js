@@ -22,8 +22,12 @@ import {login, getData, getInfo} from "../api/HttpSend";
 @observer
 export default class Login extends React.Component {
     @action
-    setRouter() {
-        this.props.store.NavInfo.setRoute();
+    setRouter(bool = false) {
+        this.props.store.NavInfo.setRoute(bool);
+    }
+
+    componentWillMount() {
+        this.setRouter();
     }
 
     constructor() {
@@ -45,9 +49,9 @@ export default class Login extends React.Component {
         }
         let result = await login(this.state.name, this.state.pwd);
         showToast('登录成功', 'success');
-        this.setRouter();
         await AsyncStorage.setItem('shop_token', result.token);
         let res = await getInfo()
+        this.setRouter(true);
         await AsyncStorage.setItem('shop_info', JSON.stringify(res.user))
         this.setState({name: '', pwd: ''})
         this.props.navigation.navigate('TabFragment')

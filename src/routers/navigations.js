@@ -15,7 +15,7 @@ import EvalutIndex from "../page/evalutFragment/EvalutIndex"
 import MineIndex from "../page/mineFragment/MineIndex"
 import ForgetPwd from "../page/mineFragment/ForgetPwd"
 import ShopDetail from "../page/shopFragment/component/ShopDetail"
-import alarmList from "../page/shopFragment/component/alarmList"
+import AlarmList from "../page/shopFragment/component/AlarmList"
 import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
@@ -42,8 +42,6 @@ const dynamicIndex = createStackNavigator({
 /*店铺*/
 const shopIndex = createStackNavigator({
     ShopIndex: {screen: ShopIndex},
-    ShopDetail: {screen: ShopDetail},
-    alarmList: {screen: alarmList},
 }, {
     header: null,
     headerMode: 'none',
@@ -110,6 +108,8 @@ export const AppNavigator = createStackNavigator({
     EvalutEnd: {screen: EvalutEnd},//考评历史详情
     FeedbackDetail: {screen: FeedbackDetail},//列外考评详情
     ForgetPwd: {screen: ForgetPwd},//修改密码
+    ShopDetail: {screen: ShopDetail},//店铺详情
+    AlarmList: {screen: AlarmList},//报警列表
     screenFull: {screen: screenFull},
 }, {
     //路由参数
@@ -127,7 +127,6 @@ export const routerRule = ['TabDynamic', 'TabShop', 'TabEvalut', 'TabMine', 'Tab
 export default class AppNavigatorRoot extends React.Component {
     @action
     setIndex(index) {
-        /**/
         this.props.store.NavIndex.setRoute(index)
     }
 
@@ -152,6 +151,7 @@ export default class AppNavigatorRoot extends React.Component {
     onBackPress = () => {
         let info = this.routerInfo;
         let index = this.routerIndex
+        console.log(info, index)
         if (info ? index === 2 || index === 1 : index === 1) {
             if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
                 BackHandler.exitApp()
