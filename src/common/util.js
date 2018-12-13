@@ -6,7 +6,7 @@ import Toast from "react-native-root-toast"
 import {dangerColor, successColor, warringColor} from "./styles"
 
 /*封装公共Toast*/
-export function showToast(text, type = "info", duration = 2000, position = "bottom") {
+export function showToast(text, type = "info", duration = 2000, position = "center") {
     let showDuration = ""//展示时间长短
     if (duration > 1500) {
         showDuration = Toast.durations.LONG

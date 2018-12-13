@@ -1,14 +1,14 @@
 import React from "react"
-import {StyleSheet, Image, Text, TouchableOpacity, View} from "react-native"
-import {scaleSize} from "../common/screenUtil"
-import {whiteColor} from "../common/styles";
+import { StyleSheet, Image, Text, TouchableOpacity, View } from "react-native"
+import { scaleSize } from "../common/screenUtil"
+import { whiteColor } from "../common/styles";
 
 const HeaderAttach = (props) => (
     <View style={styles.head_children}>
         {
             props.all ?
                 <View style={styles.head_left}>
-                    <Text style={styles.head_left_text} onPress={props.all}>全部</Text>
+                    <Text style={[styles.head_left_text, { paddingHorizontal: scaleSize(40) }]} onPress={props.all}>全部</Text>
                 </View>
                 : null
         }
@@ -17,10 +17,10 @@ const HeaderAttach = (props) => (
                 props.search ?
                     <TouchableOpacity
                         activeOpacity={0.9}
-                        style={[styles.icon, {marginRight: scaleSize(30)}]}
+                        style={[styles.icon, { marginRight: scaleSize(20), paddingHorizontal: scaleSize(40) }]}
                         onPress={props.search}
                     >
-                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_search.png")}/>
+                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_search.png")} />
                     </TouchableOpacity>
                     : null
             }
@@ -28,10 +28,10 @@ const HeaderAttach = (props) => (
                 props.filter ?
                     <TouchableOpacity
                         activeOpacity={0.9}
-                        style={[styles.icon, {marginRight: scaleSize(10)}]}
+                        style={[styles.icon, { marginRight: scaleSize(20), paddingRight: scaleSize(40) }]}
                         onPress={props.filter}
                     >
-                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_filter.png")}/>
+                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_filter.png")} />
                     </TouchableOpacity>
                     : null
             }
