@@ -9,8 +9,13 @@ import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {BASE_URL} from "../../../config/config";
 import {showToast} from "../../../common/util";
 import ImagePicker from "react-native-image-picker"
-import {exceptionSave, uploadImage} from "../../../api/evaluReq";
+import {exceptionFollow, exceptionSave, uploadImage} from "../../../api/evaluReq";
 import {garyColor} from "../../../common/styles";
+import CustomImage from "../../../components/CustomImage";
+
+/*mobx*/
+import {inject, observer} from "mobx-react";
+import {computed} from "mobx";
 
 //图片选择器参数设置
 const options = {
@@ -28,7 +33,13 @@ const options = {
     }
 };
 
+@inject('store')
+@observer
 export default class FeedbackDetail extends React.Component {
+    @computed get userInfo() {
+        return this.props.store.UserInfo.userInfo;
+    }
+
     componentWillUnmount() {
         /*移除监听返回按钮*/
         BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
@@ -49,75 +60,80 @@ export default class FeedbackDetail extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            imgs: [],//添加的图片
-            value: [],
+            data: {},//列外数据
+            imgs: "",//添加的图片
+            value: "",
         }
+
+        this._exceptionFollow()
+    }
+
+    _exceptionFollow = async () => {
+        const {params} = this.props.navigation.state
+        let result = await exceptionFollow(params.reviewProjectId);
+        console.log(result);
+        this.setState({data: result.storeReviewProject})
     }
 
     /**/
-    _changeText = (value, index) => {
-        console.log(value, index)
-        let val = this.state.value;
-        val[index] = value;
-        this.setState({value: val})
+    _changeText = (value) => {
+        console.log(value)
+        this.setState({value})
     }
 
     /*上传图片*/
-    choosePic = (index) => {
+    choosePic = () => {
         ImagePicker.showImagePicker(options, async (response) => {
             console.log('Response = ', response);
 
             if (response.didCancel) {
                 //console.log('用户取消了选择！');
-            }
-            else if (response.error) {
+            } else if (response.error) {
                 alert("ImagePicker发生错误：" + response.error);
-            }
-            else if (response.customButton) {
+            } else if (response.customButton) {
                 alert("自定义按钮点击：" + response.customButton);
-            }
-            else {
+            } else {
                 let imgArr = this.state.imgs;
-                let imgs = imgArr[index] ? imgArr[index].split(",") : []
+                let imgs = imgArr ? imgArr.split(",") : []
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
                 let uri = await uploadImage(response.uri, response.fileName);
                 console.log(imgs, uri, response.uri);
                 showToast('上传成功', 'success')
                 imgs.push(uri.imgUrl)
-                imgArr[index] = imgs.join(",")
+                imgArr = imgs.join(",")
                 this.setState({imgs: imgArr})
             }
         });
     }
 
     /*删除图片*/
-    deleteImage = (index, zIndex) => {
-        console.log(index, zIndex);
+    deleteImage = (zIndex) => {
+        console.log(zIndex);
         let imgArr = this.state.imgs;
-        let imgs = imgArr[index].split(",")
+        let imgs = imgArr.split(",")
         imgs.splice(zIndex, 1)
-        imgArr[index] = imgs.join(",")
+        imgArr = imgs.join(",")
         this.setState({imgs: imgArr})
     }
 
     /*保存*/
-    exceptionSave = async (index, bool) => {
+    exceptionSave = async (bool) => {
         if (!bool) {
-            if (this.state.value[index] == null) {
+            if (this.state.value == null) {
                 return showToast("请输入不合格备注", "warning")
             }
-            if (this.state.imgs[index] == null) {
+            if (this.state.imgs == null) {
                 return showToast("请上传不合格图片", "warning")
             }
         }
-        const {params} = this.props.navigation.state;
-        let userInfo = await AsyncStorage.getItem('shop_info');
-        let data = params.list[index]
-        userInfo = JSON.parse(userInfo);
-        console.log(data.reviewProjectId, data.reviewId, data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value[index] || "", this.state.imgs[index] || "")
-        await exceptionSave(data.reviewProjectId, data.reviewId, data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value[index] || "", this.state.imgs[index] || "")
+        let userInfo = this.userInfo;
+        console.log(this.state.data)
+        console.log(this.state.data.reviewProjectId, this.state.data.reviewId, this.state.data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value || "", this.state.imgs || "")
+        await exceptionSave(this.state.data.reviewProjectId, this.state.data.reviewId, this.state.data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value || "", this.state.imgs || "")
         showToast("保存成功", "success")
+        await this.setState({value: "", imgs: ""})
+        this._exceptionFollow();
     }
 
     render() {
@@ -126,80 +142,90 @@ export default class FeedbackDetail extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <Header isBack={this.onBackPress} title={"例外跟踪"}/>
-                <Content style={styles.container}>
-                    <Text style={styles.title}>店铺名称：{params.storeName}</Text>
-                    <View style={styles.content}>
-                        {
-                            params.list.length ?
-                                params.list.map((item, index) => (
-                                    <View key={item.reviewProjectId}>
-                                        <View>
-                                            <Text>{item.projectCode}</Text>
-                                            <View>
-                                                <Text>{item.projectData}</Text>
-                                                <Text>{item.projectRequire}</Text>
-                                                <View style={styles.image_wrap}>
-                                                    {
-                                                        item.photos && item.photos.split(",").map((v, i) => (
-                                                            <Image key={i} style={styles.image}
-                                                                   source={{uri: BASE_URL + v}}/>)
-                                                        )
-                                                    }
-                                                </View>
-                                                <Text style={{color: '#F00'}}>{item.exception}</Text>
-                                            </View>
-                                        </View>
-                                        <View style={styles.comment}>
-                                            <View style={styles.image_wrap}>
-                                                {this.showImages(index)}
-                                                <TouchableOpacity
-                                                    activeOpacity={0.9}
-                                                    style={[styles.image]}
-                                                    onPress={() => this.choosePic(index)}
-                                                >
-                                                    <Image
-                                                        source={require("../../../assets/resource/evalut/icon_add.png")}
-                                                        style={{width: scaleSize(170), height: scaleSize(95)}}/>
-                                                </TouchableOpacity>
-                                            </View>
-                                            <View style={styles.input_wrap}>
-                                                <TextInput
-                                                    placeholder="请输入备注"
-                                                    editable={true}//是否可编辑
-                                                    style={styles.inputStyle}//input框的基本样式
-                                                    value={this.state.value[index]}
-                                                    onChangeText={(value) => {
-                                                        this._changeText(value, index)
-                                                    }}//输入框改变触发的函数
-                                                />
-                                                <Image style={{width: scaleSize(48), height: scaleSize(48)}}
-                                                       source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                            </View>
-                                        </View>
-                                        <View style={styles.btn_wrapper}>
-                                            <Button light style={styles.btn} onPress={() => {
-                                                this.exceptionSave(index, true)
-                                            }}>
-                                                <Text>合格</Text>
-                                            </Button>
-                                            <Button light style={styles.btn} onPress={() => {
-                                                this.exceptionSave(index, false)
-                                            }}>
-                                                <Text>不合格</Text>
-                                            </Button>
-                                        </View>
+                <View>
+                    <Text>{this.state.data.projectType}</Text>
+                    <Text>{this.state.data.exception}</Text>
+                    <Text>{this.state.data.projectArea}</Text>
+                    <Text>{this.state.data.projectCode}</Text>
+                    <Text>{this.state.data.projectData}</Text>
+                    <Text>{this.state.data.projectRequire}</Text>
+                </View>
+                <Content>
+                    {
+                        this.state.data.followList && this.state.data.followList.map(item =>
+                            <View key={item.followId}>
+                                <Text>{item.projectCode}</Text>
+                                <Text>修改时间：{item.createTime}</Text>
+                                <Text>操作人：{item.follower}</Text>
+                                <View>
+                                    <View style={styles.image_wrap}>
+                                        {
+                                            item.followPhotos && item.followPhotos.split(",").map((v, i) => (
+                                                <CustomImage
+                                                    key={i}
+                                                    style={styles.image}
+                                                    image={BASE_URL + v}
+                                                />)
+                                            )
+                                        }
                                     </View>
-                                ))
-                                : null
-                        }
-                    </View>
+                                    <Text style={{color: '#F00'}}>{item.followDesc}</Text>
+                                </View>
+                            </View>
+                        )
+                    }
+                    {
+                        this.state.data.exceptionStatus && this.state.data.exceptionStatus !== 2 ?
+                            <View>
+                                <View style={styles.comment}>
+                                    <View style={styles.image_wrap}>
+                                        {this.showImages()}
+                                        <TouchableOpacity
+                                            activeOpacity={0.9}
+                                            style={[styles.image]}
+                                            onPress={() => this.choosePic()}
+                                        >
+                                            <Image
+                                                source={require("../../../assets/resource/evalut/icon_add.png")}
+                                                style={{width: scaleSize(170), height: scaleSize(95)}}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.input_wrap}>
+                                        <TextInput
+                                            placeholder="请输入备注"
+                                            editable={true}//是否可编辑
+                                            style={styles.inputStyle}//input框的基本样式
+                                            value={this.state.value}
+                                            onChangeText={(value) => {
+                                                this._changeText(value)
+                                            }}//输入框改变触发的函数
+                                        />
+                                        <Image style={{width: scaleSize(48), height: scaleSize(48)}}
+                                               source={require("../../../assets/resource/evalut/icon_comment.png")}/>
+                                    </View>
+                                </View>
+                                < View style={styles.btn_wrapper}>
+                                    < Button light style={styles.btn} onPress={() => {
+                                        this.exceptionSave(true)
+                                    }}>
+                                        <Text>合格</Text>
+                                    </Button>
+                                    <Button light style={styles.btn} onPress={() => {
+                                        this.exceptionSave(false)
+                                    }}>
+                                        <Text>不合格</Text>
+                                    </Button>
+                                </View>
+                            </View>
+                            : null
+                    }
                 </Content>
             </View>
-        )
+        );
     }
 
-    showImages = (index) => {
-        let show = this.state.imgs[index] ? this.state.imgs[index].split(",").map((v, i) => (
+    showImages = () => {
+        let show = this.state.imgs ? this.state.imgs.split(",").map((v, i) => (
             <View key={i} style={styles.image_item}>
                 <TouchableOpacity
                     activeOpacity={0.9}
@@ -209,7 +235,7 @@ export default class FeedbackDetail extends React.Component {
                         top: scaleSize(12),
                         zIndex: 1,
                     }]}
-                    onPress={() => this.deleteImage(index, i)}
+                    onPress={() => this.deleteImage(i)}
                 >
                     <Image style={styles.delete_icon}
                            source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>

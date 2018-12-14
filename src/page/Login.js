@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import {Container, Item, Input, Form, Label, Thumbnail, Button} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
-import {headerColor, mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
+import {mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 import {observer, inject} from 'mobx-react'
 import {action} from 'mobx'
@@ -26,7 +26,12 @@ export default class Login extends React.Component {
         this.props.store.NavInfo.setRoute(bool);
     }
 
-    componentWillMount() {
+    @action
+    setUserInfo(info) {
+        this.props.store.UserInfo.setUserInfo(info);
+    }
+
+    componentDidMount() {
         this.setRouter();
     }
 
@@ -52,9 +57,9 @@ export default class Login extends React.Component {
         await AsyncStorage.setItem('shop_token', result.token);
         let res = await getInfo()
         this.setRouter(true);
-        await AsyncStorage.setItem('shop_info', JSON.stringify(res.user))
+        this.setUserInfo(res.user);
         this.setState({name: '', pwd: ''})
-        this.props.navigation.navigate('TabFragment')
+        this.props.navigation.navigate('TabDynamic')
     }
 
     render() {

@@ -22,12 +22,11 @@ export function exceptionList(page = 1, sidx, order, storeCode, storeName, limit
 
 /**
  * 列外考评处理
- * params
+ * reviewProjectId 列外ID
  * */
-export function exceptionFollow() {
-    let url = '/app/review/follow';
-    let data = {}
-    return BaseServer.get(url, objChangeUrl(data))
+export function exceptionFollow(reviewProjectId) {
+    let url = `/app/review/follow/${reviewProjectId}`;
+    return BaseServer.get(url)
 }
 
 /**

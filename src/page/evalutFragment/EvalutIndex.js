@@ -15,6 +15,16 @@ import Recording from "./tabs/Recording";
 import SearchModal from "../../components/SearchModal";
 
 export default class DynamicIndex extends React.Component {
+    componentWillUnmount() {
+        this.addEventTab.remove();
+    }
+
+    componentWillMount() {
+        this.addEventTab = this.props.navigation.addListener('didFocus', () => {
+            this.setState({index: 0})
+        })
+    }
+
     constructor() {
         super()
         this.state = {
@@ -62,15 +72,6 @@ export default class DynamicIndex extends React.Component {
     }
     closeModal = () => this.setState({isOpen: false})
 
-    /*删除历史的Item*/
-    deleteSearchHistory = async (index) => {
-        let result = await AsyncStorage.getItem("shop_store_search");
-        result = JSON.parse(result);
-        result.splice(index, 1);
-        this.setState({historyList: result});
-        AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -78,6 +79,7 @@ export default class DynamicIndex extends React.Component {
                     <HeaderAttach all={this.allClick} search={this.search}/>
                 </Header>
                 <ScrollableTabView
+                    tabBarTextStyle={{paddingTop: scaleSize(20)}}
                     tabBarUnderlineStyle={{height: scaleSize(2), backgroundColor: mainColor}}
                     tabBarActiveTextColor={mainColor}
                     tabBarInactiveTextColor={garyColor}

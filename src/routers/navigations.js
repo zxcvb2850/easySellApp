@@ -3,8 +3,8 @@
 * xiaobai
 * */
 import React from "react";
-import { Image, BackHandler, DeviceEventEmitter } from "react-native"
-import { createStackNavigator, createTabNavigator, createBottomTabNavigator, SafeAreaView } from "react-navigation"
+import {Image, BackHandler, DeviceEventEmitter} from "react-native"
+import {createStackNavigator, createTabNavigator, createBottomTabNavigator, SafeAreaView} from "react-navigation"
 
 /*路由指向的文件*/
 import BootPage from "../components/BootPage"
@@ -20,106 +20,106 @@ import ShowVideo from "../page/shopFragment/component/ShowVideo"
 import EvalutDetails from "../page/evalutFragment/component/EvalutDetails"
 import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
 import EvalutItem from "../page/evalutFragment/component/EvalutItem"
+import FeedList from "../page/evalutFragment/component/FeedList"
 import FeedbackDetail from "../page/evalutFragment/component/FeedbackDetail"
 
-import { garyColor, mainColor } from "../common/styles";
-import { scaleSize } from "../common/screenUtil";
-import { showToast, tabImages } from "../common/util";
+import {garyColor, mainColor} from "../common/styles";
+import {scaleSize} from "../common/screenUtil";
+import {showToast, tabImages} from "../common/util";
 
 /*mobx*/
-import { observer, inject } from 'mobx-react'
-import { action, computed } from 'mobx'
+import {observer, inject} from 'mobx-react'
+import {action, computed} from 'mobx'
 
 /*动态*/
 const dynamicIndex = createStackNavigator({
-    DynamicIndex: { screen: DynamicIndex },
+    DynamicIndex: {screen: DynamicIndex},
 }, {
-        title: "动态",
-        header: null,
-        headerMode: 'none',
-    })
+    title: "动态",
+    header: null,
+    headerMode: 'none',
+})
 /*店铺*/
 const shopIndex = createStackNavigator({
-    ShopIndex: { screen: ShopIndex },
+    ShopIndex: {screen: ShopIndex},
 }, {
-        header: null,
-        headerMode: 'none',
-    })
+    header: null,
+    headerMode: 'none',
+})
 /*考评*/
 const evalutIndex = createStackNavigator({
-    EvalutIndex: { screen: EvalutIndex },
+    EvalutIndex: {screen: EvalutIndex},
 }, {
-        header: null,
-        headerMode: 'none',
-    })
+    header: null,
+    headerMode: 'none',
+})
 
 /*我的*/
 const mineIndex = createStackNavigator({
-    MineIndex: { screen: MineIndex },
+    MineIndex: {screen: MineIndex},
 }, {
-        header: null,
-        headerMode: 'none',
-    })
+    header: null,
+    headerMode: 'none',
+})
 
 /*四个页签*/
 const tabFragment = createBottomTabNavigator({
     TabDynamic: {
         screen: dynamicIndex,
-        navigationOptions: { title: "动态" }
+        navigationOptions: {title: "动态"}
     },
     TabShop: {
         screen: shopIndex,
-        navigationOptions: { title: "店铺" }
+        navigationOptions: {title: "店铺"}
     },
     TabEvalut: {
         screen: evalutIndex,
-        navigationOptions: { title: "考评" }
+        navigationOptions: {title: "考评"}
     },
     TabMine: {
         screen: mineIndex,
-        navigationOptions: { title: "我的" }
+        navigationOptions: {title: "我的"}
     },
 }, {
-        navigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor }) => {
-                const { routeName } = navigation.state;
-                let img = tabImages[routeName + (focused ? "Yes" : "Not")];
-                return <Image style={{ width: scaleSize(48), height: scaleSize(48) }} source={img} />
-            },
-        }),
-        lazy: true,
-        removeClippedSubviews: true,
-        backBehavior: false,
-        tabBarOptions: {
-            activeTintColor: mainColor,
-            inactiveTintColor: garyColor,
-            showIcon: true,
-            safeAreaInset: { bottom: 'never' }
+    navigationOptions: ({navigation}) => ({
+        tabBarIcon: ({focused, tintColor}) => {
+            const {routeName} = navigation.state;
+            let img = tabImages[routeName + (focused ? "Yes" : "Not")];
+            return <Image style={{width: scaleSize(48), height: scaleSize(48)}} source={img}/>
         },
-    })
+    }),
+    lazy: true,
+    removeClippedSubviews: true,
+    backBehavior: false,
+    tabBarOptions: {
+        activeTintColor: mainColor,
+        inactiveTintColor: garyColor,
+        showIcon: true,
+        safeAreaInset: {bottom: 'never'}
+    },
+})
 
 export const AppNavigator = createStackNavigator({
-    BootPage: { screen: BootPage },
-    Login: { screen: Login },
-    TabFragment: { screen: tabFragment },
-    ShopVideo: { screen: ShowVideo },//视频播放
-    EvalutItem: { screen: EvalutItem },//在线考评
-    EvalutDetails: { screen: EvalutDetails },//计划考评列表
-    EvalutEnd: { screen: EvalutEnd },//考评历史详情
-    FeedbackDetail: { screen: FeedbackDetail },//列外考评详情
-    ForgetPwd: { screen: ForgetPwd },//修改密码
-    ShopDetail: { screen: ShopDetail },//店铺详情
-    AlarmList: { screen: AlarmList },//报警列表
+    BootPage: {screen: BootPage},
+    Login: {screen: Login},
+    TabFragment: {screen: tabFragment},
+    ShopVideo: {screen: ShowVideo},//视频播放
+    EvalutItem: {screen: EvalutItem},//在线考评
+    EvalutDetails: {screen: EvalutDetails},//计划考评列表
+    EvalutEnd: {screen: EvalutEnd},//考评历史详情
+    FeedList: {screen: FeedList},//列外考评列表
+    FeedbackDetail: {screen: FeedbackDetail},//列外考评详情
+    ForgetPwd: {screen: ForgetPwd},//修改密码
+    ShopDetail: {screen: ShopDetail},//店铺详情
+    AlarmList: {screen: AlarmList},//报警列表
 }, {
-        //路由参数
-        header: null,
-        headerMode: 'none',
-        navigationOptions: {
-            gesturesEnabled: false,
-        }
-    })
-
-export const routerRule = ['TabDynamic', 'TabShop', 'TabEvalut', 'TabMine', 'TabFragment']
+    //路由参数
+    header: null,
+    headerMode: 'none',
+    navigationOptions: {
+        //gesturesEnabled: false,
+    }
+})
 
 @inject('store')
 @observer
@@ -169,11 +169,11 @@ export default class AppNavigatorRoot extends React.Component {
 
     render() {
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: this.getStatusBar }}>
+            <SafeAreaView style={{flex: 1, backgroundColor: this.getStatusBar}}>
                 <AppNavigator
                     onNavigationStateChange={(prevState, newState, action) => {
                         this.setIndex(prevState.index)
-                    }} />
+                    }}/>
             </SafeAreaView>
         )
     }

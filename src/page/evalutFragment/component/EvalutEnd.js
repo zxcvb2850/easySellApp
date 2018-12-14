@@ -12,6 +12,7 @@ import {classify} from "../../../common/util"
 import commonStyle from "../../../common/commStyle"
 import {scaleSize} from "../../../common/screenUtil"
 import {BASE_URL} from "../../../config/config";
+import CustomImage from "../../../components/CustomImage";
 
 export default class EvalutEnd extends React.Component {
     constructor(props) {
@@ -115,7 +116,11 @@ export default class EvalutEnd extends React.Component {
                     <View style={styles.image_wrap}>
                         {
                             item.photos && item.photos.split(',').map(v => (
-                                <Image key={v} style={styles.image} source={{uri: BASE_URL + v}}/>
+                                <CustomImage
+                                    key={v}
+                                    style={styles.image}
+                                    image={BASE_URL + v}
+                                />
                             ))
                         }
                     </View>

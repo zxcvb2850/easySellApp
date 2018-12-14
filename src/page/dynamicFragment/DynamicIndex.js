@@ -27,7 +27,16 @@ import {storeStat} from "../../api/storeReq";
 import {exceptionList, reviewPlanStat, reviewRecordStat} from "../../api/evaluReq";
 
 export default class DynamicIndex extends React.Component {
-    componentDidMount() {
+    componentWillUnmount() {
+        this.addEventTab.remove();
+    }
+
+    componentWillMount() {
+        this.addEventTab = this.props.navigation.addListener('didFocus', () => {
+            this._storeStat();
+            this._reviewRecordStat()
+            this._reviewPlanStat()
+        })
     }
 
     constructor() {
@@ -54,9 +63,6 @@ export default class DynamicIndex extends React.Component {
             isLoreTextStatus: true,
             isLoreText: '正在加载中...',//上拉加载提示文字
         }
-        this._storeStat();
-        this._reviewRecordStat()
-        this._reviewPlanStat()
     }
 
     _storeStat = async () => {
@@ -186,17 +192,17 @@ export default class DynamicIndex extends React.Component {
             >
                 <View style={styles.item_header}>
                     <Text style={[styles.txt, styles.item_title]}>在线考评</Text>
-                    <Text style={styles.item_degree}>完成率：{this.state.reviewPlan.rate}%</Text>
+                    <Text style={styles.item_degree}>完成率：{this.state.reviewPlan.rate * 100}%</Text>
                 </View>
                 <View style={styles.item_body}>
                     <View style={styles.body_item}>
-                        <Text style={styles.txt}>今日考评</Text>
-                        <Text style={styles.txt}>{this.state.reviewPlan.today}</Text>
+                        <Text style={styles.txt}>今日计划</Text>
+                        <Text style={styles.txt}>{this.state.reviewPlan.plan}</Text>
                     </View>
                     <View style={styles.line}/>
                     <View style={styles.body_item}>
-                        <Text style={styles.txt}>计划考评</Text>
-                        <Text style={styles.txt}>{this.state.reviewPlan.plan}</Text>
+                        <Text style={styles.txt}>今日考评</Text>
+                        <Text style={styles.txt}>{this.state.reviewPlan.today}</Text>
                     </View>
                     <View style={styles.line}/>
                     <View style={[styles.body_item, styles.row]}>
@@ -222,22 +228,26 @@ export default class DynamicIndex extends React.Component {
                     this.state.reviewRecord.reviewRecord ?
                         <View style={styles.item_body}>
                             <View style={styles.body_item}>
-                                <Text style={styles.txt}>优>>{this.state.reviewRecord.reviewRecord.excellent.rule}</Text>
+                                <Text
+                                    style={styles.txt}>优>>{this.state.reviewRecord.reviewRecord.excellent.rule * 100}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.excellent.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={[styles.body_item]}>
-                                <Text style={styles.txt}>良>>{this.state.reviewRecord.reviewRecord.good.rule}</Text>
+                                <Text
+                                    style={styles.txt}>良>>{this.state.reviewRecord.reviewRecord.good.rule * 100}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.good.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={[styles.body_item]}>
-                                <Text style={styles.txt}>中>>{this.state.reviewRecord.reviewRecord.medium.rule}</Text>
+                                <Text
+                                    style={styles.txt}>中>>{this.state.reviewRecord.reviewRecord.medium.rule * 100}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.medium.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={styles.body_item}>
-                                <Text style={styles.txt}>差>>{this.state.reviewRecord.reviewRecord.bad.rule}</Text>
+                                <Text
+                                    style={styles.txt}>差>>{this.state.reviewRecord.reviewRecord.bad.rule * 100}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.bad.total}</Text>
                             </View>
                         </View>

@@ -3,7 +3,7 @@
 * */
 import {Linking} from "react-native"
 import Toast from "react-native-root-toast"
-import {dangerColor, successColor, warringColor} from "./styles"
+import {dangerColor, mainColor, successColor, warringColor} from "./styles"
 
 /*封装公共Toast*/
 export function showToast(text, type = "info", duration = 2000, position = "center") {
@@ -106,4 +106,52 @@ export function classify(arr) {
         }
     }
     return dest
+}
+
+/*相同的时间分类*/
+export function timerify(arr) {
+    let reg = /\S*/;
+    let map = {}, dest = [];
+    for (let i = 0; i < arr.length; i++) {
+        let ai = arr[i];
+        if (!map[ai.planTime.match(reg)[0]]) {
+            dest.push({
+                planTime: ai.planTime.match(reg)[0],
+                data: [ai]
+            });
+            map[ai.planTime.match(reg)[0]] = ai;
+        } else {
+            for (let j = 0; j < dest.length; j++) {
+                let dj = dest[j];
+                if (dj.planTime.match(reg)[0] === ai.planTime.match(reg)[0]) {
+                    dj.data.push(ai);
+                    break;
+                }
+            }
+        }
+    }
+    return dest
+}
+
+/*考评状态*/
+export function checkResult(status) {
+    let str = "", color = mainColor;
+    switch (status) {
+        case 1:
+            str = "待考评";
+            break;
+        case 2:
+            str = "正常";
+            color = successColor;
+            break;
+        case 3:
+            str = "列外";
+            color = dangerColor;
+            break;
+        case 4:
+            str = "不适用";
+            color = warringColor;
+            break;
+    }
+    return {str, color};
 }

@@ -3,7 +3,7 @@
  * */
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
-import {Separator} from "native-base"
+import {Separator, ListItem, Left, Right} from "native-base"
 import {scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
 import {exceptionList, getExceptionList} from "../../../api/evaluReq";
@@ -29,6 +29,9 @@ export default class Feedback extends React.Component {
                 await this.setState({filter: nextProps.filter});
                 this._exceptionList();
             }
+        }
+        if (nextProps.index === 1) {
+            this._exceptionList();
         }
     }
 
@@ -69,11 +72,10 @@ export default class Feedback extends React.Component {
         this._exceptionList(1, true)
     }
 
-    feedbackItem = (item) => {
-        console.log(item);
+    gotoFeedDetail = (item, v) => {
         this.props.navigate('FeedbackDetail', {
             storeName: item.storeName,
-            list: item.projectList,
+            reviewProjectId: v.reviewProjectId,
             callback: () => {
                 this._exceptionList()
             }
@@ -102,17 +104,10 @@ export default class Feedback extends React.Component {
 
     _keyExtractor = (item) => item.reviewId + '';
     _renderItem = ({item}) => (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            style={styles.item}
-            onPress={() => {
-                this.feedbackItem(item)
-            }}
-        >
+        <View style={styles.item}>
             <View style={styles.head}>
                 <View style={styles.line}/>
                 <Text style={styles.head_title}>{item.storeName}</Text>
-                <Text style={styles.eval_icon}>处理</Text>
             </View>
             <View style={styles.footer}>
                 <View style={styles.center}>
@@ -121,7 +116,21 @@ export default class Feedback extends React.Component {
                     <Text style={styles.time}>考评时间：{item.updateTime}</Text>
                 </View>
             </View>
-        </TouchableOpacity>
+            {
+                item.projectList && item.projectList.map(v =>
+                    <ListItem key={v.reviewProjectId} onPress={() => {
+                        this.gotoFeedDetail(item, v)
+                    }}>
+                        <Left>
+                            <Text>{v.exception}</Text>
+                        </Left>
+                        <Right>
+                            <Text>处理</Text>
+                        </Right>
+                    </ListItem>
+                )
+            }
+        </View>
     )
     _renderFooter = () => {
         return (

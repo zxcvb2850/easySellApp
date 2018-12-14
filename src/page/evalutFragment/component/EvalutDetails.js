@@ -3,14 +3,14 @@
 * */
 import React from "react"
 import {StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Modal} from "react-native"
-import {Content, Button} from "native-base";
+import {Content, Button, ListItem} from "native-base";
 import Accordion from 'react-native-collapsible/Accordion'
 import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"
 import {scaleSize} from "../../../common/screenUtil";
 import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles";
 import {getPlanDetails, saveAll, saveSingle, uploadImage} from "../../../api/evaluReq";
-import {classify, showToast} from "../../../common/util";
+import {checkResult, classify, showToast} from "../../../common/util";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'
@@ -45,7 +45,7 @@ export default class EvalutDetails extends React.Component {
     constructor(props) {
         super()
         this.state = {
-            activeSections: [],
+            activeSections: [0],
             data: [],
             modalVisible: false,//确认提交全部弹窗
             reviewId: 0
@@ -65,7 +65,7 @@ export default class EvalutDetails extends React.Component {
             v.data.forEach(_v => list.push(_v))
         })
         console.log(list)
-        let result = await saveAll(list);
+        /*let result = await saveAll(list);
         console.log(result)
         if (result.code !== 0) {
             showToast('提交失败', 'error')
@@ -73,7 +73,7 @@ export default class EvalutDetails extends React.Component {
             showToast('提交成功', 'success')
         }
         this.setState({modalVisible: false})
-        this._getPlanDetails(this.state.reviewId);
+        this._getPlanDetails(this.state.reviewId);*/
     }
 
     /*关闭提示框*/
@@ -101,7 +101,23 @@ export default class EvalutDetails extends React.Component {
         this.setState({activeSections});
     };
 
+    gotoItem = (item) => {
+        const {params} = this.props.navigation.state;
+        let data = [];
+        this.state.data.forEach(v => {
+            v.data.forEach(_v => data.push(_v))
+        })
+        this.setList(data);//mobx保存当前考评的列表
+        let _index = this.getEvalutList.findIndex(v => v.reviewProjectId === item.reviewProjectId);
+        this.setIndex(_index);
+        this.props.navigation.navigate("EvalutItem", {
+            callback: () => this._getPlanDetails(params.reviewId)
+        })
+    }
+
     render() {
+        const {params} = this.props.navigation.state;
+
         return (
             <View style={styles.container}>
                 <Header isBack title={"考评"}>
@@ -114,6 +130,9 @@ export default class EvalutDetails extends React.Component {
                                source={require("../../../assets/resource/evalut/icon_confirm.png")}/>
                     </TouchableOpacity>
                 </Header>
+                <ListItem itemDivider>
+                    <Text>{params.storeName}</Text>
+                </ListItem>
                 <Content style={styles.center}>
                     {/*手风琴动画*/}
                     <Accordion
@@ -177,26 +196,23 @@ export default class EvalutDetails extends React.Component {
     };
 
     _renderContent = (section, index, isActive, sections) => {
-        const {params} = this.props.navigation.state
         return section.data.map((item, i) => (
             <View key={item.reviewProjectId} style={[styles.content, {
                 marginBottom: isActive ? scaleSize(20) : scaleSize(0)
             }]}>
                 <View style={styles.content_item}>
                     <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
-                    <View style={styles.content_desc}>
-                        <Text onPress={() => {
-                            let data = [];
-                            this.state.data.forEach(v => {
-                                v.data.forEach(_v => data.push(_v))
-                            })
-                            this.setList(data);//mobx保存当前考评的列表
-                            //console.log(this.state.data, section, index, item, i);
-                            let _index = this.getEvalutList.findIndex(v => v.reviewProjectId === item.reviewProjectId);
-                            this.setIndex(_index);
-                            this.props.navigation.navigate("EvalutItem", {callback: () => this._getPlanDetails(params.reviewId)})
-                        }}>{item.projectData}</Text>
-                    </View>
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        style={styles.content_desc}
+                        onPress={() => this.gotoItem(item)}
+                    >
+                        <Text>{item.projectData}</Text>
+                        <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
+                            <Text
+                                style={{color: checkResult(item.checkResult).color}}>{checkResult(item.checkResult).str}</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         ))

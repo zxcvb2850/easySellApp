@@ -28,9 +28,9 @@ const AlarmList = ({navigation}) => {
                             <View style={styles.options}>
                                 {
                                     item.protectAdderss ?
-                                        <Text>操作员：{item.protectCode}</Text>
-                                        :
                                         <Text>防区号：{item.protectCode}</Text>
+                                        :
+                                        <Text>操作员：{item.protectCode}</Text>
                                 }
                             </View>
                         </View>

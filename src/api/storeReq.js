@@ -66,7 +66,7 @@ export function getVideoList(storeId) {
  * channelId 渠道ID
  * */
 export function getVideoDetail(channelId) {
-    let url = `/app/store/preview/${16}`;
+    let url = `/app/store/preview/${channelId}`;
     return BaseServer.get(url)
 }
 

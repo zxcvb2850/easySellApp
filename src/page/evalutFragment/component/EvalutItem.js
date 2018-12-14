@@ -25,6 +25,7 @@ import ImagePicker from "react-native-image-picker"
 /*mbox*/
 import {inject, observer} from "mobx-react";
 import {computed, action} from "mobx";
+import CustomImage from "../../../components/CustomImage";
 
 //图片选择器参数设置
 const options = {
@@ -159,14 +160,11 @@ export default class EvalutItem extends React.Component {
 
             if (response.didCancel) {
                 //console.log('用户取消了选择！');
-            }
-            else if (response.error) {
+            } else if (response.error) {
                 alert("ImagePicker发生错误：" + response.error);
-            }
-            else if (response.customButton) {
+            } else if (response.customButton) {
                 alert("自定义按钮点击：" + response.customButton);
-            }
-            else {
+            } else {
                 let list = this.state.list;
                 let imgs = list[this.state.index].photos ? list[this.state.index].photos.split(',') : [];
                 // You can also display the image using data:
@@ -359,7 +357,10 @@ export default class EvalutItem extends React.Component {
                     <Image style={styles.delete_icon}
                            source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>
                 </TouchableOpacity>
-                <Image source={{uri: BASE_URL + item}} style={styles.image}/>
+                <CustomImage
+                    image={BASE_URL + item}
+                    style={styles.image}
+                />
             </View>
         )) : null
         return show;

@@ -2,11 +2,12 @@
  * 计划考评
  * */
 import React from "react";
-import { StyleSheet, View, Text, Image, FlatList, RefreshControl } from "react-native";
-import { ListItem, Left, Icon, Body, Right, Thumbnail } from "native-base";
-import { whiteColor } from "../../../common/styles";
-import { getPlanList } from "../../../api/evaluReq";
-import { scaleSize } from "../../../common/screenUtil"
+import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native";
+import {List, ListItem, Left, Icon, Body, Right, Thumbnail} from "native-base";
+import {mainColor, whiteColor} from "../../../common/styles";
+import {getPlanList} from "../../../api/evaluReq";
+import {scaleSize} from "../../../common/screenUtil"
+import {timerify} from "../../../common/util";
 
 export default class PlanList extends React.Component {
     constructor(props) {
@@ -27,9 +28,12 @@ export default class PlanList extends React.Component {
         if (nextProps.filter !== this.props.filter) {
             if (nextProps.index === 0) {
                 console.log(nextProps.filter)
-                await this.setState({ filter: nextProps.filter })
+                await this.setState({filter: nextProps.filter})
                 this._getPlanList()
             }
+        }
+        if (nextProps.index === 0) {
+            this._getPlanList();
         }
     }
 
@@ -45,28 +49,29 @@ export default class PlanList extends React.Component {
     _getPlanList = async (page = 1, isRefresh = false) => {
         /*此处请求有点小问题*/
         let result = await getPlanList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.filter.storeName);
-        console.log(result)
+        let data = timerify(result.page.list);
+        console.log(data)
         if (page === 1) {
-            if (result.page.list.length) {
-                this.setState({ list: result.page.list });
+            if (data.length) {
+                this.setState({list: data});
             } else {
-                this.setState({ isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false })
+                this.setState({isLoreText: '没有更多数据了...', list: [], isLoreTextStatus: false})
             }
-        } else if (result.page.list.length) {
-            this.setState({ list: this.state.list.concat(result.page.list) })
+        } else if (data.length) {
+            this.setState({list: this.state.list.concat(data)})
         } else {
-            this.setState({ isLoreText: '没有更多数据了...', isLoreTextStatus: false })
+            this.setState({isLoreText: '没有更多数据了...', isLoreTextStatus: false})
         }
-        this.setState({ isStatus: false, isLoreTextStatus: false })
+        this.setState({isStatus: false, isLoreTextStatus: false})
         if (isRefresh) {
-            this.setState({ refreshing: false })
+            this.setState({refreshing: false})
             this.getMoreList();
         }
     }
 
     getMoreList = () => {
         if (!this.state.isStatus) {
-            this.setState({ isStatus: true, page: this.state.page + 1 })
+            this.setState({isStatus: true, page: this.state.page + 1})
             this._getPlanList(this.state.page + 1)
         }
     }
@@ -86,35 +91,52 @@ export default class PlanList extends React.Component {
                         <RefreshControl
                             refreshing={this.state.refreshing}
                             onRefresh={this.Refresh}
-                            title="刷新中..." />
+                            title="刷新中..."/>
                     }
                 />
             </View>
         )
     }
 
-    _keyExtractor = (item) => item.reviewId + '';
+    _keyExtractor = (item, index) => index + '';
 
-    _renderItem = ({ item }) => (
-        <ListItem avatar style={{ backgroundColor: whiteColor }}
-            key={item.reviewId}
-            onPress={() => {
-                //console.log(item);
-                this.props.navigate('EvalutDetails', { reviewId: item.reviewId, storeName: item.storeName })
-            }}
-        >
-            <Left>
-                <Thumbnail square
-                    style={{ width: scaleSize(48), height: scaleSize(48) }}
-                    source={require("../../../assets/resource/evalut/icon_shop.png")} />
-            </Left>
-            <Body>
-                <Text>{item.storeName}</Text>
-            </Body>
-            <Right>
-                <Icon name="arrow-forward" />
-            </Right>
-        </ListItem>
+    _renderItem = ({item, index}) => (
+        <List key={index}>
+            <ListItem itemDivider>
+                <View style={{
+                    marginHorizontal: scaleSize(8),
+                    width: scaleSize(4),
+                    height: scaleSize(26),
+                    backgroundColor: mainColor,
+                }}/>
+                <Text>{item.planTime}</Text>
+            </ListItem>
+            {
+                item.data.map(v =>
+                    <ListItem avatar style={{backgroundColor: whiteColor}}
+                              key={v.reviewId}
+                              onPress={() => {
+                                  this.props.navigate('EvalutDetails', {
+                                      reviewId: v.reviewId,
+                                      storeName: v.storeName
+                                  })
+                              }}
+                    >
+                        <Left>
+                            <Thumbnail square
+                                       style={{width: scaleSize(48), height: scaleSize(48)}}
+                                       source={require("../../../assets/resource/evalut/icon_shop.png")}/>
+                        </Left>
+                        <Body>
+                        <Text>{v.storeName}</Text>
+                        </Body>
+                        <Right>
+                            <Icon name="arrow-forward"/>
+                        </Right>
+                    </ListItem>
+                )
+            }
+        </List>
     )
 
     _renderFooter = () => {

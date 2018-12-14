@@ -24,7 +24,7 @@ export class NavInfo {
     navInfo = 0;
 
     constructor(route) {
-        this.navInfo = route
+        this.navInfo = route;
     }
 
     @action

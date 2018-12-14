@@ -10,8 +10,10 @@ import {scaleSize} from "../../common/screenUtil"
 import {garyColor, mainColor, maxFontSize, whiteColor} from "../../common/styles"
 import {postLogout} from "../../api/HttpSend";
 import {showToast} from "../../common/util";
+
+/*mobx*/
 import {observer, inject} from 'mobx-react'
-import {action} from 'mobx'
+import {action, computed} from 'mobx'
 
 @inject('store')
 @observer
@@ -21,21 +23,14 @@ export default class MineIndex extends React.Component {
         this.props.store.NavInfo.setRoute(true);
     }
 
-    constructor() {
-        super()
-        this.state = {
-            userInfo: {}
-        }
+    /*获取个人信息*/
+    @computed get userInfo() {
+        return this.props.store.UserInfo.userInfo;
     }
 
-    async componentDidMount() {
-        let userInfo = await AsyncStorage.getItem("shop_info")
-        this.setState({userInfo: JSON.parse(userInfo)})
-    }
-
-
+    /*退出登陆*/
     logout = async () => {
-        let result = await postLogout();
+        await postLogout();
         this.setRouter();
         await AsyncStorage.removeItem('shop_token')
         await AsyncStorage.removeItem('shop_info')
@@ -59,7 +54,7 @@ export default class MineIndex extends React.Component {
                         <Text style={{color: garyColor}}>昵称</Text>
                     </Left>
                     <Body>
-                    <Text style={{color: "#000", fontSize: maxFontSize}}>{this.state.userInfo.fullname}</Text>
+                    <Text style={{color: "#000", fontSize: maxFontSize}}>{this.userInfo.fullname}</Text>
                     </Body>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('ForgetPwd')}>
