@@ -48,14 +48,14 @@
 		6F6662DD392F4CD2A9214395 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32EEDF76AFAA475E8EF09B63 /* Roboto.ttf */; };
 		7670AD5143044D32BCE8728C /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25398A9528334464A0D52A39 /* libRNSVG-tvOS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		96BC0DE721C202280076D60F /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE521C202270076D60F /* MClient.framework */; };
-		96BC0DE821C202280076D60F /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE621C202270076D60F /* NPlayer.framework */; };
-		96BC0DE921C202300076D60F /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE521C202270076D60F /* MClient.framework */; };
-		96BC0DEA21C202300076D60F /* MClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE521C202270076D60F /* MClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		96BC0DEB21C202300076D60F /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE621C202270076D60F /* NPlayer.framework */; };
-		96BC0DEC21C202300076D60F /* NPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96BC0DE621C202270076D60F /* NPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		96BC0DF221C20F3E0076D60F /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BC0DF021C20F3E0076D60F /* VideoViewManager.m */; };
-		96BC0DF321C20F3E0076D60F /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96BC0DF121C20F3E0076D60F /* VideoView.m */; };
+		961A64E821C384FE00B068AA /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 961A64E621C384FD00B068AA /* VideoViewManager.m */; };
+		961A64E921C384FE00B068AA /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 961A64E721C384FE00B068AA /* VideoView.m */; };
+		961A64EC21C3850900B068AA /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EA21C3850800B068AA /* MClient.framework */; };
+		961A64ED21C3850900B068AA /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; };
+		961A64EE21C3851300B068AA /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EA21C3850800B068AA /* MClient.framework */; };
+		961A64EF21C3851300B068AA /* MClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EA21C3850800B068AA /* MClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		961A64F021C3851300B068AA /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; };
+		961A64F121C3851300B068AA /* NPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A5680677C13345DA8C9737B3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFDA69D37A6F41EAB22B4D6A /* Ionicons.ttf */; };
 		AD61EF3533EE4305B33530A8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1F1746F37854726B5E0809E /* Entypo.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -377,14 +377,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		96BC0DED21C202300076D60F /* Embed Frameworks */ = {
+		961A64F221C3851300B068AA /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				96BC0DEC21C202300076D60F /* NPlayer.framework in Embed Frameworks */,
-				96BC0DEA21C202300076D60F /* MClient.framework in Embed Frameworks */,
+				961A64F121C3851300B068AA /* NPlayer.framework in Embed Frameworks */,
+				961A64EF21C3851300B068AA /* MClient.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -430,12 +430,12 @@
 		804CD44FD6014196B76D1A8F /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8BB068278B054337A7E9EF80 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
-		96BC0DE521C202270076D60F /* MClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MClient.framework; path = easySellApp/MClient.framework; sourceTree = "<group>"; };
-		96BC0DE621C202270076D60F /* NPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NPlayer.framework; path = easySellApp/NPlayer.framework; sourceTree = "<group>"; };
-		96BC0DEE21C20F3E0076D60F /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
-		96BC0DEF21C20F3E0076D60F /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
-		96BC0DF021C20F3E0076D60F /* VideoViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoViewManager.m; path = easySellApp/VideoViewManager.m; sourceTree = "<group>"; };
-		96BC0DF121C20F3E0076D60F /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoView.m; path = easySellApp/VideoView.m; sourceTree = "<group>"; };
+		961A64E421C384FD00B068AA /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
+		961A64E521C384FD00B068AA /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
+		961A64E621C384FD00B068AA /* VideoViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoViewManager.m; path = easySellApp/VideoViewManager.m; sourceTree = "<group>"; };
+		961A64E721C384FE00B068AA /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoView.m; path = easySellApp/VideoView.m; sourceTree = "<group>"; };
+		961A64EA21C3850800B068AA /* MClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MClient.framework; path = easySellApp/MClient.framework; sourceTree = "<group>"; };
+		961A64EB21C3850800B068AA /* NPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NPlayer.framework; path = easySellApp/NPlayer.framework; sourceTree = "<group>"; };
 		96CFF82917FA44BBB66D9BA1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		9AD27968097B497B99C4FDD9 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		A34679850C504408BFAEB9E6 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
@@ -454,8 +454,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
-				96BC0DEB21C202300076D60F /* NPlayer.framework in Frameworks */,
-				96BC0DE921C202300076D60F /* MClient.framework in Frameworks */,
+				961A64F021C3851300B068AA /* NPlayer.framework in Frameworks */,
+				961A64EE21C3851300B068AA /* MClient.framework in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -467,9 +467,9 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
-				96BC0DE821C202280076D60F /* NPlayer.framework in Frameworks */,
+				961A64ED21C3850900B068AA /* NPlayer.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				96BC0DE721C202280076D60F /* MClient.framework in Frameworks */,
+				961A64EC21C3850900B068AA /* MClient.framework in Frameworks */,
 				1686AD74B4A745B19B4BEF64 /* libRNSVG.a in Frameworks */,
 				18684CDE1BBE4C3F92325BFE /* libBVLinearGradient.a in Frameworks */,
 				B18930AA213B4A369828DCEE /* libRNImagePicker.a in Frameworks */,
@@ -586,10 +586,10 @@
 		13B07FAE1A68108700A75B9A /* easySellApp */ = {
 			isa = PBXGroup;
 			children = (
-				96BC0DEE21C20F3E0076D60F /* VideoView.h */,
-				96BC0DF121C20F3E0076D60F /* VideoView.m */,
-				96BC0DEF21C20F3E0076D60F /* VideoViewManager.h */,
-				96BC0DF021C20F3E0076D60F /* VideoViewManager.m */,
+				961A64E421C384FD00B068AA /* VideoView.h */,
+				961A64E721C384FE00B068AA /* VideoView.m */,
+				961A64E521C384FD00B068AA /* VideoViewManager.h */,
+				961A64E621C384FD00B068AA /* VideoViewManager.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -712,8 +712,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				96BC0DE521C202270076D60F /* MClient.framework */,
-				96BC0DE621C202270076D60F /* NPlayer.framework */,
+				961A64EA21C3850800B068AA /* MClient.framework */,
+				961A64EB21C3850800B068AA /* NPlayer.framework */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -797,7 +797,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				96BC0DED21C202300076D60F /* Embed Frameworks */,
+				961A64F221C3851300B068AA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1335,9 +1335,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96BC0DF321C20F3E0076D60F /* VideoView.m in Sources */,
+				961A64E921C384FE00B068AA /* VideoView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				96BC0DF221C20F3E0076D60F /* VideoViewManager.m in Sources */,
+				961A64E821C384FE00B068AA /* VideoViewManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

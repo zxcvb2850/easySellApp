@@ -120,6 +120,7 @@ export default class DynamicIndex extends React.Component {
     }
     /*打开搜索框*/
     search = async () => {
+        console.log('------')
         this.setState({ isOpen: true })
     }
     /*搜索内容*/
@@ -133,6 +134,7 @@ export default class DynamicIndex extends React.Component {
     }
 
     filter = async () => {
+        console.log('++++++')
         let result = await getOrgList()
         this.setState({ filterList: result.orgList })
         this.openDrawer();

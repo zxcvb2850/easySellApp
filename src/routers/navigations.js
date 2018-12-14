@@ -94,7 +94,8 @@ const tabFragment = createBottomTabNavigator({
             activeTintColor: mainColor,
             inactiveTintColor: garyColor,
             showIcon: true,
-        }
+            safeAreaInset: { bottom: 'never' }
+        },
     })
 
 export const AppNavigator = createStackNavigator({
