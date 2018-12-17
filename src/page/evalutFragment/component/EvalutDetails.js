@@ -2,14 +2,14 @@
 * 考评详情
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Modal} from "react-native"
-import {Content, Button, ListItem} from "native-base";
+import {StyleSheet, View, Text, Image, TouchableOpacity, Modal} from "react-native"
+import {Content, Button, ListItem, Input} from "native-base";
 import Accordion from 'react-native-collapsible/Accordion'
 import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"
 import {scaleSize} from "../../../common/screenUtil";
 import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles";
-import {getPlanDetails, saveAll, saveSingle, uploadImage} from "../../../api/evaluReq";
+import {getPlanDetails, submitAll} from "../../../api/evaluReq";
 import {checkResult, classify, showToast} from "../../../common/util";
 
 /*mobx*/
@@ -50,7 +50,6 @@ export default class EvalutDetails extends React.Component {
             modalVisible: false,//确认提交全部弹窗
             reviewId: 0
         }
-
     }
 
     /*提交所有*/
@@ -64,16 +63,16 @@ export default class EvalutDetails extends React.Component {
         this.state.data.forEach(v => {
             v.data.forEach(_v => list.push(_v))
         })
-        console.log(list)
-        /*let result = await saveAll(list);
-        console.log(result)
+        let result = await submitAll(list[0].reviewId);
+        await this.setState({modalVisible: false});
         if (result.code !== 0) {
-            showToast('提交失败', 'error')
+            showToast(result.msg, 'error')
         } else {
             showToast('提交成功', 'success')
+            const {params} = this.props.navigation.state;
+            params.callback();
+            this.props.navigation.goBack();
         }
-        this.setState({modalVisible: false})
-        this._getPlanDetails(this.state.reviewId);*/
     }
 
     /*关闭提示框*/
@@ -83,18 +82,16 @@ export default class EvalutDetails extends React.Component {
 
     _getPlanDetails = async (reviewId) => {
         let result = await getPlanDetails(reviewId)
-        console.log(result)
         let list = result.storeReview.projectList
         let dest = classify(list)
-        this.setState({data: dest, reviewId: result.reviewId})
+        this.setState({data: dest, reviewId: result.storeReview.reviewId})
     }
 
     _getStoreEvalutList = async (storeId) => {
         let result = await getStoreEvalutList(storeId);
-        console.log(result);
         let list = result.storeReview.projectList
         let dest = classify(list)
-        this.setState({data: dest, reviewId: result.reviewId})
+        this.setState({data: dest, reviewId: result.storeReview.reviewId})
     }
 
     _updateSections = activeSections => {
@@ -111,7 +108,8 @@ export default class EvalutDetails extends React.Component {
         let _index = this.getEvalutList.findIndex(v => v.reviewProjectId === item.reviewProjectId);
         this.setIndex(_index);
         this.props.navigation.navigate("EvalutItem", {
-            callback: () => this._getPlanDetails(params.reviewId)
+            reviewId: this.state.reviewId,
+            callback: (reviewId) => this._getPlanDetails(reviewId)
         })
     }
 

@@ -111,7 +111,7 @@ export default class Feedback extends React.Component {
             </View>
             <View style={styles.footer}>
                 <View style={styles.center}>
-                    <Text style={styles.time}>考评内容荣：全部不合格项目({item.projectList.length}项)</Text>
+                    <Text style={styles.time}>考评内容：全部不合格项目({item.projectList.length}项)</Text>
                     <Text style={styles.time}>处理人：{item.reviewer}</Text>
                     <Text style={styles.time}>考评时间：{item.updateTime}</Text>
                 </View>

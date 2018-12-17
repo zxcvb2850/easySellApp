@@ -137,7 +137,7 @@ export default class BaseServer {
 	return new Promise((resolve, reject) => {
 	  axios.put(BASE_URL + url, params)
 		.then((res) => {
-		  //console.log(res)
+		  console.log(res)
 		  if (res != null) {
 			res = res.data;
 			if (isShowError) {

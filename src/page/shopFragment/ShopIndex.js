@@ -10,15 +10,14 @@ import {
     TouchableOpacity,
     FlatList,
     RefreshControl,
-    TextInput,
     AsyncStorage,
-    BackHandler
+    BackHandler,
 } from "react-native"
 import Header from "../../components/Header"
 import {garyColor, headColor, headerColor, mainColor, whiteColor} from "../../common/styles"
-import {Drawer, Button, List, ListItem, Left, Right, Icon, Content} from "native-base"
+import {Drawer, Button, List, ListItem, Left, Right, Icon, Content, Input} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../common/screenUtil";
+import {scaleSize} from "../../common/screenUtil";
 import {dialPhone, showToast} from "../../common/util"
 import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
@@ -28,29 +27,14 @@ import SearchModal from "../../components/SearchModal"
 
 export default class DynamicIndex extends React.Component {
     componentWillUnmount() {
-        /*移除监听返回按钮*/
-        BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-
         this.addEventTab.remove();
     }
 
     componentWillMount() {
-        /*监听返回按钮*/
-        BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-
+        /*监听当前tab是否是自己*/
         this.addEventTab = this.props.navigation.addListener('didFocus', () => {
             this._getStoreList()
         })
-    }
-
-    /*如果modal开启则需关闭*/
-    onBackPress = () => {
-        if (this.state.isOpen) {
-            this.setState({isOpen: false})
-            return true;
-        } else {
-            return false;
-        }
     }
 
     constructor() {
@@ -86,7 +70,6 @@ export default class DynamicIndex extends React.Component {
 
     _getStoreList = async (page = 1, isRefresh = false) => {
         let result = await getStoreList(page, this.state.filter.sidx, this.state.filter.order, this.state.filter.storeCode, this.state.value, this.state.isCollect ? 1 : 0);
-        console.log(result.page.list);
         if (page === 1) {
             if (result.page.list.length) {
                 this.setState({list: result.page.list});
@@ -123,21 +106,16 @@ export default class DynamicIndex extends React.Component {
         this._getStoreList();
     }
     /*打开搜索框*/
-    search = async () => {
-        this.setState({isOpen: true})
-    }
+    search = () => this.setState({isOpen: true})
     /*搜索内容*/
     searchText = async value => {
         await this.setState({value, isOpen: false});
         this._getStoreList();
     }
     /*关闭搜索框*/
-    closeModal = () => {
-        this.setState({isOpen: false})
-    }
+    closeModal = () => this.setState({isOpen: false})
 
     filter = async () => {
-        console.log('++++++')
         let result = await getOrgList()
         this.setState({filterList: result.orgList})
         this.openDrawer();
@@ -239,7 +217,7 @@ export default class DynamicIndex extends React.Component {
                     </View>}
                 onClose={() => this.closeDrawer()}>
                 <View style={styles.container}>
-                    <Header title={"店铺"} statusColor={this.state.isOpen ? garyColor : headerColor}>
+                    <Header title={"店铺"}>
                         <HeaderAttach
                             all={this.allClick}
                             search={this.search}

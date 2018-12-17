@@ -19,12 +19,29 @@ import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../comm
 import Header from "../../../components/Header";
 import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {getVideoDetail, getVideoList} from "../../../api/storeReq";
+import Modal from "react-native-modal";
 import AndroidPlayer from "../../../common/AndroidPlayer";
 import IosPlayer from "../../../common/IosPlayer";
 import Orientation from "react-native-orientation";
 import {showToast} from "../../../common/util";
 
+/*mobx*/
+import {observer, inject} from "mobx-react";
+import {action, computed} from "mobx";
+import {BASE_URL} from "../../../config/config";
+
+@inject('store')
+@observer
 export default class ShowVideo extends React.Component {
+    @action
+    setPath(photo) {
+        this.props.store.PhotoPath.setPhotoPath(photo);
+    }
+
+    @computed get getPhotoPath() {
+        return this.props.store.PhotoPath.photoPath;
+    }
+
     componentWillUnmount() {
         /*移除监听返回按钮*/
         BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
@@ -36,10 +53,11 @@ export default class ShowVideo extends React.Component {
 
         DeviceEventEmitter.addListener('screenshots', (photo) => {
             showToast('----------' + photo)
-            this.setState({isScreen: 0})
-            /*if (photo) {
-
-            }*/
+            this.setState({
+                isScreen: 0,
+                screenImage: photo,
+                isShowScreen: true
+            });
         })
     }
 
@@ -66,6 +84,8 @@ export default class ShowVideo extends React.Component {
             videoStatus: 0,//视频状态
             isFull: false,//是否全屏
             isScreen: 0,//是否截屏
+            screenImage: "",//截取的图片
+            isShowScreen: false,//是否展示截图的图片
         }
         this._getVideoList(props.navigation.state.params.storeId)
         this.screenFull = this.screenFull.bind(this)
@@ -114,6 +134,20 @@ export default class ShowVideo extends React.Component {
         this.setState({nowVideo: item})
     }
 
+    gotoEvalut = () => {
+        this.props.navigation.navigate("EvalutDetails", {storeId: this.props.navigation.state.params.storeId})
+    }
+
+    submitScreen = async () => {
+        if (this.state.screenImage !== "") {
+            this.setPath(this.state.screenImage);
+            this.gotoEvalut();
+        } else {
+            showToast("图片获取失败", "error");
+        }
+        await this.setState({isShowScreen: false})
+    }
+
     render() {
         const {params} = this.props.navigation.state;
         return (
@@ -127,7 +161,7 @@ export default class ShowVideo extends React.Component {
                 <View style={[styles.video, {height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)}]}>
                     {/*视频播放*/}
                     <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
-                        {
+                        {/*{
                             this.state.videoPath !== "" ?
                                 Platform.OS === 'ios' ?
                                     <IosPlayer
@@ -152,7 +186,7 @@ export default class ShowVideo extends React.Component {
                                         status={this.state.videoStatus}
                                     />
                                 : null
-                        }
+                        }*/}
                     </View>
                     <View style={styles.video_wrapper}>
                         <View style={styles.video_txt_wrap}>
@@ -186,11 +220,40 @@ export default class ShowVideo extends React.Component {
                     columnWrapperStyle={styles.video_item}
                     keyExtractor={this._keyExtractor}
                     renderItem={this._renderItem}/>
-                <Button block style={styles.footer_btn} onPress={() =>
-                    this.props.navigation.navigate("EvalutDetails", {storeId: this.props.navigation.state.params.storeId})}
-                >
+                <Button block style={styles.footer_btn} onPress={this.gotoEvalut}>
                     <Text style={{color: whiteColor}}>进入考评</Text>
                 </Button>
+                {/*截屏成功团片弹出框*/}
+                <Modal
+                    isVisible={this.state.isShowScreen}
+                    animationIn="slideInLeft"
+                    animationOut="slideOutRight"
+                    style={styles.modal}
+                >
+                    <View style={styles.modal_wrapper}>
+                        {/*this.state.screenImage 截屏图片地址*/}
+                        <Image
+                            style={styles.modal_image}
+                            source={{uri: this.state.screenImage}}
+                        />
+                        <View style={styles.modal_button}>
+                            <Button
+                                light
+                                style={styles.modal_btn}
+                                onPress={() => this.setState({isShowScreen: false})}
+                            >
+                                <Text>关闭</Text>
+                            </Button>
+                            <Button
+                                light
+                                style={styles.modal_btn}
+                                onPress={this.submitScreen}
+                            >
+                                <Text>报告错误</Text>
+                            </Button>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         )
     }
@@ -286,5 +349,32 @@ const styles = StyleSheet.create({
         margin: scaleSize(40),
         borderRadius: scaleSize(10),
         backgroundColor: headerColor,
-    }
+    },
+
+    modal: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modal_wrapper: {
+        width: scaleSize(500),
+        height: scaleSize(700)
+    },
+    modal_image: {
+        flex: 1,
+        width: scaleSize(500),
+        height: scaleSize(600),
+    },
+    modal_button: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: scaleSize(100),
+    },
+    modal_btn: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: scaleSize(100),
+    },
 })

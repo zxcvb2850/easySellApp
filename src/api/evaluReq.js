@@ -58,7 +58,6 @@ export function exceptionSave(reviewProjectId, reviewId, storeId, followerId, fo
 export function getStoreHistory(page = 1, sidx, order, storeCode, storeName, limit = 20) {
     let url = '/app/review/history';
     let data = {page, sidx, order, storeCode, storeName, limit}
-    console.log(data);
     return BaseServer.post(url, data);
 }
 
@@ -113,7 +112,6 @@ export function saveSingle(reviewProjectId, reviewId, storeId, projectCode, proj
         exception,
         photos
     }
-    console.log(data);
     return BaseServer.post(url, data);
 }
 
@@ -130,11 +128,9 @@ export function saveSingle(reviewProjectId, reviewId, storeId, projectCode, proj
  * exception  例外描述
  * photos  例外证据
  * */
-export function saveAll(projectlList) {
-    let url = '/app/review/saveAll';
-    let data = {projectlList}
-    console.log(data);
-    return BaseServer.post(url, data, true);
+export function submitAll(reviewId) {
+    let url = `/app/review/submit/${reviewId}`;
+    return BaseServer.put(url, "", true);
 }
 
 /**
@@ -199,9 +195,7 @@ export function reviewPlanStat() {
  * */
 export function reviewRecordStat(page = 1) {
     let url = '/app/stat/reviewRecordStat';
-    let data = {
-        "page": page
-    }
+    let data = {page}
     return BaseServer.get(url, data)
 }
 
@@ -210,7 +204,6 @@ export function reviewRecordStat(page = 1) {
  * file 文件
  * */
 export function uploadImage(file, name) {
-    console.log('++++++++++++++++', file)
     let url = '/app/store/imgUpload';
     let fileInfo = {uri: file, type: 'multipart/form-data', name};
     let formData = new FormData()

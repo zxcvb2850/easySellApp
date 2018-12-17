@@ -9,11 +9,10 @@ import {
     Image,
     Animated,
     TouchableOpacity,
-    TextInput,
     DeviceEventEmitter,
     BackHandler
 } from "react-native";
-import {Content, ListItem, Left, Right, Radio, Button} from "native-base";
+import {Content, ListItem, Left, Right, Radio, Button, Item, Input} from "native-base";
 import Header from "../../../components/Header";
 import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, whiteColor} from "../../../common/styles";
@@ -46,16 +45,6 @@ const options = {
 @inject("store")
 @observer
 export default class EvalutItem extends React.Component {
-    /*获取列表*/
-    @computed get getEvalutList() {
-        return this.props.store.EvalutList.evalutList;
-    }
-
-    /*获取列表对应的index*/
-    @computed get getEvalutIndex() {
-        return this.props.store.EvalutIndex.evalutIndex
-    }
-
     @action
     setList(list) {
         this.props.store.EvalutList.setEvalutList(list);
@@ -73,29 +62,61 @@ export default class EvalutItem extends React.Component {
         this.props.store.EvalutIndex.nextEvalutIndex(this.getEvalutIndex)
     }
 
+    @action
+    setPhotoPath() {
+        this.props.store.PhotoPath.setPhotoPath(null);
+    }
+
+    /*获取列表*/
+    @computed get getEvalutList() {
+        return this.props.store.EvalutList.evalutList;
+    }
+
+    /*获取截屏保存的图片*/
+    @computed get getPhotoPath() {
+        return this.props.store.PhotoPath.photoPath;
+    }
+
+    /*获取列表对应的index*/
+    @computed get getEvalutIndex() {
+        return this.props.store.EvalutIndex.evalutIndex
+    }
+
     componentWillUnmount() {
         /*移除监听返回按钮*/
         BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
     }
 
     /*获取mobx的数据*/
-    componentDidMount() {
+    async componentDidMount() {
         /*监听返回按钮*/
         BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+
+        if (this.getPhotoPath) {
+            let list = this.getEvalutList;
+            let index = this.getEvalutIndex;
+            let imgs = list[index].photos ? list[index].photos.split(',') : [];
+            let uri = await uploadImage(this.getPhotoPath, 'screen' + Date.now());
+            console.log('截屏上传的图片', imgs, uri);
+            showToast('上传成功', 'success')
+            imgs.push(uri.imgUrl)
+            list[index].photos = imgs.join(',');
+            await this.setList(list)
+        }
 
         this.setState({
             index: this.getEvalutIndex,
             list: this.getEvalutList,
             value: this.getEvalutList[this.getEvalutIndex].exception || "",
-            radio: this.getEvalutList[this.getEvalutIndex].checkResult,
+            radio: this.getPhotoPath ? 3 : this.getEvalutList[this.getEvalutIndex].checkResult,
         })
         this._startAnimated();
-        console.log(this.getEvalutList[this.getEvalutIndex])
     }
 
     onBackPress = () => {
+        this.setPhotoPath();
         const {params} = this.props.navigation.state;
-        params.callback(true);
+        params.callback(params.reviewId);
         this.props.navigation.goBack();
         return true;
     }
@@ -120,6 +141,7 @@ export default class EvalutItem extends React.Component {
     }
 
     changeIndex = (type) => {
+        this.input._root.blur();
         if (type === 'prev') {
             this.prevEvalut()
         } else {
@@ -134,14 +156,13 @@ export default class EvalutItem extends React.Component {
     }
 
     radioSelect = (type) => {
-        console.log(type)
+        this.input._root.blur();
         this.setState({radio: type})
         this._startAnimated()
     }
 
     /*输入框发生变化*/
     _changeText = (value) => {
-        console.log('-----------', value)
         this.setState({value: value})
         let list = this.getEvalutList;
         list[this.getEvalutIndex].exception = value;
@@ -180,7 +201,6 @@ export default class EvalutItem extends React.Component {
     }
     /*删除图片*/
     deleteImage = (index) => {
-        console.log(index);
         let list = this.state.list;
         let imgs = list[this.state.index].photos.split(',');
         imgs.splice(index, 1)
@@ -191,13 +211,17 @@ export default class EvalutItem extends React.Component {
 
     /*提交报告*/
     confirmReport = async () => {
-        let data = this.state.list[this.state.index];
-        await saveSingle(data.reviewProjectId, data.reviewId, data.storeId, data.projectCode, data.projectType, data.projectRequire, this.state.radio, this.state.radio === 3 ? data.exception : "", this.state.radio === 3 ? data.photos : "");
-        showToast('提交成功', 'success')
-        let list = this.getEvalutList
-        list[this.state.index] = data
-        list[this.state.index].checkResult = this.state.radio
-        this.setList(list)
+        if (this.state.radio !== 1) {
+            let data = this.state.list[this.state.index];
+            await saveSingle(data.reviewProjectId, data.reviewId, data.storeId, data.projectCode, data.projectType, data.projectRequire, this.state.radio, this.state.radio === 3 ? data.exception : "", this.state.radio === 3 ? data.photos : "");
+            showToast('提交成功', 'success')
+            let list = this.getEvalutList
+            list[this.state.index] = data
+            list[this.state.index].checkResult = this.state.radio
+            this.setList(list)
+        } else {
+            showToast('请选择考评状态', 'warning')
+        }
     }
 
     render() {
@@ -249,8 +273,11 @@ export default class EvalutItem extends React.Component {
                                                style={styles.image}/>
                                     </TouchableOpacity>
                                 </View>
-                                <View style={styles.input_wrap}>
-                                    <TextInput
+                                <Item style={styles.input_wrap}>
+                                    <Image style={{width: scaleSize(48), height: scaleSize(48)}}
+                                           source={require("../../../assets/resource/evalut/icon_comment.png")}/>
+                                    <Input
+                                        ref={input => this.input = input}
                                         placeholder="请输入备注"
                                         editable={true}//是否可编辑
                                         style={styles.inputStyle}//input框的基本样式
@@ -259,49 +286,53 @@ export default class EvalutItem extends React.Component {
                                             this._changeText(value)
                                         }}//输入框改变触发的函数
                                     />
-                                    <Image style={{width: scaleSize(48), height: scaleSize(48)}}
-                                           source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                </View>
+                                </Item>
                             </View>
                         </Animated.View>
                     </Content>
                     <View style={styles.checkout_select}>
-                        <ListItem onPress={() => {
-                            this.radioSelect(2);
-                        }} selected={this.state.radio === 2}>
+                        <ListItem
+                            onPress={() => this.radioSelect(2)}
+                            selected={this.state.radio === 2}
+                        >
                             <Left>
                                 <Text>正常</Text>
                             </Left>
                             <Right>
                                 <Radio
+                                    onPress={() => this.radioSelect(2)}
                                     color={"#f0ad4e"}
                                     selectedColor={"#5cb85c"}
                                     selected={this.state.radio === 2}
                                 />
                             </Right>
                         </ListItem>
-                        <ListItem onPress={() => {
-                            this.radioSelect(3);
-                        }} selected={this.state.radio === 3}>
+                        <ListItem
+                            onPress={() => this.radioSelect(3)}
+                            selected={this.state.radio === 3}
+                        >
                             <Left>
                                 <Text>例外</Text>
                             </Left>
                             <Right>
                                 <Radio
+                                    onPress={() => this.radioSelect(3)}
                                     color={"#f0ad4e"}
                                     selectedColor={"#5cb85c"}
                                     selected={this.state.radio === 3}
                                 />
                             </Right>
                         </ListItem>
-                        <ListItem onPress={() => {
-                            this.radioSelect(4);
-                        }} selected={this.state.radio === 4}>
+                        <ListItem
+                            onPress={() => this.radioSelect(4)}
+                            selected={this.state.radio === 4}
+                        >
                             <Left>
                                 <Text>不适用</Text>
                             </Left>
                             <Right>
                                 <Radio
+                                    onPress={() => this.radioSelect(4)}
                                     color={"#f0ad4e"}
                                     selectedColor={"#5cb85c"}
                                     selected={this.state.radio === 4}

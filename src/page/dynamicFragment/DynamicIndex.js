@@ -70,9 +70,8 @@ export default class DynamicIndex extends React.Component {
         this.setState({arming: result.arming, store: result.store, video: result.video, refreshing: false})
     }
 
-    _reviewRecordStat = async (page = 1, isRefresh = false) => {
+    _reviewRecordStat = async (page = 1) => {
         let result = await reviewRecordStat(page);
-        //console.log('--------------', result);
         this.setState({reviewRecord: result})
     }
 
@@ -122,7 +121,7 @@ export default class DynamicIndex extends React.Component {
                     <AnimatedCircularProgress
                         size={80}
                         width={6}
-                        fill={this.state.video.rate * 100}
+                        fill={Number((this.state.video.rate * 100).toFixed(0))}
                         rotation={0}
                         tintColor="#FFF"
                         //onAnimationComplete={() => console.log('onAnimationComplete')}
@@ -145,7 +144,7 @@ export default class DynamicIndex extends React.Component {
                     <AnimatedCircularProgress
                         size={80}
                         width={6}
-                        fill={this.state.store.rate * 100}
+                        fill={Number((this.state.store.rate * 100).toFixed(0))}
                         rotation={0}
                         tintColor="#FFF"
                         //onAnimationComplete={() => console.log('onAnimationComplete')}
@@ -165,7 +164,7 @@ export default class DynamicIndex extends React.Component {
                     <AnimatedCircularProgress
                         size={80}
                         width={6}
-                        fill={this.state.arming.rate * 100}
+                        fill={Number((this.state.arming.rate * 100).toFixed(0))}
                         rotation={0}
                         tintColor="#FFF"
                         //onAnimationComplete={() => console.log('onAnimationComplete')}
@@ -192,7 +191,7 @@ export default class DynamicIndex extends React.Component {
             >
                 <View style={styles.item_header}>
                     <Text style={[styles.txt, styles.item_title]}>在线考评</Text>
-                    <Text style={styles.item_degree}>完成率：{this.state.reviewPlan.rate * 100}%</Text>
+                    <Text style={styles.item_degree}>完成率：{Number((this.state.reviewPlan.rate * 100).toFixed(0))}%</Text>
                 </View>
                 <View style={styles.item_body}>
                     <View style={styles.body_item}>
@@ -229,25 +228,25 @@ export default class DynamicIndex extends React.Component {
                         <View style={styles.item_body}>
                             <View style={styles.body_item}>
                                 <Text
-                                    style={styles.txt}>优>>{this.state.reviewRecord.reviewRecord.excellent.rule * 100}%</Text>
+                                    style={styles.txt}>优>>{(this.state.reviewRecord.reviewRecord.excellent.rule * 100).toFixed(0)}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.excellent.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={[styles.body_item]}>
                                 <Text
-                                    style={styles.txt}>良>>{this.state.reviewRecord.reviewRecord.good.rule * 100}%</Text>
+                                    style={styles.txt}>良>>{(this.state.reviewRecord.reviewRecord.good.rule * 100).toFixed(0)}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.good.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={[styles.body_item]}>
                                 <Text
-                                    style={styles.txt}>中>>{this.state.reviewRecord.reviewRecord.medium.rule * 100}%</Text>
+                                    style={styles.txt}>中>>{(this.state.reviewRecord.reviewRecord.medium.rule * 100).toFixed(0)}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.medium.total}</Text>
                             </View>
                             <View style={styles.line}/>
                             <View style={styles.body_item}>
                                 <Text
-                                    style={styles.txt}>差>>{this.state.reviewRecord.reviewRecord.bad.rule * 100}%</Text>
+                                    style={styles.txt}>差>>{(this.state.reviewRecord.reviewRecord.bad.rule * 100).toFixed(0)}%</Text>
                                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.bad.total}</Text>
                             </View>
                         </View>

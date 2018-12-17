@@ -118,7 +118,10 @@ export default class PlanList extends React.Component {
                               onPress={() => {
                                   this.props.navigate('EvalutDetails', {
                                       reviewId: v.reviewId,
-                                      storeName: v.storeName
+                                      storeName: v.storeName,
+                                      callback: () => {
+                                          this._getPlanList();
+                                      }
                                   })
                               }}
                     >

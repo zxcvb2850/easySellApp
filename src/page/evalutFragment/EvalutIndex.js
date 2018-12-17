@@ -2,8 +2,8 @@
 * 考评
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, TextInput, AsyncStorage} from "react-native"
-import {Content, ListItem, List, Left, Right, Icon, Button} from "native-base"
+import {StyleSheet, View, Text, Image, FlatList, AsyncStorage} from "react-native"
+import {Content, ListItem, List, Left, Right, Icon, Button, Input} from "native-base"
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar,} from 'react-native-scrollable-tab-view';
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"

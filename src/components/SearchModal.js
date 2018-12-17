@@ -3,15 +3,15 @@
 * */
 
 import React from "react";
-import {StyleSheet, View, Image, Text, AsyncStorage, TextInput} from "react-native";
-import {Button, Content, Icon, Left, List, ListItem, Right} from "native-base";
+import {StyleSheet, View, Image, Text, AsyncStorage} from "react-native";
+import {Button, Content, Icon, Left, List, ListItem, Right, Item, Input} from "native-base";
 import Modal from "react-native-modal";
 import {mainColor, whiteColor} from "../common/styles";
 import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
 
 class SearchModal extends React.Component {
     constructor(props) {
-        super();
+        super(props);
         this.state = {
             value: '',
             historyList: []
@@ -67,16 +67,18 @@ class SearchModal extends React.Component {
             >
                 <View style={styles.modal_center}>
                     <View style={styles.modal_text_input}>
-                        <TextInput
-                            placeholder="请输入备注"
-                            placeholderTextColor={whiteColor}
-                            editable={true}//是否可编辑
-                            style={styles.inputStyle}//input框的基本样式
-                            value={this.state.value}
-                            onChangeText={(value) => {
-                                this.setState({value})
-                            }}//输入框改变触发的函数
-                        />
+                        <Item style={{flex: 1}}>
+                            <Input
+                                placeholder="请输入搜索内容"
+                                placeholderTextColor={whiteColor}
+                                editable={true}//是否可编辑
+                                style={styles.inputStyle}//input框的基本样式
+                                value={this.state.value}
+                                onChangeText={(value) => {
+                                    this.setState({value})
+                                }}//输入框改变触发的函数
+                            />
+                        </Item>
                         <Button style={styles.search_btn} light onPress={this.searchText}>
                             <Icon name="search"/>
                         </Button>

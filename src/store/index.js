@@ -3,8 +3,9 @@
  * */
 import UserInfo from "./actions/userInfo";
 import {NavIndex, NavInfo} from "./actions/navStore";
-import {EvalutList, EvalutIndex} from "./actions/evalutList"
-import statusBarColor from "./actions/statusBarColor"
+import {EvalutList, EvalutIndex} from "./actions/evalutList";
+import StatusBarColor from "./actions/statusBarColor";
+import PhotoPath from "./actions/photoScreen";
 
 /*初始化mobx*/
 const userInfo = "";//个人信息
@@ -12,7 +13,8 @@ const navIndex = 0;//路由
 const navInfo = 0;//路由
 const evalutList = [];//考评列表
 const evalutIndex = null;//当前考评
-const statusBar = '#FFF';//默认颜色
+const statusBar = "#FFF";//默认颜色
+const photoPath = null;
 
 class Index {
     constructor() {
@@ -21,7 +23,8 @@ class Index {
         this.NavInfo = new NavInfo(navInfo, this);
         this.EvalutList = new EvalutList(evalutList, this);
         this.EvalutIndex = new EvalutIndex(evalutIndex, this);
-        this.StatusBarColor = new statusBarColor(statusBar, this)
+        this.StatusBarColor = new StatusBarColor(statusBar, this);
+        this.PhotoPath = new PhotoPath(photoPath, this);
     }
 }
 

@@ -30,7 +30,6 @@ export default class EvalutEnd extends React.Component {
 
     _getHistoryDetail = async () => {
         let result = await getHistoryDetail(this.props.navigation.state.params.reviewId)
-        console.log(result)
         let dest = []
         if (result.storeReview.projectList.length) {
             dest = classify(result.storeReview.projectList)
@@ -64,33 +63,34 @@ export default class EvalutEnd extends React.Component {
     render() {
         let {params} = this.props.navigation.state
         return (
-            <Content style={styles.container}>
+            <View style={styles.container}>
                 <Header isBack title={"考评详情"}/>
-                <View>
-                    <Text>店名：{this.state.storeInfo.storeName}</Text>
-                    <Text>考评时间：{this.state.storeInfo.updateTime}</Text>
-                    <Text>考评人：{this.state.storeInfo.reviewer}</Text>
-                    <Text>检查项目：{this.state.storeEvalut.length}</Text>
-                    <Text>正常数：{this.state.normal}</Text>
-                    <Text>列外数：{this.state.other}</Text>
-                    <Text>不适用数：{this.state.not}</Text>
-                </View>
+                <Content style={styles.container}>
+                    <View>
+                        <Text>店名：{this.state.storeInfo.storeName}</Text>
+                        <Text>考评时间：{this.state.storeInfo.updateTime}</Text>
+                        <Text>考评人：{this.state.storeInfo.reviewer}</Text>
+                        <Text>检查项目：{this.state.storeEvalut.length}</Text>
+                        <Text>正常数：{this.state.normal}</Text>
+                        <Text>列外数：{this.state.other}</Text>
+                        <Text>不适用数：{this.state.not}</Text>
+                    </View>
 
-                <Accordion
-                    style={{backgroundColor: whiteColor}}
-                    sections={this.state.storeEvalut}
-                    activeSections={this.state.activeSections}
-                    renderHeader={this._renderHeader}
-                    renderContent={this._renderContent}
-                    onChange={this._updateSections}
-                    underlayColor={whiteColor}
-                />
-            </Content>
+                    <Accordion
+                        style={{backgroundColor: whiteColor}}
+                        sections={this.state.storeEvalut}
+                        activeSections={this.state.activeSections}
+                        renderHeader={this._renderHeader}
+                        renderContent={this._renderContent}
+                        onChange={this._updateSections}
+                        underlayColor={whiteColor}
+                    />
+                </Content>
+            </View>
         )
     }
 
     _renderHeader = (section, index, isActive, sections) => {
-        console.log(section)
         return (
             <View
                 style={[styles.header, commonStyle.borderTopBottom, {
@@ -106,7 +106,7 @@ export default class EvalutEnd extends React.Component {
     }
 
     _renderContent = (section, index, isActive, sections) => {
-        console.log(section)
+        console.log('++++++++++', section)
         return section.data.map((item) => (
             <View key={item.reviewProjectId}>
                 <View>
@@ -124,13 +124,40 @@ export default class EvalutEnd extends React.Component {
                             ))
                         }
                     </View>
+                    {this.followList(item)}
                 </View>
             </View>
         ))
     }
+
+    followList = (item) => {
+        let renderList = null;
+        if (item.followList.length) {
+            renderList = item.followList.map((v, i) =>
+                <View key={v.followId} style={{marginLeft: scaleSize(20 * i)}}>
+                    <Text>{v.createTime}</Text>
+                    <Text style={styles.colofollowListr_red}>{v.followDesc}</Text>
+                    <View styles={styles.image_wrap}>
+                        {v.followPhotos && this.showImage(v.followPhotos)}
+                    </View>
+                </View>
+            )
+        }
+
+        return renderList;
+    };
+
+    showImage = (value) => {
+        let imgs = value.split(",");
+        return imgs.map((item, index) => <CustomImage key={index} image={item} style={styles.image}/>)
+    }
 }
 
 const styles = StyleSheet.create({
+    color_red: {
+        color: '#F00',
+    },
+
     container: {
         flex: 1,
     },

@@ -129,6 +129,11 @@ export default class AppNavigatorRoot extends React.Component {
         this.props.store.NavIndex.setRoute(index)
     }
 
+    @action
+    setPhotoPath() {
+        this.props.store.PhotoPath.setPhotoPath(null);
+    }
+
     @computed get routerIndex() {
         return this.props.store.NavIndex.navIndex
     }
@@ -154,7 +159,6 @@ export default class AppNavigatorRoot extends React.Component {
     onBackPress = () => {
         let info = this.routerInfo;
         let index = this.routerIndex
-        console.log(info, index)
         if (info ? index === 2 || index === 1 : index === 1) {
             if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
                 BackHandler.exitApp()
@@ -164,6 +168,7 @@ export default class AppNavigatorRoot extends React.Component {
             this.lastBackPressed = Date.now();
             return true;
         }
+        this.setPhotoPath();
         return false;
     }
 

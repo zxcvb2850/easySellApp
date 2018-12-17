@@ -2,8 +2,8 @@
  * 列外详情
  * */
 import React from "react";
-import {StyleSheet, View, Text, Image, TouchableOpacity, TextInput, AsyncStorage, BackHandler} from "react-native";
-import {Content, Button} from "native-base"
+import {StyleSheet, View, Text, Image, TouchableOpacity, AsyncStorage, BackHandler} from "react-native";
+import {Content, Button, Item, Input} from "native-base"
 import Header from "../../../components/Header";
 import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {BASE_URL} from "../../../config/config";
@@ -151,29 +151,7 @@ export default class FeedbackDetail extends React.Component {
                     <Text>{this.state.data.projectRequire}</Text>
                 </View>
                 <Content>
-                    {
-                        this.state.data.followList && this.state.data.followList.map(item =>
-                            <View key={item.followId}>
-                                <Text>{item.projectCode}</Text>
-                                <Text>修改时间：{item.createTime}</Text>
-                                <Text>操作人：{item.follower}</Text>
-                                <View>
-                                    <View style={styles.image_wrap}>
-                                        {
-                                            item.followPhotos && item.followPhotos.split(",").map((v, i) => (
-                                                <CustomImage
-                                                    key={i}
-                                                    style={styles.image}
-                                                    image={BASE_URL + v}
-                                                />)
-                                            )
-                                        }
-                                    </View>
-                                    <Text style={{color: '#F00'}}>{item.followDesc}</Text>
-                                </View>
-                            </View>
-                        )
-                    }
+                    {this.followList()}
                     {
                         this.state.data.exceptionStatus && this.state.data.exceptionStatus !== 2 ?
                             <View>
@@ -190,8 +168,10 @@ export default class FeedbackDetail extends React.Component {
                                                 style={{width: scaleSize(170), height: scaleSize(95)}}/>
                                         </TouchableOpacity>
                                     </View>
-                                    <View style={styles.input_wrap}>
-                                        <TextInput
+                                    <Item style={styles.input_wrap}>
+                                        <Image style={{width: scaleSize(48), height: scaleSize(48)}}
+                                               source={require("../../../assets/resource/evalut/icon_comment.png")}/>
+                                        <Input
                                             placeholder="请输入备注"
                                             editable={true}//是否可编辑
                                             style={styles.inputStyle}//input框的基本样式
@@ -200,9 +180,7 @@ export default class FeedbackDetail extends React.Component {
                                                 this._changeText(value)
                                             }}//输入框改变触发的函数
                                         />
-                                        <Image style={{width: scaleSize(48), height: scaleSize(48)}}
-                                               source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                    </View>
+                                    </Item>
                                 </View>
                                 < View style={styles.btn_wrapper}>
                                     < Button light style={styles.btn} onPress={() => {
@@ -223,6 +201,29 @@ export default class FeedbackDetail extends React.Component {
             </View>
         );
     }
+
+    followList = () => this.state.data.followList && this.state.data.followList.map((item, index) =>
+        <View key={item.followId} style={{marginLeft: scaleSize(20 * index)}}>
+            <Text>{index + 1}</Text>
+            <Text>{item.projectCode}</Text>
+            <Text>修改时间：{item.createTime}</Text>
+            <Text>操作人：{item.follower}</Text>
+            <View>
+                <View style={styles.image_wrap}>
+                    {
+                        item.followPhotos && item.followPhotos.split(",").map((v, i) => (
+                            <CustomImage
+                                key={i}
+                                style={styles.image}
+                                image={BASE_URL + v}
+                            />)
+                        )
+                    }
+                </View>
+                <Text style={{color: '#F00'}}>{item.followDesc}</Text>
+            </View>
+        </View>
+    )
 
     showImages = () => {
         let show = this.state.imgs ? this.state.imgs.split(",").map((v, i) => (

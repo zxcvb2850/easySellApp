@@ -3,14 +3,14 @@
 * */
 
 import React from "react"
-import { StyleSheet, View, Image, Text, TouchableOpacity, StatusBar } from "react-native"
-import { withNavigation } from "react-navigation"
-import { scaleSize } from "../common/screenUtil"
-import { headerColor, whiteColor } from "../common/styles";
+import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from "react-native"
+import {withNavigation} from "react-navigation"
+import {scaleSize} from "../common/screenUtil"
+import {headerColor, whiteColor} from "../common/styles";
 
 /*mobx*/
-import { observer, inject } from 'mobx-react'
-import { action, computed } from 'mobx'
+import {observer, inject} from 'mobx-react'
+import {action, computed} from 'mobx'
 
 @inject('store')
 @observer
@@ -20,22 +20,28 @@ class Header extends React.Component {
         this.props.store.StatusBarColor.setStatusBarColor(color)
     }
 
+    @action
+    setPhotoPath() {
+        this.props.store.PhotoPath.setPhotoPath(null);
+    }
+
     @computed get getStatusBar() {
         return this.props.store.StatusBarColor.statusBarColor
     }
 
     back = () => {
+        this.setPhotoPath();
         this.props.navigation.goBack();
     }
 
     render() {
-        const { backgroundColor, statusColor, hidden } = this.props;
+        const {backgroundColor, statusColor, hidden} = this.props;
         let color = statusColor ? statusColor : headerColor;
         this.setStatusBar(color);
 
         return (
             <View style={[this.props.style, styles.container]}>
-                <StatusBar backgroundColor={this.getStatusBar} hidden={hidden ? true : false} />
+                <StatusBar backgroundColor={this.getStatusBar} hidden={hidden ? true : false}/>
                 {
                     this.props.isBack ?
                         <TouchableOpacity
@@ -47,12 +53,12 @@ class Header extends React.Component {
                                 paddingHorizontal: scaleSize(40),
                                 height: scaleSize(90), zIndex: 10
                             }]}>
-                            <Image style={styles.back_btn} source={require("../assets/resource/common/icon_back.png")} />
+                            <Image style={styles.back_btn} source={require("../assets/resource/common/icon_back.png")}/>
                         </TouchableOpacity>
                         : null
                 }
-                <View style={[styles.title, { backgroundColor: backgroundColor ? backgroundColor : headerColor }]}>
-                    <Text style={{ color: whiteColor, fontSize: scaleSize(38) }}>{this.props.title}</Text>
+                <View style={[styles.title, {backgroundColor: backgroundColor ? backgroundColor : headerColor}]}>
+                    <Text style={{color: whiteColor, fontSize: scaleSize(38)}}>{this.props.title}</Text>
                 </View>
                 {this.props.children}
             </View>
