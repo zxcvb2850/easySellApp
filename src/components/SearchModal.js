@@ -59,10 +59,6 @@ class SearchModal extends React.Component {
             <Modal isVisible={this.props.isOpen}
                    onSwipe={this.props.close}
                    onBackdropPress={this.props.close}
-                   animationIn="zoomInDown"
-                   animationOut="zoomOutUp"
-                   animationInTiming={300}
-                   animationOutTiming={300}
                    style={styles.modal}
             >
                 <View style={styles.modal_center}>

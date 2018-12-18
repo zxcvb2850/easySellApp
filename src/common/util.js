@@ -52,6 +52,14 @@ export function showToast(text, type = "info", duration = 2000, position = "cent
     })
 }
 
+/*返回导航对应的名字*/
+export const tabName = {
+    TabDynamic: '动态',
+    TabShop: '店铺',
+    TabEvalut: '考评',
+    TabMine: '我的',
+}
+
 /*返回当前Tab的图片*/
 export const tabImages = {
     TabDynamicYes: require("../assets/resource/tabs/dynamic_yes.png"),

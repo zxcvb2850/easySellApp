@@ -25,7 +25,7 @@ import FeedbackDetail from "../page/evalutFragment/component/FeedbackDetail"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
-import {showToast, tabImages} from "../common/util";
+import {showToast, tabImages, tabName} from "../common/util";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'
@@ -64,24 +64,13 @@ const mineIndex = createStackNavigator({
 
 /*四个页签*/
 const tabFragment = createBottomTabNavigator({
-    TabDynamic: {
-        screen: dynamicIndex,
-        navigationOptions: {title: "动态"}
-    },
-    TabShop: {
-        screen: shopIndex,
-        navigationOptions: {title: "店铺"}
-    },
-    TabEvalut: {
-        screen: evalutIndex,
-        navigationOptions: {title: "考评"}
-    },
-    TabMine: {
-        screen: mineIndex,
-        navigationOptions: {title: "我的"}
-    },
+    TabDynamic: {screen: dynamicIndex},
+    TabShop: {screen: shopIndex},
+    TabEvalut: {screen: evalutIndex},
+    TabMine: {screen: mineIndex},
 }, {
     navigationOptions: ({navigation}) => ({
+        title: tabName[navigation.state.routeName],
         tabBarIcon: ({focused, tintColor}) => {
             const {routeName} = navigation.state;
             let img = tabImages[routeName + (focused ? "Yes" : "Not")];
@@ -92,9 +81,13 @@ const tabFragment = createBottomTabNavigator({
     removeClippedSubviews: true,
     backBehavior: false,
     tabBarOptions: {
+        style: {
+            height: scaleSize(100),
+        },
         activeTintColor: mainColor,
         inactiveTintColor: garyColor,
         showIcon: true,
+        showLabel: true,
         safeAreaInset: {bottom: 'never'}
     },
 })
@@ -117,7 +110,7 @@ export const AppNavigator = createStackNavigator({
     header: null,
     headerMode: 'none',
     navigationOptions: {
-        //gesturesEnabled: false,
+        gesturesEnabled: false,
     }
 })
 

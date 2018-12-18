@@ -119,7 +119,7 @@ export default class DynamicIndex extends React.Component {
             <LinearGradient colors={[headerColor, itemHeadColor]} style={styles.show_data}>
                 <View style={styles.cols}>
                     <AnimatedCircularProgress
-                        size={80}
+                        size={100}
                         width={6}
                         fill={Number((this.state.video.rate * 100).toFixed(0))}
                         rotation={0}
@@ -142,7 +142,7 @@ export default class DynamicIndex extends React.Component {
                 </View>
                 <View style={[styles.cols, styles.borderLeftRight]}>
                     <AnimatedCircularProgress
-                        size={80}
+                        size={100}
                         width={6}
                         fill={Number((this.state.store.rate * 100).toFixed(0))}
                         rotation={0}
@@ -162,7 +162,7 @@ export default class DynamicIndex extends React.Component {
                 </View>
                 <View style={styles.cols}>
                     <AnimatedCircularProgress
-                        size={80}
+                        size={100}
                         width={6}
                         fill={Number((this.state.arming.rate * 100).toFixed(0))}
                         rotation={0}
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
         color: whiteColor,
     },
     gary_color: {
+        fontSize: mainFontSize,
         color: backgroundColor,
     },
     borderLeftRight: {
