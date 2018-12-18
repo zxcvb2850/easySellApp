@@ -30,9 +30,15 @@ export default class Login extends React.Component {
     setUserInfo(info) {
         this.props.store.UserInfo.setUserInfo(info);
     }
+    
+    @action
+    setStatusBar(color) {
+        this.props.store.StatusBarColor.setStatusBarColor(color)
+    }
 
     componentDidMount() {
         this.setRouter();
+        this.setStatusBar("#000")
     }
 
     constructor() {
@@ -93,26 +99,6 @@ export default class Login extends React.Component {
                                    onChangeText={text => this.setState({pwd: text.replace(/\s/g, "")})}
                                    value={this.state.pwd}/>
                         </Item>
-                        {/*<Item floatingLabel>
-
-			  <Label>
-				<Text>用户名</Text>
-			  </Label>
-			  <Input autoCapitalize={'none'}
-					 onChangeText={text => this.setState({name: text.replace(/\s/g, "")})}
-					 value={this.state.name}/>
-			</Item>*/}
-                        {/*<Item floatingLabel>
-			  <Thumbnail square
-						 style={{borderRadius: 'none', width: scaleSize(40), height: scaleSize(42)}}
-						 source={require('../assets/resource/login/passwd_icon.png')}/>
-			  <Label>
-				<Text>密 码</Text>
-			  </Label>
-			  <Input secureTextEntry
-					 onChangeText={text => this.setState({pwd: text.replace(/\s/g, "")})}
-					 value={this.state.pwd}/>
-			</Item>*/}
                     </Form>
                     <Button primary style={styles.login_btn} onPress={this.postLogin}>
                         <Text style={{fontSize: mainFontSize, color: whiteColor}}>登录</Text>
