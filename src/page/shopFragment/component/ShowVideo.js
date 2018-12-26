@@ -117,11 +117,12 @@ export default class ShowVideo extends React.Component {
     videoChannel = async (item) => {
         let result = await getVideoDetail(item.channelId)
         result = result.preview
+        console.log(result)
         this.setState({
-            videoAddress: result.address,
-            videoPort: result.port,
-            vidoeCallid: result.callid,
-            videoResource: result.resource
+            videoAddress: result.address + '',
+            videoPort: result.port + '',
+            vidoeCallid: result.callid + '',
+            videoResource: result.resource + ''
         })
         if (result.address) {
             this.setState({

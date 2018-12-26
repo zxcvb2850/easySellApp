@@ -14,6 +14,22 @@ const HeaderAttach = (props) => (
         }
         <View style={styles.head_right}>
             {
+                props.collection ?
+                    <TouchableOpacity
+                        activeOpacity={0.9}
+                        style={[styles.icon, { marginRight: scaleSize(20), paddingHorizontal: scaleSize(40) }]}
+                        onPress={props.collection}
+                    >
+                    {
+                        props.isCollection?
+                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_yes.png")} />
+                        :
+                        <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_not.png")} />
+                    }  
+                    </TouchableOpacity>
+                    : null
+            }
+            {
                 props.search ?
                     <TouchableOpacity
                         activeOpacity={0.9}

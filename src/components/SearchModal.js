@@ -3,13 +3,13 @@
 * */
 
 import React from "react";
-import {StyleSheet, View, Image, Text, AsyncStorage, Platform} from "react-native";
-import {Button, Content, Icon, Left, List, ListItem, Right, Item} from "native-base";
+import { StyleSheet, View, Image, Text, AsyncStorage, Platform } from "react-native";
+import { Button, Content, Icon, Left, List, ListItem, Right, Item, Input } from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import TextInputZH from "./TextInputZH"
-import {mainColor, whiteColor} from "../common/styles";
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
+import { mainColor, whiteColor } from "../common/styles";
+import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize } from "../common/screenUtil";
+import { showToast } from "../common/util";
 
 class SearchModal extends React.Component {
     constructor(props) {
@@ -24,12 +24,13 @@ class SearchModal extends React.Component {
         if (nextProps.isOpen) {
             let list = await AsyncStorage.getItem('shop_store_search');
             console.log(list);
-            this.setState({historyList: JSON.parse(list)})
+            this.setState({ historyList: JSON.parse(list) })
         }
     }
 
     /*搜索内容*/
     searchText = async () => {
+        console.log(this.state.value)
         if (this.state.value !== "") {
             let searchContent = await AsyncStorage.getItem("shop_store_search") || "[]";
             searchContent = JSON.parse(searchContent);
@@ -45,6 +46,8 @@ class SearchModal extends React.Component {
             }
             AsyncStorage.setItem("shop_store_search", JSON.stringify(searchContent))
             this.props.search(this.state.value)
+        } else {
+            showToast('请输入搜索内容')
         }
     }
     /*删除历史的Item*/
@@ -52,39 +55,39 @@ class SearchModal extends React.Component {
         let result = await AsyncStorage.getItem("shop_store_search");
         result = JSON.parse(result);
         result.splice(index, 1);
-        this.setState({historyList: result});
+        this.setState({ historyList: result });
         AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
     }
 
     render() {
         return (
             <Modal isVisible={this.props.isOpen}
-                   onSwipe={this.props.close}
-                   onBackdropPress={this.props.close}
-                   style={styles.modal}
+                onSwipe={this.props.close}
+                onBackdropPress={this.props.close}
+                style={styles.modal}
             >
                 <View style={styles.modal_center}>
                     <View style={styles.modal_text_input}>
-                        <Item style={{flex: 1}}>
-                            <TextInputZH
+                        <Item style={{ flex: 1 }}>
+                            <Input
                                 placeholder="请输入搜索内容"
                                 placeholderTextColor={whiteColor}
                                 editable={true}//是否可编辑
                                 style={styles.inputStyle}//input框的基本样式
                                 value={this.state.value}
                                 onChangeText={(value) => {
-                                    this.setState({value})
+                                    this.setState({ value })
                                 }}//输入框改变触发的函数
                             />
                         </Item>
                         <Button style={styles.search_btn} light onPress={this.searchText}>
-                            <Icon name="search"/>
+                            <Icon name="search" />
                         </Button>
                     </View>
                     <Content style={styles.search_history}>
                         <List>{this.searchHistory()}</List>
                     </Content>
-                    {Platform.OS === 'ios' && <KeyboardSpacer/>}
+                    {Platform.OS === 'ios' && <KeyboardSpacer />}
                 </View>
             </Modal>
         )
@@ -92,16 +95,16 @@ class SearchModal extends React.Component {
 
     searchHistory = () => this.state.historyList && this.state.historyList.map((item, index) => (
         <ListItem key={item} onPress={async () => {
-            await this.setState({value: item})
+            await this.setState({ value: item })
             this.searchText();
         }}>
             <Left>
                 <Text style={styles.whiteColor}>{item}</Text>
             </Left>
             <Right>
-                <Icon style={{color: mainColor}} onPress={() => {
+                <Icon style={{ color: mainColor }} onPress={() => {
                     this.deleteSearchHistory(index)
-                }} name="trash"/>
+                }} name="trash" />
             </Right>
         </ListItem>
     ))

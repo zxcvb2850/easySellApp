@@ -11,20 +11,20 @@ import {
     TouchableOpacity,
     DeviceEventEmitter,
     BackHandler,
+    Platform
 } from "react-native";
-import {Content, ListItem, Left, Right, Radio, Button, Item} from "native-base";
+import { Content, ListItem, Left, Right, Radio, Button, Item, Input} from "native-base";
 import Header from "../../../components/Header";
-import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
-import {garyColor, lightGaryColor, whiteColor} from "../../../common/styles";
-import {BASE_URL} from "../../../config/config";
-import {saveSingle, uploadImage} from "../../../api/evaluReq";
-import {showToast} from "../../../common/util";
+import { DEVICE_WIDTH, scaleSize } from "../../../common/screenUtil";
+import { garyColor, lightGaryColor, whiteColor } from "../../../common/styles";
+import { BASE_URL } from "../../../config/config";
+import { saveSingle, uploadImage } from "../../../api/evaluReq";
+import { showToast } from "../../../common/util";
 import ImagePicker from "react-native-image-picker"
-import TextInputZH from "../../../components/TextInputZH"
 
 /*mbox*/
-import {inject, observer} from "mobx-react";
-import {computed, action} from "mobx";
+import { inject, observer } from "mobx-react";
+import { computed, action } from "mobx";
 import CustomImage from "../../../components/CustomImage";
 
 //图片选择器参数设置
@@ -116,7 +116,7 @@ export default class EvalutItem extends React.Component {
 
     onBackPress = () => {
         this.setPhotoPath();
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         params.callback(params.reviewId);
         this.props.navigation.goBack();
         return true;
@@ -158,13 +158,13 @@ export default class EvalutItem extends React.Component {
 
     radioSelect = (type) => {
         //this.input._root.blur();
-        this.setState({radio: type})
+        this.setState({ radio: type })
         this._startAnimated()
     }
 
     /*输入框发生变化*/
     _changeText = (value) => {
-        this.setState({value: value})
+        this.setState({ value: value })
         let list = this.getEvalutList;
         list[this.getEvalutIndex].exception = value;
         this.setList(list);
@@ -191,7 +191,8 @@ export default class EvalutItem extends React.Component {
                 let imgs = list[this.state.index].photos ? list[this.state.index].photos.split(',') : [];
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-                let uri = await uploadImage(response.uri, response.fileName);
+                let imgName = response.fileName ? response.fileName : response.uri.match(/([\w|-]+\.jpg$)/)[1];
+                let uri = await uploadImage(response.uri, imgName);
                 console.log(imgs, uri, response.uri);
                 showToast('上传成功', 'success')
                 imgs.push(uri.imgUrl)
@@ -207,7 +208,7 @@ export default class EvalutItem extends React.Component {
         imgs.splice(index, 1)
         list.photos = imgs;
         list[this.state.index].photos = imgs.join(',');
-        this.setState({list})
+        this.setState({ list })
     }
 
     /*提交报告*/
@@ -237,14 +238,14 @@ export default class EvalutItem extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Header isBack={this.onBackPress} title={"考评详情"}/>
-                <View style={{flex: 1, paddingHorizontal: scaleSize(10)}}>
+                <Header isBack={this.onBackPress} title={"考评详情"} />
+                <View style={{ flex: 1, paddingHorizontal: scaleSize(10) }}>
                     <Content style={styles.center}>
                         {
                             this.state.list[this.state.index] ?
                                 <View>
                                     <Text
-                                        style={{textAlign: 'center'}}>{this.state.list[this.state.index].projectType}</Text>
+                                        style={{ textAlign: 'center' }}>{this.state.list[this.state.index].projectType}</Text>
                                     <View style={styles.details}>
                                         <Text>{this.state.list[this.state.index].projectCode}</Text>
                                         <View style={styles.details_text}>
@@ -267,17 +268,17 @@ export default class EvalutItem extends React.Component {
                                     {this.state.list[this.state.index] ? this.showImages() : null}
                                     <TouchableOpacity
                                         activeOpacity={0.9}
-                                        style={[styles.image, {margin: scaleSize(10)}]}
+                                        style={[styles.image, { margin: scaleSize(10) }]}
                                         onPress={this.choosePic}
                                     >
                                         <Image source={require("../../../assets/resource/evalut/icon_add.png")}
-                                               style={styles.image}/>
+                                            style={styles.image} />
                                     </TouchableOpacity>
                                 </View>
                                 <Item style={styles.input_wrap}>
-                                    <Image style={{width: scaleSize(48), height: scaleSize(48)}}
-                                           source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                    <TextInputZH
+                                    <Image style={{ width: scaleSize(48), height: scaleSize(48) }}
+                                        source={require("../../../assets/resource/evalut/icon_comment.png")} />
+                                    <Input
                                         ref={input => this.input = input}
                                         placeholder="请输入备注"
                                         editable={true}//是否可编辑
@@ -347,19 +348,19 @@ export default class EvalutItem extends React.Component {
                         {
                             this.state.index - 1 >= 0 ?
                                 <Button light style={styles.btn}
-                                        onPress={() => this.changeIndex('prev')}><Text>上一个</Text></Button>
+                                    onPress={() => this.changeIndex('prev')}><Text>上一个</Text></Button>
                                 : null
                         }
                     </View>
                     <View style={styles.footer_btn}>
                         <Button style={styles.btn}
-                                onPress={this.confirmReport}><Text style={{color: '#FFF'}}>提交</Text></Button>
+                            onPress={this.confirmReport}><Text style={{ color: '#FFF' }}>提交</Text></Button>
                     </View>
                     <View style={styles.footer_btn}>
                         {
                             this.state.index < this.state.list.length - 1 ?
                                 <Button light style={styles.btn}
-                                        onPress={() => this.changeIndex('next')}><Text>下一个</Text></Button>
+                                    onPress={() => this.changeIndex('next')}><Text>下一个</Text></Button>
                                 : null
                         }
                     </View>
@@ -387,7 +388,7 @@ export default class EvalutItem extends React.Component {
                     onPress={() => this.deleteImage(index)}
                 >
                     <Image style={styles.delete_icon}
-                           source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>
+                        source={require("../../../assets/resource/evalut/icon_error_yes.png")} />
                 </TouchableOpacity>
                 <CustomImage
                     image={BASE_URL + item}
