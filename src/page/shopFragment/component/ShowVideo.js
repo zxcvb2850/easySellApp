@@ -28,7 +28,6 @@ import {showToast} from "../../../common/util";
 /*mobx*/
 import {observer, inject} from "mobx-react";
 import {action, computed} from "mobx";
-import {BASE_URL} from "../../../config/config";
 
 @inject('store')
 @observer
@@ -161,7 +160,7 @@ export default class ShowVideo extends React.Component {
                 <View style={[styles.video, {height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)}]}>
                     {/*视频播放*/}
                     <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
-                        {/*{
+                        {
                             this.state.videoPath !== "" ?
                                 Platform.OS === 'ios' ?
                                     <IosPlayer
@@ -186,7 +185,7 @@ export default class ShowVideo extends React.Component {
                                         status={this.state.videoStatus}
                                     />
                                 : null
-                        }*/}
+                        }
                     </View>
                     <View style={styles.video_wrapper}>
                         <View style={styles.video_txt_wrap}>

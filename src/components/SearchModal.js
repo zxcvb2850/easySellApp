@@ -3,7 +3,7 @@
 * */
 
 import React from "react";
-import {StyleSheet, View, Image, Text, AsyncStorage} from "react-native";
+import {StyleSheet, View, Image, Text, AsyncStorage, Platform} from "react-native";
 import {Button, Content, Icon, Left, List, ListItem, Right, Item, Input} from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -83,7 +83,7 @@ class SearchModal extends React.Component {
                     <Content style={styles.search_history}>
                         <List>{this.searchHistory()}</List>
                     </Content>
-                    <KeyboardSpacer/>
+                    {Platform.OS === 'ios' && <KeyboardSpacer/>}
                 </View>
             </Modal>
         )
