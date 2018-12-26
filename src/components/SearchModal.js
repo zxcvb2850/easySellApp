@@ -4,9 +4,10 @@
 
 import React from "react";
 import {StyleSheet, View, Image, Text, AsyncStorage, Platform} from "react-native";
-import {Button, Content, Icon, Left, List, ListItem, Right, Item, Input} from "native-base";
+import {Button, Content, Icon, Left, List, ListItem, Right, Item} from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import TextInputZH from "./TextInputZH"
 import {mainColor, whiteColor} from "../common/styles";
 import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
 
@@ -65,7 +66,7 @@ class SearchModal extends React.Component {
                 <View style={styles.modal_center}>
                     <View style={styles.modal_text_input}>
                         <Item style={{flex: 1}}>
-                            <Input
+                            <TextInputZH
                                 placeholder="请输入搜索内容"
                                 placeholderTextColor={whiteColor}
                                 editable={true}//是否可编辑

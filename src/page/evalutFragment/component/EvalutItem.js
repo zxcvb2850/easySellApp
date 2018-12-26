@@ -10,9 +10,9 @@ import {
     Animated,
     TouchableOpacity,
     DeviceEventEmitter,
-    BackHandler
+    BackHandler,
 } from "react-native";
-import {Content, ListItem, Left, Right, Radio, Button, Item, Input} from "native-base";
+import {Content, ListItem, Left, Right, Radio, Button, Item} from "native-base";
 import Header from "../../../components/Header";
 import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {garyColor, lightGaryColor, whiteColor} from "../../../common/styles";
@@ -20,6 +20,7 @@ import {BASE_URL} from "../../../config/config";
 import {saveSingle, uploadImage} from "../../../api/evaluReq";
 import {showToast} from "../../../common/util";
 import ImagePicker from "react-native-image-picker"
+import TextInputZH from "../../../components/TextInputZH"
 
 /*mbox*/
 import {inject, observer} from "mobx-react";
@@ -141,7 +142,7 @@ export default class EvalutItem extends React.Component {
     }
 
     changeIndex = (type) => {
-        this.input._root.blur();
+        //this.input._root.blur();
         if (type === 'prev') {
             this.prevEvalut()
         } else {
@@ -156,7 +157,7 @@ export default class EvalutItem extends React.Component {
     }
 
     radioSelect = (type) => {
-        this.input._root.blur();
+        //this.input._root.blur();
         this.setState({radio: type})
         this._startAnimated()
     }
@@ -276,7 +277,7 @@ export default class EvalutItem extends React.Component {
                                 <Item style={styles.input_wrap}>
                                     <Image style={{width: scaleSize(48), height: scaleSize(48)}}
                                            source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                    <Input
+                                    <TextInputZH
                                         ref={input => this.input = input}
                                         placeholder="请输入备注"
                                         editable={true}//是否可编辑

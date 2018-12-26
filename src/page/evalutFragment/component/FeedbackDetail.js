@@ -3,8 +3,9 @@
  * */
 import React from "react";
 import {StyleSheet, View, Text, Image, TouchableOpacity, AsyncStorage, BackHandler} from "react-native";
-import {Content, Button, Item, Input} from "native-base"
+import {Content, Button, Item,} from "native-base"
 import Header from "../../../components/Header";
+import TextInputZH from "../../../components/TextInputZH"
 import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
 import {BASE_URL} from "../../../config/config";
 import {showToast} from "../../../common/util";
@@ -171,7 +172,7 @@ export default class FeedbackDetail extends React.Component {
                                     <Item style={styles.input_wrap}>
                                         <Image style={{width: scaleSize(48), height: scaleSize(48)}}
                                                source={require("../../../assets/resource/evalut/icon_comment.png")}/>
-                                        <Input
+                                        <TextInputZH
                                             placeholder="请输入备注"
                                             editable={true}//是否可编辑
                                             style={styles.inputStyle}//input框的基本样式
