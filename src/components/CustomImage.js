@@ -6,35 +6,36 @@
  * */
 import React from "react";
 import PropTypes from "prop-types";
-import { Image } from "react-native";
+import {Image} from "react-native";
 
 export default class CustomImage extends React.Component {
-    static propTypes = {
-        image: PropTypes.string.isRequired
-    };
+  static propTypes = {
+    image: PropTypes.string.isRequired
+  };
 
-    async componentWillReceiveProps(nextProps) {
-        if (nextProps.image !== this.props.image) {
-            this.setState({ image: { uri: nextProps.image } })
-        }
+  async componentWillReceiveProps(nextProps) {
+    console.log('----------', nextProps.image, this.props.image)
+    if (nextProps.image !== this.props.image) {
+      this.setState({image: {uri: nextProps.image}})
     }
+  }
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            image: { uri: props.image }
-        }
+  constructor(props) {
+    super(props)
+    this.state = {
+      image: {uri: props.image}
     }
+  }
 
-    errorImage = () => {
-        this.setState({ image: require("../assets/resource/evalut/img_not.jpg") })
-    }
+  errorImage = () => {
+    this.setState({image: require("../assets/resource/evalut/img_not.jpg")})
+  }
 
-    render() {
-        return <Image
-            {...this.props}
-            source={this.state.image}
-            onError={this.errorImage}
-        />;
-    }
+  render() {
+    return <Image
+      {...this.props}
+      source={this.state.image}
+      onError={this.errorImage}
+    />;
+  }
 }

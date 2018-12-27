@@ -114,25 +114,23 @@ export default class ShowVideo extends React.Component {
     });
   }
 
-    /*获取视频信息*/
-    videoChannel = async (item) => {
-        let result = await getVideoDetail(item.channelId)
-        result = result.preview
-        console.log(result)
-        this.setState({
-            videoAddress: result.address + '',
-            videoPort: result.port + '',
-            vidoeCallid: result.callid + '',
-            videoResource: result.resource + ''
-        })
-        if (result.address) {
-            this.setState({
-                videoPath: `${result.address}@port:${result.port}@callid:${result.callid}@resid:${result.resource}`
-            })
-        } else {
-            showToast('暂无视频数据', 'error')
-        }
-        this.setState({nowVideo: item})
+  /*获取视频信息*/
+  videoChannel = async (item) => {
+    let result = await getVideoDetail(item.channelId)
+    result = result.preview
+    console.log(result)
+    this.setState({
+      videoAddress: result.address + '',
+      videoPort: result.port + '',
+      vidoeCallid: result.callid + '',
+      videoResource: result.resource + ''
+    })
+    if (result.address) {
+      this.setState({
+        videoPath: `${result.address}@port:${result.port}@callid:${result.callid}@resid:${result.resource}`
+      })
+    } else {
+      showToast('暂无视频数据', 'error')
     }
     this.setState({nowVideo: item})
   }
