@@ -106,8 +106,8 @@ export default class DynamicIndex extends React.Component {
         this._getStoreList();
     }
     /*是否收藏*/
-    collection = async () => {
-        await this.setState({ isCollect: !this.state.isCollect })
+    collection = () => {
+        this.setState({ isCollect: !this.state.isCollect })
         this._getStoreList();
     }
     /*打开搜索框*/
