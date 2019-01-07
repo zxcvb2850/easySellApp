@@ -11,7 +11,7 @@
 #import "VideoView.h"
 @implementation VideoViewManager
 {
-  VidowView *g_CLFImageView;
+  VideoView *g_CLFImageView;
 }
 
 RCT_EXPORT_MODULE()
@@ -33,30 +33,34 @@ RCT_CUSTOM_VIEW_PROPERTY(selectedTitle, NSString, UIButton){
    [view setTitle:json forState: UIControlStateSelected];
 }*/
 RCT_CUSTOM_VIEW_PROPERTY(serverIP, NSString, UIImageView){
-  VidowView *imgView = (VidowView*)view;
+  VideoView *imgView = (VideoView*)view;
   [imgView SetServerIP: json];
 }
 RCT_CUSTOM_VIEW_PROPERTY(serverPort, NSString, UIImageView){
-  VidowView *imgView = (VidowView*)view;
+  VideoView *imgView = (VideoView*)view;
   [imgView SetServerPort: json];
 }
 RCT_CUSTOM_VIEW_PROPERTY(callID, NSString, UIImageView){
-  VidowView *imgView = (VidowView*)view;
+  VideoView *imgView = (VideoView*)view;
   [imgView SetCallID: json];
 }
 RCT_CUSTOM_VIEW_PROPERTY(resID, NSString, UIImageView){
-  VidowView *imgView = (VidowView*)view;
+  VideoView *imgView = (VideoView*)view;
   [imgView SetResID: json];
 }
 RCT_CUSTOM_VIEW_PROPERTY(state, NSString, UIImageView){
-  VidowView *imgView = (VidowView*)view;
+  VideoView *imgView = (VideoView*)view;
+  [imgView SetState: json];
+}
+RCT_CUSTOM_VIEW_PROPERTY(captureImage, NSString, UIImageView){
+  VideoView *imgView = (VideoView*)view;
   [imgView SetState: json];
 }
 
 - (UIView *)view
 
 {
-    VidowView *imgView = [[VidowView alloc] init];
+    VideoView *imgView = [[VideoView alloc] init];
   
     //[imgView addTarget:self action:@selector(previewSelected:) forControlEvents:UIControlEventTouchUpInside];
     g_CLFImageView = imgView;
@@ -70,7 +74,7 @@ RCT_CUSTOM_VIEW_PROPERTY(state, NSString, UIImageView){
   
 }
 
-- (void)previewSelected: (VidowView *)sender{
+- (void)previewSelected: (VideoView *)sender{
 }
 
 /*- (void)btnSelected: (CLFButton *)sender{

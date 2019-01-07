@@ -1328,6 +1328,11 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base-64@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+  integrity sha1-eAqZyE59YAJgNhURxId2E78k9rs=
+
 base64-js@0.0.8:
   version "0.0.8"
   resolved "http://registry.npm.taobao.org/base64-js/download/base64-js-0.0.8.tgz#1101e9544f4a76b1bc3b26d452ca96d7a35e7978"
@@ -4687,6 +4692,14 @@ react-native-easy-grid@0.2.0:
   dependencies:
     lodash "^4.11.1"
 
+react-native-fs@2.11.17:
+  version "2.11.17"
+  resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.11.17.tgz#045b9edfd478acaa80fc03a163577749a4ed17d8"
+  integrity sha512-shAiRMBJYuialBTXkpZ6jE629tRAmt85YQhjSSM3XhlBJ5bo5T3Wu6W/8BK3ve4M6h2Uc3tjUfyCY1NksLShGg==
+  dependencies:
+    base-64 "^0.1.0"
+    utf8 "^2.1.1"
+
 react-native-image-picker@^0.27.1:
   version "0.27.1"
   resolved "http://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-0.27.1.tgz#32877c667e8c2713466fe178a6c7dd648e6cb5d3"
@@ -5812,6 +5825,11 @@ user-home@^2.0.0:
   resolved "http://registry.npm.taobao.org/user-home/download/user-home-2.0.0.tgz#9c70bfd8169bc1dcbf48604e0f04b8b49cde9e9f"
   dependencies:
     os-homedir "^1.0.0"
+
+utf8@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/utf8/-/utf8-2.1.2.tgz#1fa0d9270e9be850d9b05027f63519bf46457d96"
+  integrity sha1-H6DZJw6b6FDZsFAn9jUZv0ZFfZY=
 
 util-deprecate@1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

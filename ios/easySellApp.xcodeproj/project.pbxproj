@@ -46,10 +46,9 @@
 		5CE10B610EFE448993BF994A /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6D8F3386892048AD921CBE58 /* SimpleLineIcons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6F6662DD392F4CD2A9214395 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32EEDF76AFAA475E8EF09B63 /* Roboto.ttf */; };
+		71CA4E57EE544D0F92582A07 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5DF3866CE04D7BBFEC249F /* libRNFS.a */; };
 		7670AD5143044D32BCE8728C /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25398A9528334464A0D52A39 /* libRNSVG-tvOS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		961A64E821C384FE00B068AA /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 961A64E621C384FD00B068AA /* VideoViewManager.m */; };
-		961A64E921C384FE00B068AA /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 961A64E721C384FE00B068AA /* VideoView.m */; };
 		961A64EC21C3850900B068AA /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EA21C3850800B068AA /* MClient.framework */; };
 		961A64ED21C3850900B068AA /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; };
 		961A64EE21C3851300B068AA /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EA21C3850800B068AA /* MClient.framework */; };
@@ -106,6 +105,9 @@
 		9625E89721C7AA0C005AF65B /* mine_yes.png in Resources */ = {isa = PBXBuildFile; fileRef = 9625E86421C7AA0B005AF65B /* mine_yes.png */; };
 		9625E89821C7AA0C005AF65B /* shop_not.png in Resources */ = {isa = PBXBuildFile; fileRef = 9625E86521C7AA0B005AF65B /* shop_not.png */; };
 		9625E89921C7AA0C005AF65B /* shop_yes.png in Resources */ = {isa = PBXBuildFile; fileRef = 9625E86621C7AA0B005AF65B /* shop_yes.png */; };
+		96F36F4E21E320B000DABEA7 /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4C21E320B000DABEA7 /* VideoViewManager.m */; };
+		96F36F4F21E320B000DABEA7 /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4D21E320B000DABEA7 /* VideoView.m */; };
+		96F36F6221E3476800DABEA7 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F36F6121E3473A00DABEA7 /* libRCTCameraRoll.a */; };
 		A5680677C13345DA8C9737B3 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFDA69D37A6F41EAB22B4D6A /* Ionicons.ttf */; };
 		AD61EF3533EE4305B33530A8 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1F1746F37854726B5E0809E /* Entypo.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -417,6 +419,27 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
 		};
+		9681700921E2FFC600CE1956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBB133FB69E540C992558B77 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F12AFB9B1ADAF8F800E0535D;
+			remoteInfo = RNFS;
+		};
+		9681700B21E2FFC600CE1956 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBB133FB69E540C992558B77 /* RNFS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6456441F1EB8DA9100672408;
+			remoteInfo = "RNFS-tvOS";
+		};
+		96F36F6021E3473A00DABEA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96F36F5C21E3473A00DABEA7 /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -474,16 +497,13 @@
 		479D934193654F6AB16FEA9F /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		4D2E8D96F8EA4524A1C4CECB /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		5AB0DEFABE594207990138AE /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		5C5DF3866CE04D7BBFEC249F /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6D8F3386892048AD921CBE58 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		804CD44FD6014196B76D1A8F /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8BB068278B054337A7E9EF80 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
-		961A64E421C384FD00B068AA /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
-		961A64E521C384FD00B068AA /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
-		961A64E621C384FD00B068AA /* VideoViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoViewManager.m; path = easySellApp/VideoViewManager.m; sourceTree = "<group>"; };
-		961A64E721C384FE00B068AA /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoView.m; path = easySellApp/VideoView.m; sourceTree = "<group>"; };
 		961A64EA21C3850800B068AA /* MClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MClient.framework; path = easySellApp/MClient.framework; sourceTree = "<group>"; };
 		961A64EB21C3850800B068AA /* NPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NPlayer.framework; path = easySellApp/NPlayer.framework; sourceTree = "<group>"; };
 		9625E7F921C7AA0B005AF65B /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
@@ -537,11 +557,17 @@
 		9625E86521C7AA0B005AF65B /* shop_not.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_not.png; sourceTree = "<group>"; };
 		9625E86621C7AA0B005AF65B /* shop_yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_yes.png; sourceTree = "<group>"; };
 		96CFF82917FA44BBB66D9BA1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		96F36F4A21E320AF00DABEA7 /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
+		96F36F4B21E320B000DABEA7 /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
+		96F36F4C21E320B000DABEA7 /* VideoViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoViewManager.m; path = easySellApp/VideoViewManager.m; sourceTree = "<group>"; };
+		96F36F4D21E320B000DABEA7 /* VideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoView.m; path = easySellApp/VideoView.m; sourceTree = "<group>"; };
+		96F36F5C21E3473A00DABEA7 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		9AD27968097B497B99C4FDD9 /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		A34679850C504408BFAEB9E6 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B7620872AD474C09BB13CB3B /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		BC37F42791A44A1D95BF7553 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
+		CBB133FB69E540C992558B77 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		CE9A8A4E40AE41B8B4CD0515 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		E1F1746F37854726B5E0809E /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		E256176BEF2646A5BF6D74FC /* libRCTOrientation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTOrientation.a; sourceTree = "<group>"; };
@@ -553,6 +579,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96F36F6221E3476800DABEA7 /* libRCTCameraRoll.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				961A64F021C3851300B068AA /* NPlayer.framework in Frameworks */,
 				961A64EE21C3851300B068AA /* MClient.framework in Frameworks */,
@@ -574,6 +601,7 @@
 				18684CDE1BBE4C3F92325BFE /* libBVLinearGradient.a in Frameworks */,
 				B18930AA213B4A369828DCEE /* libRNImagePicker.a in Frameworks */,
 				D35B68DB365E4E0FBD0BF9BD /* libRCTOrientation.a in Frameworks */,
+				71CA4E57EE544D0F92582A07 /* libRNFS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,12 +714,12 @@
 		13B07FAE1A68108700A75B9A /* easySellApp */ = {
 			isa = PBXGroup;
 			children = (
+				96F36F4A21E320AF00DABEA7 /* VideoView.h */,
+				96F36F4D21E320B000DABEA7 /* VideoView.m */,
+				96F36F4B21E320B000DABEA7 /* VideoViewManager.h */,
+				96F36F4C21E320B000DABEA7 /* VideoViewManager.m */,
 				9625E82521C7AA0B005AF65B /* assets */,
 				9625E7F921C7AA0B005AF65B /* index.ios.jsbundle */,
-				961A64E421C384FD00B068AA /* VideoView.h */,
-				961A64E721C384FE00B068AA /* VideoView.m */,
-				961A64E521C384FD00B068AA /* VideoViewManager.h */,
-				961A64E621C384FD00B068AA /* VideoViewManager.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -734,6 +762,7 @@
 				8BB068278B054337A7E9EF80 /* libRNImagePicker.a */,
 				25398A9528334464A0D52A39 /* libRNSVG-tvOS.a */,
 				E256176BEF2646A5BF6D74FC /* libRCTOrientation.a */,
+				5C5DF3866CE04D7BBFEC249F /* libRNFS.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -814,6 +843,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				96F36F5C21E3473A00DABEA7 /* RCTCameraRoll.xcodeproj */,
 				961A64EA21C3850800B068AA /* MClient.framework */,
 				961A64EB21C3850800B068AA /* NPlayer.framework */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -832,6 +862,7 @@
 				3E8FDDEB5FE44674B7BBA95E /* BVLinearGradient.xcodeproj */,
 				804CD44FD6014196B76D1A8F /* RNImagePicker.xcodeproj */,
 				CE9A8A4E40AE41B8B4CD0515 /* RCTOrientation.xcodeproj */,
+				CBB133FB69E540C992558B77 /* RNFS.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1064,6 +1095,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9681700521E2FFC600CE1956 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9681700A21E2FFC600CE1956 /* libRNFS.a */,
+				9681700C21E2FFC600CE1956 /* libRNFS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96F36F5D21E3473A00DABEA7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96F36F6121E3473A00DABEA7 /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ADBDB9201DFEBF0600ED6528 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1184,6 +1232,10 @@
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
 				},
 				{
+					ProductGroup = 96F36F5D21E3473A00DABEA7 /* Products */;
+					ProjectRef = 96F36F5C21E3473A00DABEA7 /* RCTCameraRoll.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -1222,6 +1274,10 @@
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
+				},
+				{
+					ProductGroup = 9681700521E2FFC600CE1956 /* Products */;
+					ProjectRef = CBB133FB69E540C992558B77 /* RNFS.xcodeproj */;
 				},
 				{
 					ProductGroup = 210C09FD21A9336A000641DC /* Products */;
@@ -1536,6 +1592,27 @@
 			remoteRef = 9641450421BE1B4F0092B6C2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		9681700A21E2FFC600CE1956 /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 9681700921E2FFC600CE1956 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9681700C21E2FFC600CE1956 /* libRNFS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFS.a;
+			remoteRef = 9681700B21E2FFC600CE1956 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		96F36F6121E3473A00DABEA7 /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = 96F36F6021E3473A00DABEA7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1672,9 +1749,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				961A64E921C384FE00B068AA /* VideoView.m in Sources */,
+				96F36F4F21E320B000DABEA7 /* VideoView.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-				961A64E821C384FE00B068AA /* VideoViewManager.m in Sources */,
+				96F36F4E21E320B000DABEA7 /* VideoViewManager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1739,9 +1816,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = easySellApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/easySellApp\"",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1774,9 +1856,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = easySellApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/easySellApp\"",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1808,6 +1895,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = "easySellApp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1849,6 +1937,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = "easySellApp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1889,6 +1978,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = "easySellApp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1929,6 +2019,7 @@
 					"$(SRCROOT)..\node_modules\neact-native-linear-gradientBVLinearGradient",
 					"$(SRCROOT)..\node_modules\neact-native-image-pickerios",
 					"$(SRCROOT)..\node_modules\neact-native-orientationiOSRCTOrientation/**",
+					"$(SRCROOT)/../node_modules/react-native-fs/**",
 				);
 				INFOPLIST_FILE = "easySellApp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

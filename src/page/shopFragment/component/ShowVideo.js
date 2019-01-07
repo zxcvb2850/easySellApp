@@ -12,22 +12,25 @@ import {
   StatusBar,
   BackHandler,
   DeviceEventEmitter,
-  Platform
+  Platform,
+  CameraRoll
 } from "react-native"
-import {Button} from "native-base"
-import {backgroundColor, garyColor, headerColor, whiteColor} from "../../../common/styles";
+import { Button } from "native-base"
+import RNFS from "react-native-fs"
+import { backgroundColor, garyColor, headerColor, whiteColor } from "../../../common/styles";
 import Header from "../../../components/Header";
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
-import {getVideoDetail, getVideoList} from "../../../api/storeReq";
+import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize } from "../../../common/screenUtil";
+import { getVideoDetail, getVideoList } from "../../../api/storeReq";
 import Modal from "react-native-modal";
 import AndroidPlayer from "../../../common/AndroidPlayer";
 import IosPlayer from "../../../common/IosPlayer";
 import Orientation from "react-native-orientation";
-import {showToast} from "../../../common/util";
+import LoadModal from "../../../common/loadModal"
+import { showToast } from "../../../common/util";
 
 /*mobx*/
-import {observer, inject} from "mobx-react";
-import {action, computed} from "mobx";
+import { observer, inject } from "mobx-react";
+import { action, computed } from "mobx";
 
 @inject('store')
 @observer
@@ -44,6 +47,11 @@ export default class ShowVideo extends React.Component {
   componentWillUnmount() {
     /*移除监听返回按钮*/
     BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+
+    this.state = {
+      videoStatus: 0,
+      videoState: null,
+    }
   }
 
   componentWillMount() {
@@ -53,17 +61,21 @@ export default class ShowVideo extends React.Component {
     DeviceEventEmitter.addListener('screenshots', (photo) => {
       if (photo != null) {
         this.setState({
+          captureStatus: false,
           isScreen: 0,
           screenImage: 'file:///' + photo,
           isShowScreen: true
         });
+      } else {
+        showToast('截图失败', 'error')
+        this.setState({ captureStatus: false })
       }
     })
   }
 
   onBackPress = () => {
     if (this.state.isFull) {
-      this.setState({isFull: false})
+      this.setState({ isFull: false })
       Orientation.lockToPortrait()
       return true
     } else {
@@ -77,22 +89,21 @@ export default class ShowVideo extends React.Component {
       videoList: [],//视频列表
       nowVideo: {},//当前视频信息
       videoPath: "",//视频地址
-      videoAddress: "",//视频地址
-      videoPort: "",//视频端口
-      vidoeCallid: "",//视频id
-      videoResource: "",//视频资源
       videoStatus: 0,//视频状态
+      videoState: null,//IOS视频地址
+      captureImage: null,//IOS截图保存地址
       isFull: false,//是否全屏
       isScreen: 0,//是否截屏
       screenImage: "",//截取的图片
       isShowScreen: false,//是否展示截图的图片
+      captureStatus: false,//截图的状态
     }
     this._getVideoList(props.navigation.state.params.storeId)
     this.screenFull = this.screenFull.bind(this)
   }
 
   _getVideoList = async (id) => {
-    let {params} = this.props.navigation.state
+    let { params } = this.props.navigation.state
     let result = await getVideoList(id)
     console.log(result);
     await this.setState({
@@ -105,10 +116,10 @@ export default class ShowVideo extends React.Component {
   screenFull() {
     Orientation.getOrientation((err, orientation) => {
       if (orientation === "LANDSCAPE") {
-        this.setState({isFull: false})
+        this.setState({ isFull: false })
         Orientation.lockToPortrait()
       } else {
-        this.setState({isFull: true})
+        this.setState({ isFull: true })
         Orientation.lockToLandscape()
       }
     });
@@ -119,24 +130,30 @@ export default class ShowVideo extends React.Component {
     let result = await getVideoDetail(item.channelId)
     result = result.preview
     console.log(result)
-    this.setState({
-      videoAddress: result.address + '',
-      videoPort: result.port + '',
-      vidoeCallid: result.callid + '',
-      videoResource: result.resource + ''
-    })
     if (result.address) {
-      this.setState({
-        videoPath: `${result.address}@port:${result.port}@callid:${result.callid}@resid:${result.resource}`
-      })
+      let address = result.address + ""
+      let port = result.port + ""
+      let callid = result.callid + ""
+      let resource = result.resource + ""
+      if (Platform.OS === 'ios') {
+        this.setState((state) => {
+          //state.videoState = '{"server":"' + address + '","port":"'+port+'","callid":"'+callid+'","resid":"'+resource+'"}'
+          state.videoState = `{"server":"${address}","port":"${port}","callid":"${callid}","resid":"${resource}"}`
+          console.log(this.state.videoState)
+        })
+      } else {
+        this.setState({
+          videoPath: `${address}@port:${port}@callid:${callid}@resid:${resource}`
+        })
+      }
     } else {
       showToast('暂无视频数据', 'error')
     }
-    this.setState({nowVideo: item})
+    this.setState({ nowVideo: item })
   }
 
   gotoEvalut = () => {
-    this.props.navigation.navigate("EvalutDetails", {storeId: this.props.navigation.state.params.storeId})
+    this.props.navigation.navigate("EvalutDetails", { storeId: this.props.navigation.state.params.storeId })
   }
 
   submitScreen = async () => {
@@ -146,37 +163,25 @@ export default class ShowVideo extends React.Component {
     } else {
       showToast("图片获取失败", "error");
     }
-    await this.setState({isShowScreen: false})
+    await this.setState({ isShowScreen: false })
   }
 
   render() {
-    const {params} = this.props.navigation.state;
+    const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         {
           this.state.isFull ?
-            <StatusBar hidden={true}/>
+            <StatusBar hidden={true} />
             :
-            <Header hidden={this.state.isFull} isBack={true} title={"视频详情"}/>
+            <Header hidden={this.state.isFull} isBack={true} title={"视频详情"} />
         }
-        <View style={[styles.video, {height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)}]}>
+        <View style={[styles.video, { height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456) }]}>
           {/*视频播放*/}
-          <View style={[styles.video_center, {width: DEVICE_WIDTH}]}>
+          <View style={[styles.video_center, { width: DEVICE_WIDTH }]}>
             {
-              this.state.videoPath !== "" ?
-                Platform.OS === 'ios' ?
-                  <IosPlayer
-                    style={{
-                      width: this.state.isFull ? DEVICE_HEIGHT : DEVICE_WIDTH,
-                      height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)
-                    }}
-                    serverIP={this.state.videoAddress}
-                    serverPort={this.state.videoPort}
-                    callID={this.state.vidoeCallid}
-                    resID={this.state.videoResource}
-                    state='true'
-                  />
-                  :
+              Platform.OS === 'android' ?
+                this.state.videoPath !== "" ?
                   <AndroidPlayer
                     style={{
                       width: this.state.isFull ? DEVICE_HEIGHT : DEVICE_WIDTH,
@@ -186,7 +191,21 @@ export default class ShowVideo extends React.Component {
                     path={this.state.videoPath}
                     status={this.state.videoStatus}
                   />
+                  : null
                 : null
+            }
+            {
+              Platform.OS === 'ios' ?
+                this.state.videoState ?
+                  <IosPlayer
+                    style={{
+                      width: this.state.isFull ? DEVICE_HEIGHT : DEVICE_WIDTH,
+                      height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456)
+                    }}
+                    state={this.state.videoState}
+                    serverIP={this.state.captureImage}
+                  />
+                  : null : null
             }
           </View>
           <View style={styles.video_wrapper}>
@@ -197,19 +216,72 @@ export default class ShowVideo extends React.Component {
             <View style={styles.video_options}>
               <TouchableOpacity
                 activeOpacity={0.9}
-                style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
-                onPress={() => {
-                  this.setState({isScreen: 100})
+                style={[styles.video_icon, { marginHorizontal: scaleSize(30) }]}
+                onPress={async () => {
+                  const _this = this
+                  await this.setState({ captureStatus: true })
+                  if (Platform.OS === 'ios') {
+                    let date = new Date()
+                    let dirPath = RNFS.LibraryDirectoryPath
+                    let imgName = `${date.getFullYear()}-${addZore(date.getMonth() + 1)}-${addZore(date.getDate())}-${addZore(date.getHours())}-${addZore(date.getMinutes())}-${addZore(date.getSeconds())}.jpg`
+                    let downpath = dirPath + '/' + imgName
+                    function addZore(num) {
+                      return num < 10 ? '0' + num : num
+                    }
+                    this.setState({ captureImage: downpath })
+                    setTimeout(() => {
+                      RNFS.exists('file://' + downpath)
+                        .then((res) => {
+                          if (res) {
+                            this.setState({
+                              captureStatus: false,
+                              captureImage: null,
+                              screenImage: 'file://' + downpath,
+                              isShowScreen: true
+                            })
+                          } else {
+                            imgError()
+                          }
+                        })
+                        .catch((err) => {
+                          console.log(err)
+                          imgError()
+                        })
+
+                      function imgError() {
+                        showToast('图片保存失败', 'error')
+                        _this.setState({
+                          captureStatus: false,
+                          captureImage: null,
+                        })
+                      }
+                    }, 2000)
+                    /*saveImage.then((res) => {
+                      console.log('------',res)
+                      this.setState({
+                        captureImage: null,
+                        screenImage: res,
+                        isShowScreen: true
+                      })
+                    }).catch((err) => {
+                      console.log(err)
+                      showToast('图片保存失败', 'error')
+                      this.setState({captureImage: null})
+                    })*/
+
+                  } else {
+                    this.setState({ isScreen: 100 })
+                  }
                 }}>
                 <Image style={styles.video_icon}
-                       source={require("../../../assets/resource/shop/icon_screen.png")}/>
+                  source={require("../../../assets/resource/shop/icon_screen.png")} />
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={styles.video_icon}
                 onPress={this.screenFull}>
                 <Image style={styles.video_icon}
-                       source={require("../../../assets/resource/shop/icon_full_screen.png")}/>
+                  source={require("../../../assets/resource/shop/icon_full_screen.png")} />
               </TouchableOpacity>
             </View>
           </View>
@@ -220,9 +292,9 @@ export default class ShowVideo extends React.Component {
           numColumns={2}
           columnWrapperStyle={styles.video_item}
           keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}/>
+          renderItem={this._renderItem} />
         <Button block style={styles.footer_btn} onPress={this.gotoEvalut}>
-          <Text style={{color: whiteColor}}>进入考评</Text>
+          <Text style={{ color: whiteColor }}>进入考评</Text>
         </Button>
         {/*截屏成功团片弹出框*/}
         <Modal
@@ -235,13 +307,13 @@ export default class ShowVideo extends React.Component {
             {/*this.state.screenImage 截屏图片地址*/}
             <Image
               style={styles.modal_image}
-              source={{uri: this.state.screenImage}}
+              source={{ uri: this.state.screenImage }}
             />
             <View style={styles.modal_button}>
               <Button
                 light
                 style={styles.modal_btn}
-                onPress={() => this.setState({isShowScreen: false})}
+                onPress={() => this.setState({ isShowScreen: false })}
               >
                 <Text>关闭</Text>
               </Button>
@@ -255,26 +327,27 @@ export default class ShowVideo extends React.Component {
             </View>
           </View>
         </Modal>
+        <LoadModal status={this.state.captureStatus} />
       </View>
     )
   }
 
   _keyExtractor = (item) => item.channelId + ''
 
-  _renderItem = ({item}) => (
+  _renderItem = ({ item }) => (
     <View style={styles.video_item}>
       <Button block light
-              style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
-              onPress={() => this.videoChannel(item)}>
+        style={[styles.center_item, { borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor }]}
+        onPress={() => this.videoChannel(item)}>
         {
           item.inUse ?
-            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                   source={require("../../../assets/resource/shop/icon_video_offine.png")}/>
+            <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
+              source={require("../../../assets/resource/shop/icon_video_offine.png")} />
             :
-            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                   source={require("../../../assets/resource/shop/icon_video_online.png")}/>
+            <Image style={{ width: scaleSize(43), height: scaleSize(43) }}
+              source={require("../../../assets/resource/shop/icon_video_online.png")} />
         }
-        <Text style={{color: item.inUse ? garyColor : '#000'}}>{item.remark}</Text>
+        <Text style={{ color: item.inUse ? garyColor : '#000' }}>{item.remark}</Text>
       </Button>
     </View>
   )

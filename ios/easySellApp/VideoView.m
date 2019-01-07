@@ -1,5 +1,5 @@
 //
-//  CLFImageView.m
+//  VideoView.m
 //  Test
 //
 //  Created by CSSTWH on 2018/11/2.
@@ -8,12 +8,13 @@
 
 #import "VideoView.h"
 
-@implementation VidowView
+@implementation VideoView
 {
     NSString *m_ServerIP;
     NSString *m_ServerPort;
     NSString *m_CallID;
     NSString *m_ResID;
+    NSString *m_CaptureImage;
 }
 
 /*
@@ -25,7 +26,8 @@
 */
 - (void) SetServerIP: (NSString*) serverip
 {
-    m_ServerIP = serverip;
+    //m_ServerIP = serverip;
+  [self SetCaptureImage:serverip];
 }
 
 - (void) SetServerPort: (NSString*) serverPort
@@ -46,15 +48,58 @@
 - (void) SetState: (NSString*) state
 {
     //nothing
+    NSError *error = nil;
+    NSData *stream = [state dataUsingEncoding:NSUTF8StringEncoding];
+    if (nil == stream) {
+      return;
+    }
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:stream options:NSJSONReadingMutableContainers error:&error];
+    if (dic == nil) {
+      return;
+    }
+    m_ServerIP = dic[@"server"];
+    m_ServerPort = dic[@"port"];
+    m_CallID = dic[@"callid"];
+    m_ResID = dic[@"resid"];
+  
     [self VideoPlay];
+}
+
+- (void) SetCaptureImage: (NSString*) path
+{
+    m_CaptureImage = path;
+  /*NSDateFormatter *nsdf2=[[NSDateFormatter alloc] init];
+   [nsdf2 setDateStyle:NSDateFormatterShortStyle];
+   [nsdf2 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
+   NSString *date=[nsdf2 stringFromDate:[NSDate date]];
+  //创建目录
+  NSFileManager *fm = [NSFileManager defaultManager];
+   //获取当前目录
+   NSString *currentDirectory = NSTemporaryDirectory();
+   NSString *imageDirectory = [[NSString alloc] initWithFormat:@"%@/image", currentDirectory];
+   NSError *errInfo = nil;
+   //创建新目录
+   BOOL isDirectory = YES;
+   if (![fm fileExistsAtPath:imageDirectory isDirectory:&isDirectory]) {
+   if (![fm createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:&errInfo]) {
+   NSLog(@"%@ create directory failed:%@", imageDirectory, errInfo);
+   return;
+   }
+   }
+  //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  //NSString *imageDirectory1 = [paths objectAtIndex:0];
+  //图片目录
+  NSString *imagePath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", imageDirectory, date];
+  m_CaptureImage = imagePath;*/
 }
 
 - (void) VideoPlay
 {
-    m_ServerIP = @"192.168.0.87";
+    /*m_ServerIP = @"192.168.0.66";
     m_ServerPort = @"7002";
-    m_CallID = @"144115256795332612";
-    m_ResID = @"1";
+    m_CallID = @"144115269680234505";
+    m_ResID = @"7";*/
+    m_CaptureImage = nil;
     NSLog(@"ip:%@ port:%@ call:%@ res:%@", m_ServerIP, m_ServerPort, m_CallID, m_ResID);
     //播放
     if (0 != [[MClient instance] Connect:m_ServerIP port:[m_ServerPort intValue]])
@@ -93,6 +138,34 @@
     }else{
       self.image = image;
     }*/
+  if (nil != m_CaptureImage) {
+    /*NSDateFormatter *nsdf2=[[NSDateFormatter alloc] init];
+    [nsdf2 setDateStyle:NSDateFormatterShortStyle];
+    [nsdf2 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
+    NSString *date=[nsdf2 stringFromDate:[NSDate date]];*/
+    //创建目录
+    /*NSFileManager *fm = [NSFileManager defaultManager];
+     //获取当前目录
+     NSString *currentDirectory = NSHomeDirectory();
+     NSString *imageDirectory = [[NSString alloc] initWithFormat:@"%@/image", currentDirectory];
+     NSError *errInfo = nil;
+     //创建新目录
+     BOOL isDirectory = YES;
+     if (![fm fileExistsAtPath:imageDirectory isDirectory:&isDirectory]) {
+     if (![fm createDirectoryAtPath:imageDirectory withIntermediateDirectories:YES attributes:nil error:&errInfo]) {
+     NSLog(@"%@ create directory failed:%@", imageDirectory, errInfo);
+     return;
+     }
+     }*/
+    //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    //NSString *imageDirectory = [paths objectAtIndex:0];
+    //图片目录
+    //NSString *imagePath = [[NSString alloc] initWithFormat:@"%@/%@_%@.jpg", imageDirectory, m_StreamName, date];
+    NSString *imagePath = m_CaptureImage;
+    NSLog(@"capture image : %@", imagePath);
+    [UIImageJPEGRepresentation(image, 1.0) writeToFile:imagePath atomically:YES];
+    m_CaptureImage = nil;
+  }
 }
 
 - (void) ReceiveStream: (int) stream buffer: (unsigned char*) buffer length: (long) length

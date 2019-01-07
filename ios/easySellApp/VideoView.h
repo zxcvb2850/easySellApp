@@ -1,5 +1,5 @@
 //
-//  CLFImageView.h
+//  VideoView.h
 //  Test
 //
 //  Created by CSSTWH on 2018/11/2.
@@ -11,7 +11,7 @@
 #import "MClient.framework/Headers/MClient.h"
 #import "NPlayer.framework/Headers/NPlayer.h"
 
-@interface VidowView : UIImageView<MStream, NPlayerEvent>
+@interface VideoView : UIImageView<MStream, NPlayerEvent>
 
 //设置参数
 - (void) SetServerIP: (NSString*) serverip;
@@ -22,6 +22,7 @@
 - (void) SetState: (NSString*) state;
 - (void) VideoPlay;
 - (void) VideoStop;
+- (void) SetCaptureImage: (NSString*) path;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onChange;
 

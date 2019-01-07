@@ -48,7 +48,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+	<string>App需要访问您的相册</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
