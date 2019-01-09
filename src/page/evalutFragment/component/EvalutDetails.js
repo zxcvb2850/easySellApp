@@ -2,20 +2,21 @@
 * 考评详情
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, TouchableOpacity, Modal} from "react-native"
-import {Content, Button, ListItem, Input} from "native-base";
+import { StyleSheet, View, Text, Image, TouchableOpacity, Modal, Platform } from "react-native"
+import { Content, Button, ListItem, Input } from "native-base";
 import Accordion from 'react-native-collapsible/Accordion'
 import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"
-import {scaleSize} from "../../../common/screenUtil";
-import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles";
-import {getPlanDetails, submitAll} from "../../../api/evaluReq";
-import {checkResult, classify, showToast} from "../../../common/util";
+import { scaleSize } from "../../../common/screenUtil";
+import { backgroundColor, headerColor, lightGaryColor, whiteColor } from "../../../common/styles";
+import { getPlanDetails, submitAll } from "../../../api/evaluReq";
+import { checkResult, classify, showToast } from "../../../common/util";
+import { uploadImage } from "../../../api/evaluReq";
 
 /*mobx*/
-import {observer, inject} from 'mobx-react'
-import {action, computed} from 'mobx'
-import {getStoreEvalutList} from "../../../api/storeReq";
+import { observer, inject } from 'mobx-react'
+import { action, computed } from 'mobx'
+import { getStoreEvalutList } from "../../../api/storeReq";
 
 @inject("store")
 @observer
@@ -29,12 +30,31 @@ export default class EvalutDetails extends React.Component {
     setIndex(index) {
         this.props.store.EvalutIndex.setEvalutIndex(index)
     }
+    @action
+    setPath(photo) {
+        this.props.store.PhotoPath.setPhotoPath(photo);
+    }
 
     @computed get getEvalutList() {
         return this.props.store.EvalutList.evalutList;
     }
 
+    /*获取截屏保存的图片*/
+    @computed get getPhotoPath() {
+        return this.props.store.PhotoPath.photoPath;
+    }
+
     async componentDidMount() {
+        console.log('-------', this.getPhotoPath)
+        if (Platform.OS === 'ios') {
+            if (this.getPhotoPath) {
+                let uri = await uploadImage(this.getPhotoPath, 'screen' + Date.now());
+                console.log('截屏上传的图片', uri);
+                showToast('上传成功', 'success')
+                this.setPath(uri.imgUrl)
+            }
+        }
+
         if (this.props.navigation.state.params.storeId) {
             this._getStoreEvalutList(this.props.navigation.state.params.storeId);
         } else {
@@ -54,7 +74,7 @@ export default class EvalutDetails extends React.Component {
 
     /*提交所有*/
     confirmReportAll = () => {
-        this.setState({modalVisible: true})
+        this.setState({ modalVisible: true })
     }
 
     /*确认提交*/
@@ -64,12 +84,12 @@ export default class EvalutDetails extends React.Component {
             v.data.forEach(_v => list.push(_v))
         })
         let result = await submitAll(list[0].reviewId);
-        await this.setState({modalVisible: false});
+        await this.setState({ modalVisible: false });
         if (result.code !== 0) {
             showToast(result.msg, 'error')
         } else {
             showToast('提交成功', 'success')
-            const {params} = this.props.navigation.state;
+            const { params } = this.props.navigation.state;
             params.callback();
             this.props.navigation.goBack();
         }
@@ -77,29 +97,29 @@ export default class EvalutDetails extends React.Component {
 
     /*关闭提示框*/
     closeModal = () => {
-        this.setState({modalVisible: false})
+        this.setState({ modalVisible: false })
     }
 
     _getPlanDetails = async (reviewId) => {
         let result = await getPlanDetails(reviewId)
         let list = result.storeReview.projectList
         let dest = classify(list)
-        this.setState({data: dest, reviewId: result.storeReview.reviewId})
+        this.setState({ data: dest, reviewId: result.storeReview.reviewId })
     }
 
     _getStoreEvalutList = async (storeId) => {
         let result = await getStoreEvalutList(storeId);
         let list = result.storeReview.projectList
         let dest = classify(list)
-        this.setState({data: dest, reviewId: result.storeReview.reviewId})
+        this.setState({ data: dest, reviewId: result.storeReview.reviewId })
     }
 
     _updateSections = activeSections => {
-        this.setState({activeSections});
+        this.setState({ activeSections });
     };
 
     gotoItem = (item) => {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         let data = [];
         this.state.data.forEach(v => {
             v.data.forEach(_v => data.push(_v))
@@ -114,7 +134,7 @@ export default class EvalutDetails extends React.Component {
     }
 
     render() {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
 
         return (
             <View style={styles.container}>
@@ -125,7 +145,7 @@ export default class EvalutDetails extends React.Component {
                         onPress={this.confirmReportAll}
                     >
                         <Image style={styles.icon_confirm}
-                               source={require("../../../assets/resource/evalut/icon_confirm.png")}/>
+                            source={require("../../../assets/resource/evalut/icon_confirm.png")} />
                     </TouchableOpacity>
                 </Header>
                 <ListItem itemDivider>
@@ -134,7 +154,7 @@ export default class EvalutDetails extends React.Component {
                 <Content style={styles.center}>
                     {/*手风琴动画*/}
                     <Accordion
-                        style={{backgroundColor: whiteColor}}
+                        style={{ backgroundColor: whiteColor }}
                         sections={this.state.data}
                         activeSections={this.state.activeSections}
                         renderHeader={this._renderHeader}
@@ -163,13 +183,13 @@ export default class EvalutDetails extends React.Component {
                             borderRadius: scaleSize(20),
                         }}>
                             <View style={styles.tips_text}>
-                                <Text style={{color: '#000'}}>确定提交全部吗!</Text>
+                                <Text style={{ color: '#000' }}>确定提交全部吗!</Text>
                             </View>
                             <View style={styles.btn_wrapper}>
                                 <Button light style={styles.btn_item}
-                                        onPress={this.closeModal}><Text style={{color: '#000'}}>取消</Text></Button>
+                                    onPress={this.closeModal}><Text style={{ color: '#000' }}>取消</Text></Button>
                                 <Button style={styles.btn_item} onPress={this.confirmAll}><Text
-                                    style={{color: whiteColor}}>确认</Text></Button>
+                                    style={{ color: whiteColor }}>确认</Text></Button>
                             </View>
                         </View>
                     </View>
@@ -187,8 +207,8 @@ export default class EvalutDetails extends React.Component {
                 }]}>
                 <Text style={styles.header_text}>{section.projectType}</Text>
                 <Image style={[styles.icon_show, {
-                    transform: [{rotate: !isActive ? '0deg' : '90deg'}]
-                }]} source={require("../../../assets/resource/evalut/icon_show.png")}/>
+                    transform: [{ rotate: !isActive ? '0deg' : '90deg' }]
+                }]} source={require("../../../assets/resource/evalut/icon_show.png")} />
             </View>
         );
     };
@@ -199,16 +219,16 @@ export default class EvalutDetails extends React.Component {
                 marginBottom: isActive ? scaleSize(20) : scaleSize(0)
             }]}>
                 <View style={styles.content_item}>
-                    <Text style={{fontSize: 14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
+                    <Text style={{ fontSize: 14, marginRight: scaleSize(10) }}>{item.projectCode}</Text>
                     <TouchableOpacity
                         activeOpacity={0.9}
                         style={styles.content_desc}
                         onPress={() => this.gotoItem(item)}
                     >
                         <Text>{item.projectData}</Text>
-                        <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
+                        <View style={{ justifyContent: 'flex-end', flexDirection: 'row' }}>
                             <Text
-                                style={{color: checkResult(item.checkResult).color}}>{checkResult(item.checkResult).str}</Text>
+                                style={{ color: checkResult(item.checkResult).color }}>{checkResult(item.checkResult).str}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

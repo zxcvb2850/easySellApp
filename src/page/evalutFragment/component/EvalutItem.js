@@ -11,9 +11,9 @@ import {
     TouchableOpacity,
     DeviceEventEmitter,
     BackHandler,
-    Platform
+    Platform,
 } from "react-native";
-import { Content, ListItem, Left, Right, Radio, Button, Item, Input} from "native-base";
+import { Content, ListItem, Left, Right, Radio, Button, Item, Input } from "native-base";
 import Header from "../../../components/Header";
 import { DEVICE_WIDTH, scaleSize } from "../../../common/screenUtil";
 import { garyColor, lightGaryColor, whiteColor } from "../../../common/styles";
@@ -32,14 +32,12 @@ const options = {
     title: '选择图片',
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '图片库',
-    cameraType: 'back',
-    mediaType: 'photo',
+    chooseFromLibraryButtonTitle: '相册图片',
     maxWidth: 270,
     maxHeight: 195,
-    videoQuality: 'high',
     storageOptions: {
         skipBackup: true,
+        path: 'images'
     }
 };
 
@@ -94,15 +92,26 @@ export default class EvalutItem extends React.Component {
         BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
 
         if (this.getPhotoPath) {
-            let list = this.getEvalutList;
-            let index = this.getEvalutIndex;
-            let imgs = list[index].photos ? list[index].photos.split(',') : [];
-            let uri = await uploadImage(this.getPhotoPath, 'screen' + Date.now());
-            console.log('截屏上传的图片', imgs, uri);
-            showToast('上传成功', 'success')
-            imgs.push(uri.imgUrl)
-            list[index].photos = imgs.join(',');
-            await this.setList(list)
+            if (Platform.OS === 'android') {
+                let list = this.getEvalutList;
+                let index = this.getEvalutIndex;
+                let imgs = list[index].photos ? list[index].photos.split(',') : [];
+                console.log('======', this.getPhotoPath)
+                let uri = await uploadImage(this.getPhotoPath, 'screen' + Date.now());
+                console.log('截屏上传的图片', imgs, uri);
+                showToast('上传成功', 'success')
+                imgs.push(uri.imgUrl)
+                list[index].photos = imgs.join(',');
+                await this.setList(list)
+            } else {
+                let list = this.getEvalutList;
+                let index = this.getEvalutIndex;
+                let imgs = list[index].photos ? list[index].photos.split(',') : [];
+                console.log('======', this.getPhotoPath)
+                imgs.push(this.getPhotoPath)
+                list[index].photos = imgs.join(',');
+                await this.setList(list)
+            }
         }
 
         this.setState({
@@ -178,7 +187,6 @@ export default class EvalutItem extends React.Component {
     /*上传图片*/
     choosePic = () => {
         ImagePicker.showImagePicker(options, async (response) => {
-            console.log('Response = ', response);
 
             if (response.didCancel) {
                 //console.log('用户取消了选择！');

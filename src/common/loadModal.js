@@ -11,7 +11,7 @@ const LoadModal = (props) => props.status ?
             alignItems: 'center'
         }}>
             <Spinner color='blue' />
-            <Text>{props.title}</Text>
+            <Text style={{color: '#FFF'}}>{props.title}</Text>
         </View>
     </Modal>
     : null

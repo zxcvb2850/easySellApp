@@ -1,9 +1,9 @@
 /*
 * 公用函数
 * */
-import {Linking} from "react-native"
+import { Linking } from "react-native"
 import Toast from "react-native-root-toast"
-import {dangerColor, mainColor, successColor, warringColor} from "./styles"
+import { dangerColor, mainColor, successColor, warringColor } from "./styles"
 
 /*封装公共Toast*/
 export function showToast(text, type = "info", duration = 2000, position = "center") {
@@ -161,11 +161,22 @@ export function checkResult(status) {
       color = warringColor;
       break;
   }
-  return {str, color};
+  return { str, color };
 }
 
 /*时间截取*/
 export function timerSplice(timer) {
   let reg = /([\d|-]+)/;
   return timer.match(reg)[0];
+}
+
+/*保存图片命名*/
+export function imageName(type = 'jpg') {
+  let date = new Date()
+  let imgName = `${date.getFullYear()}-${addZore(date.getMonth() + 1)}-${addZore(date.getDate())}-${addZore(date.getHours())}-${addZore(date.getMinutes())}-${addZore(date.getSeconds())}.${type}`
+  return imgName
+}
+
+function addZore(num) {
+  return num < 10 ? '0' + num : num
 }

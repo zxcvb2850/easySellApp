@@ -43,6 +43,9 @@
 - (void) SetResID: (NSString*) resID
 {
     m_ResID = resID;
+  if(resID != nil){
+    [self VideoStop];
+  }
 }
 
 - (void) SetState: (NSString*) state

@@ -26,7 +26,7 @@ import AndroidPlayer from "../../../common/AndroidPlayer";
 import IosPlayer from "../../../common/IosPlayer";
 import Orientation from "react-native-orientation";
 import LoadModal from "../../../common/loadModal"
-import { showToast } from "../../../common/util";
+import { showToast, imageName } from "../../../common/util";
 
 /*mobx*/
 import { observer, inject } from "mobx-react";
@@ -40,18 +40,9 @@ export default class ShowVideo extends React.Component {
     this.props.store.PhotoPath.setPhotoPath(photo);
   }
 
-  @computed get getPhotoPath() {
-    return this.props.store.PhotoPath.photoPath;
-  }
-
   componentWillUnmount() {
     /*移除监听返回按钮*/
     BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-
-    this.state = {
-      videoStatus: 0,
-      videoState: null,
-    }
   }
 
   componentWillMount() {
@@ -97,6 +88,8 @@ export default class ShowVideo extends React.Component {
       screenImage: "",//截取的图片
       isShowScreen: false,//是否展示截图的图片
       captureStatus: false,//截图的状态
+      resetIosVideo: null,//初始化ios视频
+      isVideoStart: false,//视频获取中
     }
     this._getVideoList(props.navigation.state.params.storeId)
     this.screenFull = this.screenFull.bind(this)
@@ -105,7 +98,6 @@ export default class ShowVideo extends React.Component {
   _getVideoList = async (id) => {
     let { params } = this.props.navigation.state
     let result = await getVideoList(id)
-    console.log(result);
     await this.setState({
       videoList: result.video.channelList,
       nowVideo: params.videoInfo ? params.videoInfo : result.video.channelList[0]//当前是否接受到视频信息
@@ -127,19 +119,19 @@ export default class ShowVideo extends React.Component {
 
   /*获取视频信息*/
   videoChannel = async (item) => {
+    await this.setState({ resetIosVideo: (Math.random() * 1000) + "", isVideoStart: true })
     let result = await getVideoDetail(item.channelId)
     result = result.preview
-    console.log(result)
     if (result.address) {
       let address = result.address + ""
       let port = result.port + ""
       let callid = result.callid + ""
       let resource = result.resource + ""
       if (Platform.OS === 'ios') {
-        this.setState((state) => {
+        this.setState({
           //state.videoState = '{"server":"' + address + '","port":"'+port+'","callid":"'+callid+'","resid":"'+resource+'"}'
-          state.videoState = `{"server":"${address}","port":"${port}","callid":"${callid}","resid":"${resource}"}`
-          console.log(this.state.videoState)
+          resetIosVideo: null,
+          videoState: `{"server":"${address}","port":"${port}","callid":"${callid}","resid":"${resource}"}`
         })
       } else {
         this.setState({
@@ -149,15 +141,17 @@ export default class ShowVideo extends React.Component {
     } else {
       showToast('暂无视频数据', 'error')
     }
-    this.setState({ nowVideo: item })
+    this.setState({ nowVideo: item, isVideoStart: false })
   }
 
-  gotoEvalut = () => {
+  gotoEvalut = async () => {
+    await this.setState({ resetIosVideo: (Math.random() * 1000) + "" })
     this.props.navigation.navigate("EvalutDetails", { storeId: this.props.navigation.state.params.storeId })
   }
 
   submitScreen = async () => {
     if (this.state.screenImage !== "") {
+      console.log('+++++++++', this.state.screenImage)
       this.setPath(this.state.screenImage);
       this.gotoEvalut();
     } else {
@@ -174,7 +168,18 @@ export default class ShowVideo extends React.Component {
           this.state.isFull ?
             <StatusBar hidden={true} />
             :
-            <Header hidden={this.state.isFull} isBack={true} title={"视频详情"} />
+            <Header hidden={this.state.isFull} isBack={async () => {
+              if (Platform.OS === 'ios') {
+                await this.setState({
+                  resetIosVideo: (Math.random() * 1000) + ""
+                })
+                setTimeout(() => {
+                  this.props.navigation.goBack();
+                }, 1000)
+              } else {
+                this.props.navigation.goBack();
+              }
+            }} title={"视频详情"} />
         }
         <View style={[styles.video, { height: this.state.isFull ? DEVICE_WIDTH : scaleSize(456) }]}>
           {/*视频播放*/}
@@ -204,6 +209,7 @@ export default class ShowVideo extends React.Component {
                     }}
                     state={this.state.videoState}
                     serverIP={this.state.captureImage}
+                    resID={this.state.resetIosVideo}
                   />
                   : null : null
             }
@@ -221,13 +227,10 @@ export default class ShowVideo extends React.Component {
                   const _this = this
                   await this.setState({ captureStatus: true })
                   if (Platform.OS === 'ios') {
-                    let date = new Date()
                     let dirPath = RNFS.LibraryDirectoryPath
-                    let imgName = `${date.getFullYear()}-${addZore(date.getMonth() + 1)}-${addZore(date.getDate())}-${addZore(date.getHours())}-${addZore(date.getMinutes())}-${addZore(date.getSeconds())}.jpg`
+                    let imgName= imageName()
                     let downpath = dirPath + '/' + imgName
-                    function addZore(num) {
-                      return num < 10 ? '0' + num : num
-                    }
+                    
                     this.setState({ captureImage: downpath })
                     setTimeout(() => {
                       RNFS.exists('file://' + downpath)
@@ -327,7 +330,8 @@ export default class ShowVideo extends React.Component {
             </View>
           </View>
         </Modal>
-        <LoadModal status={this.state.captureStatus} />
+        <LoadModal status={this.state.captureStatus} title={"保存图片中..."} />
+        <LoadModal status={this.state.isVideoStart} title={"读取视频中..."} />
       </View>
     )
   }
