@@ -76,6 +76,27 @@ export default class Recording extends React.Component {
     this._getStoreHistory(1, true)
   }
 
+  evaluateImage = (type) => {
+    let img = ''
+    switch (type) {
+      case '优':
+        img = require("../../../assets/resource/evalut/icon_you.png")
+        break;
+      case '中':
+        img = require("../../../assets/resource/evalut/icon_zhong.png")
+        break;
+      case '良':
+        img = require("../../../assets/resource/evalut/icon_lian.png")
+        break;
+      case '差':
+        img = require("../../../assets/resource/evalut/icon_cha.png")
+        break;
+      default:
+        img = ''
+    }
+    return img
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -108,14 +129,7 @@ export default class Recording extends React.Component {
             <View style={styles.head}>
               <View style={styles.line}/>
               <Text style={styles.head_title}>{v.storeName}</Text>
-              {
-                v.reviewLevel === '优' ?
-                  <Image style={styles.eval_icon}
-                         source={require("../../../assets/resource/evalut/icon_you.png")}/>
-                  :
-                  <Image style={styles.eval_icon}
-                         source={require("../../../assets/resource/evalut/icon_lian.png")}/>
-              }
+              <Image style={styles.eval_icon} source={this.evaluateImage(v.reviewLevel)}/>
             </View>
             <TouchableOpacity
               activeOpacity={0.9}
@@ -170,11 +184,12 @@ const styles = StyleSheet.create({
   top: {
     justifyContent: 'center',
     height: scaleSize(78),
-    backgroundColor: '#c3d5fb',
+    backgroundColor: '#f5f5f5',
   },
   top_txt: {
     marginLeft: scaleSize(40),
-    color: mainColor,
+    fontSize: 18,
+    color: '#000',
   },
   head: {
     paddingHorizontal: scaleSize(28),
@@ -191,6 +206,8 @@ const styles = StyleSheet.create({
   },
   head_title: {
     flex: 1,
+    fontSize: 18,
+    color: '#000',
   },
   eval_icon: {
     marginHorizontal: scaleSize(14),
@@ -213,7 +230,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   desc: {
-    //fontSize: 16,
+    fontSize: 16,
+    color: '#252525'
   },
   time: {
     color: garyColor,

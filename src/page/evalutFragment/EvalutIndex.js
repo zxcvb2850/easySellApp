@@ -80,7 +80,7 @@ export default class DynamicIndex extends React.Component {
                 </Header>
                 <ScrollableTabView
                     tabBarTextStyle={{paddingTop: scaleSize(20)}}
-                    tabBarUnderlineStyle={{height: scaleSize(2), backgroundColor: mainColor}}
+                    tabBarUnderlineStyle={{height: scaleSize(4), backgroundColor: mainColor}}
                     tabBarActiveTextColor={mainColor}
                     tabBarInactiveTextColor={garyColor}
                     initialPage={0}

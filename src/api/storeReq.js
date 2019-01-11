@@ -12,9 +12,9 @@ import BaseServer from "./BaseServer";
  * storeName 门店名称
  * */
 export function getStoreList(page = 1, sidx, order, storeCode, storeName, isCollection, limit = 10) {
-    let url = '/app/store/list';
-    let data = {page, sidx, order, storeCode, storeName, isCollection, limit};
-    return BaseServer.post(url, data)
+  let url = '/app/store/list';
+  let data = {page, sidx, order, storeCode, storeName, isCollection, limit};
+  return BaseServer.post(url, data)
 }
 
 /**
@@ -22,8 +22,8 @@ export function getStoreList(page = 1, sidx, order, storeCode, storeName, isColl
  * storeId 店铺ID
  * */
 export function getStoreDetails(id) {
-    let url = `/app/store/details/${id}`;
-    return BaseServer.get(url)
+  let url = `/app/store/details/${id}`;
+  return BaseServer.get(url)
 }
 
 /**
@@ -31,16 +31,16 @@ export function getStoreDetails(id) {
  * isCollection 是否收藏 1是 2否
  * */
 export function isCollection(storeId) {
-    let url = `/app/store/collection/${storeId}`;
-    return BaseServer.put(url)
+  let url = `/app/store/collection/${storeId}`;
+  return BaseServer.put(url)
 }
 
 /**
  * 店铺统计
  * */
 export function storeStat() {
-    let url = '/app/stat/storeStat';
-    return BaseServer.get(url)
+  let url = '/app/stat/storeStat';
+  return BaseServer.get(url)
 }
 
 /**
@@ -48,8 +48,8 @@ export function storeStat() {
  * storeId 店铺ID
  * */
 export function getAlarmList(storeId) {
-    let url = `/app/store/alarm/${storeId}`;
-    return BaseServer.get(url)
+  let url = `/app/store/alarm/${storeId}`;
+  return BaseServer.get(url)
 }
 
 /**
@@ -57,8 +57,8 @@ export function getAlarmList(storeId) {
  * storeId 店铺ID
  * */
 export function getVideoList(storeId) {
-    let url = `/app/store/video/${storeId}`;
-    return BaseServer.get(url)
+  let url = `/app/store/video/${storeId}`;
+  return BaseServer.get(url)
 }
 
 /**
@@ -66,22 +66,22 @@ export function getVideoList(storeId) {
  * channelId 渠道ID
  * */
 export function getVideoDetail(channelId) {
-    let url = `/app/store/preview/${channelId}`;
-    return BaseServer.get(url)
+  let url = `/app/store/preview/${channelId}`;
+  return BaseServer.get(url, {}, true)
 }
 
 /**
  * 考评区域列表
  * */
 export function getOrgList() {
-    let url = '/app/store/orgList';
-    return BaseServer.get(url)
+  let url = '/app/store/orgList';
+  return BaseServer.get(url)
 }
 
 /**
  * 考评区域列表
  * */
 export function getStoreEvalutList(storeId) {
-    let url = `/app/review/viewByStoreId/${storeId}`;
-    return BaseServer.get(url)
+  let url = `/app/review/viewByStoreId/${storeId}`;
+  return BaseServer.get(url)
 }

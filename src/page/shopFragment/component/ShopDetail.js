@@ -27,7 +27,7 @@ export default class ShopDetail extends React.Component {
   /*店铺详情查询*/
   _getShopDetail = async (id) => {
     let result = await getStoreDetails(id)
-    console.log(result)
+    console.log('========', result)
     this.setState({
       shopData: result.storeDetails,
       linkmanList: result.storeDetails.linkmanList,
@@ -101,8 +101,14 @@ export default class ShopDetail extends React.Component {
             {
               this.state.linkmanList.length ? this.state.linkmanList.map(item => (
                   <View style={[styles.list_item]} key={item.storeLinkmanId}>
-                    <Image style={styles.icon}
-                           source={require("../../../assets/resource/shop/icon_number.png")}/>
+                    {
+                      item.position === '店员'?
+                        <Image style={styles.icon}
+                               source={require("../../../assets/resource/shop/icon_number.png")}/>
+                        :
+                        <Image style={styles.icon}
+                               source={require("../../../assets/resource/shop/icon_leader.png")}/>
+                    }
                     <View style={styles.txt_wrap}>
                       <Text style={styles.item_txt}>{item.position}：</Text>
                       <Text style={[styles.item_txt, {color: garyColor}]}
@@ -137,28 +143,37 @@ export default class ShopDetail extends React.Component {
               </View>
             </View>
           </View>
-          <View style={[styles.info_list, styles.borderTopBottom]}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={[styles.info_list, styles.borderTopBottom]}
+            onPress={() => {
+              this.props.navigation.navigate('ShopVideo', {
+                storeId: params.storeId,
+                storeName: params.storeName
+              })
+            }}
+          >
             <Text style={styles.color_back}>视频监控</Text>
             <StoreStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
                          status={this.state.videoState}/>
-            <Button bordered style={styles.more_btn}
-                    onPress={() => {
-                      this.props.navigation.navigate('ShopVideo', {
-                        storeId: params.storeId,
-                        storeName: params.storeName
-                      })
-                    }}>
-              <Text style={{fontSize: minFontSize}}>查看</Text>
-            </Button>
-          </View>
-          <View style={[styles.info_list, styles.borderTopBottom]}>
+            <Image
+              style={{width: scaleSize(48), height: scaleSize(48)}}
+              source={require("../../../assets/resource/shop/icon_look.png")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={[styles.info_list, styles.borderTopBottom]}
+            onPress={this._getAlarmList}
+          >
             <Text style={styles.color_back}>报警联网</Text>
             <DeployStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
                           status={this.state.armingState}/>
-            <Button bordered style={styles.more_btn}
-                    onPress={this._getAlarmList}><Text
-              style={{fontSize: minFontSize}}>列表</Text></Button>
-          </View>
+            <Image
+              style={{width: scaleSize(39), height: scaleSize(39)}}
+              source={require("../../../assets/resource/shop/icon_list.png")}
+            />
+          </TouchableOpacity>
         </Content>
       </View>
     )
@@ -174,7 +189,9 @@ export default class ShopDetail extends React.Component {
         <Text style={styles.table_td}>{item.reviewRate * 100}%</Text>
         <Text style={styles.table_td}>{item.qualifiedRate * 100}%</Text>
         <Text style={styles.table_td}>{item.reviewLevel}</Text>
-        <Text style={styles.table_td}>
+        <Text style={[styles.table_td, {
+          color: item.reviewStatus === 1 ? "#4895ea" : item.reviewStatus === 2 ? "#ea9448" : "#53bc58"
+        }]}>
           {item.reviewStatus === 1 ? "待考评" : item.reviewStatus === 2 ? "待提交" : "已完结"}
         </Text>
         <Text numberOfLines={1} style={[{width: scaleSize(200)}]}>{timerSplice(item.updateTime)}</Text>
@@ -256,7 +273,7 @@ const styles = StyleSheet.create({
     paddingVertical: scaleSize(20),
     flex: 1,
     flexDirection: 'column',
-    width: scaleSize(700)
+    width: scaleSize(720)
   },
   table_header: {
     backgroundColor: '#c4c4c4',
@@ -286,11 +303,4 @@ const styles = StyleSheet.create({
     height: scaleSize(96),
     backgroundColor: whiteColor,
   },
-  more_btn: {
-    marginTop: scaleSize(22),
-    width: scaleSize(112),
-    height: scaleSize(52),
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
 })

@@ -11,22 +11,27 @@ import {scaleSize} from "../common/screenUtil";
 * 1 撤防
 * */
 const DeployStatus = (props) => (
-    <View style={[styles.body, props.style]}>
-        <Text style={[styles.dot, {color: props.status === '0001' ? successColor : warringColor}]}>●</Text>
-        <Text
-            style={{color: props.status === '0001' ? successColor : warringColor}}>{props.status === '0001' ? '布防' : '撤防'}</Text>
-        <Text style={[styles.dot, {color: props.status === '0001' ? successColor : warringColor}]}>●</Text>
-    </View>
+  <View style={[styles.body, props.style]}>
+    <Text
+      style={[styles.textFontSize, styles.dot, {color: props.status === '0001' ? successColor : warringColor}]}>●</Text>
+    <Text
+      style={[styles.textFontSize, {color: props.status === '0001' ? successColor : warringColor}]}>{props.status === '0001' ? '布防' : '撤防'}</Text>
+    <Text
+      style={[styles.textFontSize, styles.dot, {color: props.status === '0001' ? successColor : warringColor}]}>●</Text>
+  </View>
 )
 
 const styles = StyleSheet.create({
-    body: {
-        flexDirection: 'row',
-    },
-    dot: {
-        marginHorizontal: scaleSize(10),
-        color: '#7f9bdb',
-    },
+  body: {
+    flexDirection: 'row',
+  },
+  dot: {
+    marginHorizontal: scaleSize(10),
+    color: '#7f9bdb',
+  },
+  textFontSize: {
+    fontSize: 12
+  }
 })
 
 export default DeployStatus

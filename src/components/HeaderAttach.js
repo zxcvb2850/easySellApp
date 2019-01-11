@@ -4,7 +4,6 @@ import {scaleSize} from "../common/screenUtil"
 import {whiteColor} from "../common/styles";
 
 const HeaderAttach = (props) => {
-  console.log('-------', props);
   return (
     <View style={styles.head_children}>
       {
@@ -24,9 +23,9 @@ const HeaderAttach = (props) => {
             >
               {
                 props.isCollect ?
-                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_yes.png")}/>
+                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_search_yes.png")}/>
                   :
-                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_not.png")}/>
+                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_search_not.png")}/>
               }
             </TouchableOpacity>
             : null
