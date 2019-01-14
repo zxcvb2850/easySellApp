@@ -2,7 +2,7 @@
 *   react-native 页面做适配
 * */
 
-import { Dimensions, PixelRatio } from 'react-native'
+import {Dimensions, PixelRatio, Platform} from 'react-native'
 
 export const DEVICE_WIDTH = Dimensions.get('window').width;      //设备的宽度
 export const DEVICE_HEIGHT = Dimensions.get('window').height;    //设备的高度
@@ -27,6 +27,6 @@ export function scaleSize(size) {
 }
 
 export function setSpText(size) {
-  size = Math.round((size * scale * 0.5) * PIXEL_RATIO / fontScale)
-  return size / PIXEL_RATIO
+  //size = Platform.OS === 'ios' ? Math.round((size * scale * 0.5) * PIXEL_RATIO / fontScale) : size
+  return size / DEFAULT_PIXEL
 }

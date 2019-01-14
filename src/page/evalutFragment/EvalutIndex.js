@@ -7,7 +7,7 @@ import {Content, ListItem, List, Left, Right, Icon, Button, Input} from "native-
 import ScrollableTabView, {DefaultTabBar, ScrollableTabBar,} from 'react-native-scrollable-tab-view';
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"
-import {garyColor, mainColor, whiteColor} from "../../common/styles"
+import {garyColor, mainColor, maxFontSize, minFontSize, whiteColor} from "../../common/styles"
 import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize,setSpText} from "../../common/screenUtil";
 import PlanList from "./tabs/PlanList";
 import Feedback from "./tabs/Feedback";
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: scaleSize(20),
         flex: 1,
         color: whiteColor,
-        fontSize: setSpText(18),
+        fontSize: minFontSize,
     },
     search_btn: {
         marginTop: scaleSize(30),
