@@ -3,13 +3,13 @@
 * */
 
 import React from "react";
-import {StyleSheet, View, Image, Text, AsyncStorage, Platform, TouchableOpacity} from "react-native";
-import {Button, Content, Icon, Left, List, ListItem, Right, Item, Input} from "native-base";
+import { StyleSheet, View, Image, Text, AsyncStorage, Platform, TouchableOpacity } from "react-native";
+import { Button, Content, Icon, Left, List, ListItem, Right, Item, Input } from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import {whiteColor} from "../common/styles";
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
-import {showToast} from "../common/util";
+import { whiteColor, mainFontSize, minFontSize } from "../common/styles";
+import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize, setSpText } from "../common/screenUtil";
+import { showToast } from "../common/util";
 import commonStyle from "../common/commStyle";
 
 class SearchModal extends React.Component {
@@ -25,7 +25,7 @@ class SearchModal extends React.Component {
     if (nextProps.isOpen) {
       let list = await AsyncStorage.getItem('shop_store_search');
       console.log(list);
-      this.setState({historyList: JSON.parse(list)})
+      this.setState({ historyList: JSON.parse(list) })
     }
   }
 
@@ -56,16 +56,16 @@ class SearchModal extends React.Component {
     let result = await AsyncStorage.getItem("shop_store_search");
     result = JSON.parse(result);
     result.splice(index, 1);
-    this.setState({historyList: result});
+    this.setState({ historyList: result });
     AsyncStorage.setItem("shop_store_search", JSON.stringify(result));
   }
 
   render() {
     return (
       <Modal isVisible={this.props.isOpen}
-             onSwipe={this.props.close}
-             onBackdropPress={this.props.close}
-             style={styles.modal}
+        onSwipe={this.props.close}
+        onBackdropPress={this.props.close}
+        style={styles.modal}
       >
         <View style={styles.modal_center}>
           <View style={[styles.modal_text_input, commonStyle.borderBottom]}>
@@ -76,9 +76,9 @@ class SearchModal extends React.Component {
                 editable={true}//是否可编辑
                 style={styles.input_style}//input框的基本样式
                 value={this.state.value}
-                onChangeText={(value) => {
-                  this.setState({value})
-                }}//输入框改变触发的函数
+                onEndEditing={(evt) => {
+                  this.setState({ value:evt.nativeEvent.text });
+                }}
               />
             </View>
             <TouchableOpacity
@@ -87,7 +87,7 @@ class SearchModal extends React.Component {
               onPress={this.searchText}
             >
               <Image
-                style={{width: scaleSize(84), height: scaleSize(84)}}
+                style={{ width: scaleSize(84), height: scaleSize(84) }}
                 source={require("../assets/resource/common/icon_search.png")}
               />
             </TouchableOpacity>
@@ -95,7 +95,7 @@ class SearchModal extends React.Component {
           <Content style={styles.search_history}>
             <List>{this.searchHistory()}</List>
           </Content>
-          {Platform.OS === 'ios' && <KeyboardSpacer/>}
+          {Platform.OS === 'ios' && <KeyboardSpacer />}
         </View>
       </Modal>
     )
@@ -103,23 +103,23 @@ class SearchModal extends React.Component {
 
   searchHistory = () => this.state.historyList && this.state.historyList.map((item, index) => (
     <ListItem key={item} onPress={async () => {
-      await this.setState({value: item})
+      await this.setState({ value: item })
       this.searchText();
     }}>
       <Left>
-        <Text style={{color: '#666', fontSize: 18}}>{item}</Text>
+        <Text style={{ color: '#666', fontSize: mainFontSize }}>{item}</Text>
       </Left>
       <Right>
         <TouchableOpacity
           activeOpacity={0.9}
-          style={[styles.item_close, {padding: scaleSize(20)}]}
+          style={[styles.item_close, { padding: scaleSize(20) }]}
           onPress={() => {
             this.deleteSearchHistory(index)
           }}
         >
           <Image
             style={styles.item_close}
-            source={require("../assets/resource/shop/icon_close.png")}/>
+            source={require("../assets/resource/shop/icon_close.png")} />
         </TouchableOpacity>
       </Right>
     </ListItem>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     //paddingHorizontal: scaleSize(20),
     //flex: 1,
     color: '#000',
-    fontSize: 14,
+    fontSize: minFontSize,
     width: scaleSize(535),
     height: scaleSize(64),
     borderStyle: 'solid',

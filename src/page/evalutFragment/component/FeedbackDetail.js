@@ -2,16 +2,16 @@
  * 列外详情
  * */
 import React from "react";
-import {StyleSheet, View, Text, Image, TouchableOpacity, AsyncStorage, BackHandler} from "react-native";
-import {Content, List, ListItem, Left, Right, Button, Item, Input} from "native-base"
+import {StyleSheet, View, Text, Image, TouchableOpacity, BackHandler} from "react-native";
+import {Content, List, ListItem, Left, Right, Item, Input} from "native-base"
 import Header from "../../../components/Header";
-import {scaleSize} from "../../../common/screenUtil";
+import {scaleSize,setSpText} from "../../../common/screenUtil";
 import commonStyle from "../../../common/commStyle"
 import {BASE_URL} from "../../../config/config";
 import {showToast} from "../../../common/util";
 import ImagePicker from "react-native-image-picker"
 import {exceptionFollow, exceptionSave, uploadImage} from "../../../api/evaluReq";
-import {dangerColor, garyColor, whiteColor} from "../../../common/styles";
+import {dangerColor, whiteColor} from "../../../common/styles";
 import CustomImage from "../../../components/CustomImage";
 
 /*mobx*/
@@ -205,9 +205,13 @@ export default class FeedbackDetail extends React.Component {
                       editable={true}//是否可编辑
                       style={[styles.inputStyle, commonStyle.borderBottom]}//input框的基本样式
                       value={this.state.value}
-                      onChangeText={(value) => {
-                        this._changeText(value)
-                      }}//输入框改变触发的函数
+                      onEndEditing={(evt) => {
+                        //this.setState({ text:evt.nativeEvent.text });
+                        this._changeText(evt.nativeEvent.text)
+                      }}
+                      //onChangeText={(value) => {
+                        //this._changeText(value)
+                      //}}//输入框改变触发的函数
                     />
                   </Item>
                 </View>
@@ -295,7 +299,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 18,
+    fontSize: setSpText(18),
   },
   content: {},
   image_wrap: {

@@ -2,14 +2,14 @@
  * 引导页
  * */
 import React from "react"
-import {StyleSheet, StatusBar, View, Text, Image, AsyncStorage} from "react-native"
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
-import {getInfo} from "../api/HttpSend";
-import {showToast} from "../common/util"
+import { StyleSheet, StatusBar, View, Text, Image, AsyncStorage } from "react-native"
+import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize, setSpText } from "../common/screenUtil";
+import { getInfo } from "../api/HttpSend";
+import { showToast } from "../common/util"
 
 /*mobx*/
-import {observer, inject} from 'mobx-react'
-import {action} from 'mobx'
+import { observer, inject } from 'mobx-react'
+import { action } from 'mobx'
 
 @inject('store')
 @observer
@@ -41,7 +41,7 @@ export default class BootPage extends React.Component {
     down = async () => {
         if (this.state.downTimer > 0) {
             this.timer = setTimeout(() => {
-                this.setState({downTimer: this.state.downTimer - 1})
+                this.setState({ downTimer: this.state.downTimer - 1 })
                 this.down();
             }, 1000)
         } else {
@@ -65,9 +65,9 @@ export default class BootPage extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={true}/>
-                <View style={{paddingBottom: scaleSize(500)}}>
-                    <Image style={styles.logoImg} source={require("../assets/resource/login/logo.png")}/>
+                <StatusBar hidden={true} />
+                <View style={{ paddingBottom: scaleSize(500) }}>
+                    <Image style={styles.logoImg} source={require("../assets/resource/login/logo.png")} />
                     <Text style={styles.title}>易售通</Text>
                 </View>
                 <Text style={styles.downTimer}>{this.downTimer}</Text>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     title: {
         textAlign: 'center',
-        fontSize: scaleSize(32),
+        fontSize: setSpText(32),
     },
     downTimer: {
         position: 'absolute',

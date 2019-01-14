@@ -1,9 +1,9 @@
 /*
 * 公用样式函数
 * */
-import {StyleSheet} from "react-native"
-import {scaleSize} from "./screenUtil";
-import {lightGaryColor} from "./styles";
+import { StyleSheet } from "react-native"
+import { scaleSize, setSpText } from "./screenUtil";
+import { lightGaryColor, minFontSize } from "./styles";
 
 export default StyleSheet.create({
   borderTopBottom: {
@@ -20,6 +20,6 @@ export default StyleSheet.create({
   },
   color_back: {
     color: '#000',
-    fontSize: 16,
+    fontSize: minFontSize,
   }
 })

@@ -4,8 +4,8 @@
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
 import {Separator} from "native-base"
-import {scaleSize} from "../../../common/screenUtil";
-import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
+import {scaleSize,setSpText} from "../../../common/screenUtil";
+import {garyColor, lightGaryColor, mainColor, whiteColor, maxFontSize, minFontSize, mainFontSize} from "../../../common/styles"
 import {getStoreHistory} from "../../../api/evaluReq";
 import EvalutEnd from "../component/EvalutEnd";
 import {timerify} from "../../../common/util";
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   },
   top_txt: {
     marginLeft: scaleSize(40),
-    fontSize: 18,
+    fontSize: maxFontSize,
     color: '#000',
   },
   head: {
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   head_title: {
     flex: 1,
-    fontSize: 18,
+    fontSize: maxFontSize,
     color: '#000',
   },
   eval_icon: {
@@ -230,11 +230,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   desc: {
-    fontSize: 16,
+    fontSize: mainFontSize,
     color: '#252525'
   },
   time: {
     color: garyColor,
-    fontSize: 13,
+    fontSize: minFontSize,
   }
 })

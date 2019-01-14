@@ -8,7 +8,7 @@ import ScrollableTabView, {DefaultTabBar, ScrollableTabBar,} from 'react-native-
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"
 import {garyColor, mainColor, whiteColor} from "../../common/styles"
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../common/screenUtil";
+import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize,setSpText} from "../../common/screenUtil";
 import PlanList from "./tabs/PlanList";
 import Feedback from "./tabs/Feedback";
 import Recording from "./tabs/Recording";
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: scaleSize(20),
         flex: 1,
         color: whiteColor,
-        fontSize: 18,
+        fontSize: setSpText(18),
     },
     search_btn: {
         marginTop: scaleSize(30),

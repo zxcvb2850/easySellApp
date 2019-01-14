@@ -2,16 +2,16 @@
  * 已完结的项目
  * */
 import React from "react";
-import {StyleSheet, View, Text, Image} from "react-native"
-import {Content, List, ListItem, Separator, Left, Right} from "native-base"
+import { StyleSheet, View, Text, Image } from "react-native"
+import { Content, List, ListItem, Separator, Left, Right } from "native-base"
 import Header from "../../../components/Header";
-import {getHistoryDetail} from "../../../api/evaluReq"
-import {backgroundColor, headerColor, lightGaryColor, whiteColor} from "../../../common/styles"
+import { getHistoryDetail } from "../../../api/evaluReq"
+import { backgroundColor, headerColor, lightGaryColor, whiteColor, maxFontSize } from "../../../common/styles"
 import Accordion from 'react-native-collapsible/Accordion'
-import {classify} from "../../../common/util"
+import { classify } from "../../../common/util"
 import commonStyle from "../../../common/commStyle"
-import {scaleSize} from "../../../common/screenUtil"
-import {BASE_URL} from "../../../config/config";
+import { scaleSize, setSpText } from "../../../common/screenUtil"
+import { BASE_URL } from "../../../config/config";
 import CustomImage from "../../../components/CustomImage";
 
 export default class EvalutEnd extends React.Component {
@@ -58,19 +58,19 @@ export default class EvalutEnd extends React.Component {
   }
 
   _updateSections = activeSections => {
-    this.setState({activeSections});
+    this.setState({ activeSections });
   };
 
   render() {
-    let {params} = this.props.navigation.state
+    let { params } = this.props.navigation.state
     return (
       <View style={styles.container}>
-        <Header isBack title={"考评详情"}/>
+        <Header isBack title={"考评详情"} />
+        <Separator bordered style={{ height: scaleSize(120), backgroundColor: whiteColor }}>
+          <Text style={[commonStyle.color_back, { fontSize: maxFontSize }]}>{this.state.storeInfo.storeName}</Text>
+        </Separator>
         <Content style={styles.container}>
           <List style={styles.header_desc}>
-            <Separator bordered style={{height: scaleSize(120), backgroundColor: whiteColor}}>
-              <Text style={[commonStyle.color_back, {fontSize: 18}]}>{this.state.storeInfo.storeName}</Text>
-            </Separator>
             <ListItem style={styles.header_item}>
               <Text>检查项目：{this.state.storeEvalut.length}</Text>
             </ListItem>
@@ -96,7 +96,7 @@ export default class EvalutEnd extends React.Component {
           </List>
 
           <Accordion
-            style={{backgroundColor: whiteColor}}
+            style={{ backgroundColor: whiteColor }}
             sections={this.state.storeEvalut}
             activeSections={this.state.activeSections}
             renderHeader={this._renderHeader}
@@ -118,8 +118,8 @@ export default class EvalutEnd extends React.Component {
         }]}>
         <Text style={[commonStyle.color_back, styles.header_text]}>{section.projectType}</Text>
         <Image style={[styles.icon_show, {
-          transform: [{rotate: !isActive ? '0deg' : '90deg'}]
-        }]} source={require("../../../assets/resource/evalut/icon_show.png")}/>
+          transform: [{ rotate: !isActive ? '0deg' : '90deg' }]
+        }]} source={require("../../../assets/resource/evalut/icon_show.png")} />
       </View>
     );
   }
@@ -128,7 +128,7 @@ export default class EvalutEnd extends React.Component {
     return section.data.map((item) => (
       <View key={item.reviewProjectId}>
         <View>
-          <ListItem style={{height: scaleSize(60)}}>
+          <ListItem style={{ height: scaleSize(60) }}>
             <Text style={commonStyle.color_back}>{item.projectCode}</Text>
           </ListItem>
           {/*<ListItem><Text>{item.projectData}</Text></ListItem>*/}
@@ -167,13 +167,13 @@ export default class EvalutEnd extends React.Component {
             marginLeft: scaleSize(20 * i > 1 ? 1 : 0)
           }}
         >
-          <View style={{padding: scaleSize(20), paddingBottom: scaleSize(0)}}>
+          <View style={{ padding: scaleSize(20), paddingBottom: scaleSize(0) }}>
             <Text style={styles.colofollowListr_red}>{v.follower}：{v.followDesc}</Text>
             <View styles={styles.image_wrap}>
               {v.followPhotos && this.showImage(v.followPhotos)}
             </View>
           </View>
-          <ListItem style={{height: scaleSize(60)}}>
+          <ListItem style={{ height: scaleSize(60) }}>
             <Left>
               <Text>{v.createTime}</Text>
             </Left>
@@ -187,7 +187,7 @@ export default class EvalutEnd extends React.Component {
 
   showImage = (value) => {
     let imgs = value.split(",");
-    return imgs.map((item, index) => <CustomImage key={index} image={item} style={styles.image}/>)
+    return imgs.map((item, index) => <CustomImage key={index} image={item} style={styles.image} />)
   }
 }
 
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     borderLeftColor: headerColor,
     borderLeftWidth: scaleSize(4),
     borderStyle: 'solid',
-    fontSize: 18
+    fontSize: setSpText(18)
   },
   icon_show: {
     width: scaleSize(45),
@@ -264,6 +264,6 @@ const styles = StyleSheet.create({
   header_item: {
     paddingLeft: scaleSize(20),
     marginRight: scaleSize(20),
-    height: scaleSize(80)
+    height: scaleSize(100)
   },
 })

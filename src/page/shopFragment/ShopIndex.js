@@ -10,21 +10,17 @@ import {
   TouchableOpacity,
   FlatList,
   RefreshControl,
-  AsyncStorage,
-  BackHandler,
 } from "react-native"
 import Header from "../../components/Header"
-import {garyColor, headColor, headerColor, mainColor, whiteColor} from "../../common/styles"
-import {Drawer, Button, List, ListItem, Left, Right, Icon, Content, Input} from "native-base"
+import {garyColor, headColor, whiteColor, maxFontSize} from "../../common/styles"
+import {Drawer, Button} from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
 import {scaleSize} from "../../common/screenUtil";
 import {dialPhone, showToast} from "../../common/util"
 import DeployStatus from "../../components/DeployStatus";
 import StoreStatus from "../../components/StoreStatus";
 import {getOrgList, getStoreList, isCollection, getAlarmList} from "../../api/storeReq";
-import EvalutDetails from "../evalutFragment/component/EvalutDetails";
 import SearchModal from "../../components/SearchModal"
-import LoadModal from "../../common/loadModal";
 
 export default class DynamicIndex extends React.Component {
   componentWillUnmount() {
@@ -508,7 +504,7 @@ const styles = StyleSheet.create({
   body_footer: {},
 
   drawer_text: {
-    fontSize: 18,
+    fontSize: maxFontSize,
   },
 
   filter_item: {

@@ -5,7 +5,7 @@
 import React from "react"
 import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from "react-native"
 import {withNavigation} from "react-navigation"
-import {scaleSize} from "../common/screenUtil"
+import {scaleSize,setSpText} from "../common/screenUtil"
 import {headerColor, whiteColor} from "../common/styles";
 
 /*mobx*/
@@ -58,7 +58,7 @@ class Header extends React.Component {
                         : null
                 }
                 <View style={[styles.title, {backgroundColor: backgroundColor ? backgroundColor : headerColor}]}>
-                    <Text style={{color: whiteColor, fontSize: scaleSize(38)}}>{this.props.title}</Text>
+                    <Text style={{color: whiteColor, fontSize: setSpText(38)}}>{this.props.title}</Text>
                 </View>
                 {this.props.children}
             </View>

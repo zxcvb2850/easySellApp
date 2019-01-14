@@ -5,8 +5,8 @@ import React from "react";
 import {StyleSheet, View, Text} from "react-native";
 import {Content} from "native-base"
 import Header from "../../../components/Header";
-import {scaleSize} from "../../../common/screenUtil";
-import {lightGaryColor, whiteColor} from "../../../common/styles";
+import {scaleSize,setSpText} from "../../../common/screenUtil";
+import {lightGaryColor, whiteColor, maxFontSize} from "../../../common/styles";
 
 const AlarmList = ({navigation}) => {
   const {params} = navigation.state;
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   title_text: {
     color: '#000',
-    fontSize: 18,
+    fontSize: maxFontSize,
   },
   content: {
     paddingHorizontal: scaleSize(30),

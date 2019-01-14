@@ -16,7 +16,7 @@ import {
 import {Content, List, ListItem, Left, Body, Right, Radio, Button, Item, Input} from "native-base";
 import Header from "../../../components/Header";
 import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
-import {garyColor, lightGaryColor, whiteColor} from "../../../common/styles";
+import {garyColor, lightGaryColor, whiteColor, maxFontSize, minFontSize} from "../../../common/styles";
 import {BASE_URL} from "../../../config/config";
 import {saveSingle, uploadImage} from "../../../api/evaluReq";
 import {showToast} from "../../../common/util";
@@ -249,7 +249,7 @@ export default class EvalutItem extends React.Component {
     return (
       <View style={styles.container}>
         <Header isBack={this.onBackPress} title={"考评详情"}/>
-        <ListItem style={{height: scaleSize(90)}}><Text style={{color: '#000', fontSize: 18}}>{params.storeName}</Text></ListItem>
+        <ListItem style={{height: scaleSize(100)}}><Text style={{color: '#000', fontSize: maxFontSize}}>{params.storeName}</Text></ListItem>
         <View style={{flex: 1, paddingHorizontal: scaleSize(10)}}>
           <Content style={styles.center}>
             {this.state.list[this.state.index] && this.showHeader()}
@@ -297,7 +297,7 @@ export default class EvalutItem extends React.Component {
               style={styles.select_item}
             >
               <Left>
-                <Text>正常</Text>
+                <Text style={{fontSize:minFontSize}}>正常</Text>
               </Left>
               <Right>
                 <Radio
@@ -314,7 +314,7 @@ export default class EvalutItem extends React.Component {
               style={styles.select_item}
             >
               <Left>
-                <Text>例外</Text>
+                <Text style={{fontSize:minFontSize}}>例外</Text>
               </Left>
               <Right>
                 <Radio
@@ -331,7 +331,7 @@ export default class EvalutItem extends React.Component {
               style={styles.select_item}
             >
               <Left>
-                <Text>不适用</Text>
+                <Text style={{fontSize:minFontSize}}>不适用</Text>
               </Left>
               <Right>
                 <Radio
@@ -550,6 +550,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5'
   },
   select_item: {
-    height: scaleSize(80),
+    height: scaleSize(90),
   }
 })

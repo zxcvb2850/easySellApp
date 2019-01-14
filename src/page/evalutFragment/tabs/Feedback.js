@@ -3,10 +3,10 @@
  * */
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
-import {Separator, ListItem, Left, Right} from "native-base"
-import {scaleSize} from "../../../common/screenUtil";
-import {garyColor, lightGaryColor, mainColor, whiteColor} from "../../../common/styles"
-import {exceptionList, getExceptionList} from "../../../api/evaluReq";
+import {ListItem, Left, Right} from "native-base"
+import {scaleSize,setSpText} from "../../../common/screenUtil";
+import {lightGaryColor, mainColor, maxFontSize, minFontSize} from "../../../common/styles"
+import {getExceptionList} from "../../../api/evaluReq";
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   head_title: {
     flex: 1,
-    fontSize: 18,
+    fontSize: maxFontSize,
     color: '#000',
   },
   eval_icon: {
@@ -199,6 +199,6 @@ const styles = StyleSheet.create({
     //fontSize: 16,
   },
   time: {
-    fontSize: 13,
+    fontSize: minFontSize,
   }
 })

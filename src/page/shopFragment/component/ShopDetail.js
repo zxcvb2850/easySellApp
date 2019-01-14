@@ -5,8 +5,8 @@ import React from "react"
 import {StyleSheet, View, Text, Image, Linking, TouchableOpacity} from "react-native"
 import {List, ListItem, Button, Content} from "native-base"
 import Header from "../../../components/Header"
-import {scaleSize} from "../../../common/screenUtil"
-import {garyColor, lightGaryColor, minFontSize, whiteColor} from "../../../common/styles"
+import {scaleSize,setSpText} from "../../../common/screenUtil"
+import {garyColor, lightGaryColor, minFontSize, whiteColor, maxFontSize} from "../../../common/styles"
 import {dialPhone, showToast, timerSplice} from "../../../common/util"
 import StoreStatus from "../../../components/StoreStatus";
 import DeployStatus from "../../../components/DeployStatus";
@@ -72,7 +72,7 @@ export default class ShopDetail extends React.Component {
         <Content style={{flex: 1}}>
           <View style={styles.list}>
             <View style={[styles.list_item, styles.first]}>
-              <Text style={[styles.color_back, {fontSize: 18}]}>{params.storeName}</Text>
+              <Text style={[styles.color_back, {fontSize: maxFontSize}]}>{params.storeName}</Text>
             </View>
             <View style={[styles.list_item]}>
               <Image style={styles.icon} source={require("../../../assets/resource/shop/icon_addr.png")}/>
