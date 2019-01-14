@@ -68,11 +68,11 @@ export default class ShopDetail extends React.Component {
     const {params} = this.props.navigation.state;
     return (
       <View style={styles.container}>
-        <Header isBack title={`店铺${params.storeName}详情`}/>
+        <Header isBack title={`店铺详情`}/>
         <Content style={{flex: 1}}>
           <View style={styles.list}>
             <View style={[styles.list_item, styles.first]}>
-              <Text style={styles.color_back}>基本信息</Text>
+              <Text style={[styles.color_back, {fontSize: 18}]}>{params.storeName}</Text>
             </View>
             <View style={[styles.list_item]}>
               <Image style={styles.icon} source={require("../../../assets/resource/shop/icon_addr.png")}/>
@@ -102,7 +102,7 @@ export default class ShopDetail extends React.Component {
               this.state.linkmanList.length ? this.state.linkmanList.map(item => (
                   <View style={[styles.list_item]} key={item.storeLinkmanId}>
                     {
-                      item.position === '店员'?
+                      item.position === '店员' ?
                         <Image style={styles.icon}
                                source={require("../../../assets/resource/shop/icon_number.png")}/>
                         :

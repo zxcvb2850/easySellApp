@@ -90,6 +90,7 @@ export default class ShowVideo extends React.Component {
       captureStatus: false,//截图的状态
       resetIosVideo: null,//初始化ios视频
       isVideoStart: false,//视频获取中
+      videoInit: true,
     }
     this._getVideoList(props.navigation.state.params.storeId)
     this.screenFull = this.screenFull.bind(this)
@@ -121,9 +122,9 @@ export default class ShowVideo extends React.Component {
   videoChannel = async (item) => {
     await this.setState({resetIosVideo: (Math.random() * 1000) + "", isVideoStart: true})
     let result = await getVideoDetail(item.channelId)
-    console.log('=========', result)
-    if (result.code !== 200) {
+    if (result.code !== 0) {
       showToast(result.msg, 'error')
+      this.setState({videoInit: false})
     } else {
       result = result.preview
       if (result.address) {
@@ -144,14 +145,19 @@ export default class ShowVideo extends React.Component {
         }
       } else {
         showToast('暂无视频数据', 'error')
+        this.setState({videoInit: false})
       }
     }
     this.setState({nowVideo: item, isVideoStart: false})
   }
 
   gotoEvalut = async () => {
+    const {params} = this.props.navigation.state;
     await this.setState({resetIosVideo: (Math.random() * 1000) + ""})
-    this.props.navigation.navigate("EvalutDetails", {storeId: this.props.navigation.state.params.storeId})
+    this.props.navigation.navigate("EvalutDetails", {
+      storeId: this.props.navigation.state.params.storeId,
+      storeName: params.storeName
+    })
   }
 
   submitScreen = async () => {
@@ -163,6 +169,69 @@ export default class ShowVideo extends React.Component {
       showToast("图片获取失败", "error");
     }
     await this.setState({isShowScreen: false})
+  }
+
+  screenHandle = async () => {
+    if (this.state.isFull) {
+      showToast('请竖屏截图')
+    } else {
+      const _this = this
+      await this.setState({captureStatus: true})
+      if (Platform.OS === 'ios') {
+        let dirPath = RNFS.LibraryDirectoryPath
+        let imgName = imageName()
+        let downpath = dirPath + '/' + imgName
+
+        this.setState({captureImage: downpath})
+        setTimeout(() => {
+          RNFS.exists('file://' + downpath)
+            .then((res) => {
+              if (res) {
+                this.setState({
+                  captureStatus: false,
+                  captureImage: null,
+                  screenImage: 'file://' + downpath,
+                  isShowScreen: true
+                })
+              } else {
+                imgError()
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+              imgError()
+            })
+
+          function imgError() {
+            showToast('图片保存失败', 'error')
+            _this.setState({
+              captureStatus: false,
+              captureImage: null,
+            })
+          }
+        }, 2000)
+        /*saveImage.then((res) => {
+          console.log('------',res)
+          this.setState({
+            captureImage: null,
+            screenImage: res,
+            isShowScreen: true
+          })
+        }).catch((err) => {
+          console.log(err)
+          showToast('图片保存失败', 'error')
+          this.setState({captureImage: null})
+        })*/
+
+      } else {
+        if (this.state.videoInit) {
+          this.setState({isScreen: 100})
+        } else {
+          showToast('截图失败', 'error')
+          this.setState({captureStatus: false})
+        }
+      }
+    }
   }
 
   render() {
@@ -228,59 +297,7 @@ export default class ShowVideo extends React.Component {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
-                onPress={async () => {
-                  const _this = this
-                  await this.setState({captureStatus: true})
-                  if (Platform.OS === 'ios') {
-                    let dirPath = RNFS.LibraryDirectoryPath
-                    let imgName = imageName()
-                    let downpath = dirPath + '/' + imgName
-
-                    this.setState({captureImage: downpath})
-                    setTimeout(() => {
-                      RNFS.exists('file://' + downpath)
-                        .then((res) => {
-                          if (res) {
-                            this.setState({
-                              captureStatus: false,
-                              captureImage: null,
-                              screenImage: 'file://' + downpath,
-                              isShowScreen: true
-                            })
-                          } else {
-                            imgError()
-                          }
-                        })
-                        .catch((err) => {
-                          console.log(err)
-                          imgError()
-                        })
-
-                      function imgError() {
-                        showToast('图片保存失败', 'error')
-                        _this.setState({
-                          captureStatus: false,
-                          captureImage: null,
-                        })
-                      }
-                    }, 2000)
-                    /*saveImage.then((res) => {
-                      console.log('------',res)
-                      this.setState({
-                        captureImage: null,
-                        screenImage: res,
-                        isShowScreen: true
-                      })
-                    }).catch((err) => {
-                      console.log(err)
-                      showToast('图片保存失败', 'error')
-                      this.setState({captureImage: null})
-                    })*/
-
-                  } else {
-                    this.setState({isScreen: 100})
-                  }
-                }}>
+                onPress={this.screenHandle}>
                 <Image style={styles.video_icon}
                        source={require("../../../assets/resource/shop/icon_screen.png")}/>
               </TouchableOpacity>
@@ -371,13 +388,14 @@ const styles = StyleSheet.create({
   },
   video: {
     position: 'relative',
-    height: scaleSize(456),
+    height: scaleSize(536),
     backgroundColor: '#000',
     zIndex: 1000
   },
   video_center: {
     position: 'absolute',
     top: 0,
+    bottom: scaleSize(80),
     left: 0,
     right: 0,
   },

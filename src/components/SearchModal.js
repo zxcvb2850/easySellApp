@@ -81,15 +81,16 @@ class SearchModal extends React.Component {
                 }}//输入框改变触发的函数
               />
             </View>
-            <Button style={styles.search_btn} onPress={this.searchText}>
-              <Icon name="search" style={{
-                marginTop: scaleSize(10),
-                marginLeft: scaleSize(60),
-                width: scaleSize(64),
-                height: scaleSize(64),
-                color: whiteColor
-              }}/>
-            </Button>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={styles.search_btn}
+              onPress={this.searchText}
+            >
+              <Image
+                style={{width: scaleSize(84), height: scaleSize(84)}}
+                source={require("../assets/resource/common/icon_search.png")}
+              />
+            </TouchableOpacity>
           </View>
           <Content style={styles.search_history}>
             <List>{this.searchHistory()}</List>
@@ -170,14 +171,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fcfcfc',
   },
   search_btn: {
-    marginTop: scaleSize(30),
+    // marginTop: scaleSize(30),
     marginLeft: scaleSize(26),
-    justifyContent: 'center',
-    alignItems: 'center',
     width: scaleSize(84),
     height: scaleSize(84),
-    borderRadius: scaleSize(20),
-    backgroundColor: '#3898f1',
   },
   search_history: {
     flex: 1,

@@ -83,10 +83,16 @@ export default class EvalutEnd extends React.Component {
             <ListItem style={styles.header_item}>
               <Text>不适用数：{this.state.not}</Text>
             </ListItem>
-            <ListItem style={{height: scaleSize(120)}}>
-              <Left><Text>{this.state.storeInfo.updateTime}</Text></Left>
-              <Right><Text>操作人：{this.state.storeInfo.reviewer}</Text></Right>
-            </ListItem>
+            <View style={{
+              paddingVertical: scaleSize(20),
+              marginHorizontal: scaleSize(40),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              height: scaleSize(120)
+            }}>
+              <Text>{this.state.storeInfo.updateTime}</Text>
+              <Text>操作人：{this.state.storeInfo.reviewer}</Text>
+            </View>
           </List>
 
           <Accordion
@@ -126,7 +132,7 @@ export default class EvalutEnd extends React.Component {
             <Text style={commonStyle.color_back}>{item.projectCode}</Text>
           </ListItem>
           {/*<ListItem><Text>{item.projectData}</Text></ListItem>*/}
-          <ListItem style={{height: scaleSize(60)}}><Text>{item.projectRequire}</Text></ListItem>
+          <ListItem><Text>{item.projectRequire}</Text></ListItem>
           <View style={styles.image_wrap}>
             {
               item.photos && item.photos.split(',').map(v => (

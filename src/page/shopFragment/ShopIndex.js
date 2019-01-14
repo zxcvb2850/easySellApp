@@ -100,13 +100,22 @@ export default class DynamicIndex extends React.Component {
 
   /*全部*/
   allClick = async () => {
+    const list = this.state.filterList
+    resetSelect(list)
     let filter = {
       sidx: '',
       order: '',
       storeCode: '',
     }
-    await this.setState({filter, value: ""})
+    await this.setState({filter, value: "", filterList: list, isCollect: false})
     this._getStoreList();
+
+    function resetSelect(arr) {
+      arr.forEach((v, i) => {
+        arr[i].isSelect = false
+        v.list.length && resetSelect(v.list)
+      })
+    }
   }
   /*是否收藏*/
   collection = async () => {
@@ -126,6 +135,7 @@ export default class DynamicIndex extends React.Component {
   filter = async () => {
     if (!this.state.filterList.length) {
       let result = await getOrgList()
+      console.log(result.orgList)
       this.setState({filterList: result.orgList})
     }
 
@@ -162,7 +172,6 @@ export default class DynamicIndex extends React.Component {
   clickFilterItem = (item) => {
     if (item.parentId > -1) {
       let list = this.state.filterList;
-      console.log(item.orgId)
       isSelect(list)
       let filter = {
         sidx: '',
@@ -269,7 +278,7 @@ export default class DynamicIndex extends React.Component {
             this.searchText(value)
           }}
         />
-        <LoadModal status={this.state.isLoading}/>
+        {/*<LoadModal status={this.state.isLoading}/>*/}
       </Drawer>
     )
   }
@@ -278,10 +287,12 @@ export default class DynamicIndex extends React.Component {
     <TouchableOpacity
       activeOpacity={0.9}
       onPress={() => this.clickFilterItem(item)}
-      key={item.orgId} style={{
-      paddingLeft: scaleSize((item.parentId + 1) * 10),
-      backgroundColor: item.isSelect ? '#D0E8FE' : '#FFF',
-    }}>
+      key={item.orgId}
+      style={{
+        paddingLeft: item.parentId < 0 ? scaleSize(10) : scaleSize((item.parentId + 1) * 10),
+        backgroundColor: item.isSelect ? '#D0E8FE' : '#FFF',
+      }}
+    >
       <View style={[styles.filter_item, {
         borderBottomColor: item.orgId === 0 ? '#d6d7dc' : 'transparent',
         borderBottomWidth: scaleSize(2),

@@ -154,11 +154,11 @@ export function checkResult(status) {
       break;
     case 3:
       str = "列外";
-      color = dangerColor;
+      color = warringColor;
       break;
     case 4:
       str = "不适用";
-      color = warringColor;
+      color = dangerColor;
       break;
   }
   return { str, color };
