@@ -76,8 +76,8 @@ class SearchModal extends React.Component {
                 editable={true}//是否可编辑
                 style={styles.input_style}//input框的基本样式
                 value={this.state.value}
-                onEndEditing={(evt) => {
-                  this.setState({ value:evt.nativeEvent.text });
+                onChangeText={(value) => {
+                  this.setState({ value })
                 }}
               />
             </View>
@@ -102,17 +102,23 @@ class SearchModal extends React.Component {
   }
 
   searchHistory = () => this.state.historyList && this.state.historyList.map((item, index) => (
-    <ListItem key={item} onPress={async () => {
-      await this.setState({ value: item })
-      this.searchText();
-    }}>
+    <ListItem key={item}>
       <Left>
-        <Text style={{ color: '#666', fontSize: mainFontSize }}>{item}</Text>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={{ flex: 1 }}
+          onPress={async () => {
+            await this.setState({ value: item })
+            this.searchText();
+          }}
+        >
+          <Text style={{ color: '#666', fontSize: mainFontSize }}>{item}</Text>
+        </TouchableOpacity>
       </Left>
       <Right>
         <TouchableOpacity
           activeOpacity={0.9}
-          style={[styles.item_close, { padding: scaleSize(20) }]}
+          style={[styles.item_close, { paddingHorizontal: scaleSize(10), paddingVertical: scaleSize(30) }]}
           onPress={() => {
             this.deleteSearchHistory(index)
           }}

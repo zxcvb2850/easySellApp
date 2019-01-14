@@ -272,12 +272,12 @@ const styles = StyleSheet.create({
   },
   show_data: {
     flex: 1,
-    height: scaleSize(444),
+    height: scaleSize(400),
     flexDirection: 'row',
   },
   cols: {
     flex: 1,
-    height: scaleSize(444),
+    height: scaleSize(400),
     alignItems: 'center',
     justifyContent: 'center',
   },

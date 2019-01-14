@@ -6,7 +6,7 @@ import { StyleSheet, View, Text, Image } from "react-native"
 import { Content, List, ListItem, Separator, Left, Right } from "native-base"
 import Header from "../../../components/Header";
 import { getHistoryDetail } from "../../../api/evaluReq"
-import { backgroundColor, headerColor, lightGaryColor, whiteColor, maxFontSize } from "../../../common/styles"
+import { backgroundColor, headerColor, lightGaryColor, whiteColor, maxFontSize, minFontSize } from "../../../common/styles"
 import Accordion from 'react-native-collapsible/Accordion'
 import { classify } from "../../../common/util"
 import commonStyle from "../../../common/commStyle"
@@ -66,9 +66,9 @@ export default class EvalutEnd extends React.Component {
     return (
       <View style={styles.container}>
         <Header isBack title={"考评详情"} />
-        <Separator bordered style={{ height: scaleSize(120), backgroundColor: whiteColor }}>
+        <View style={[commonStyle.borderBottom, { height: scaleSize(120), backgroundColor: whiteColor }]}>
           <Text style={[commonStyle.color_back, { fontSize: maxFontSize }]}>{this.state.storeInfo.storeName}</Text>
-        </Separator>
+        </View>
         <Content style={styles.container}>
           <List style={styles.header_desc}>
             <ListItem style={styles.header_item}>
@@ -128,7 +128,7 @@ export default class EvalutEnd extends React.Component {
     return section.data.map((item) => (
       <View key={item.reviewProjectId}>
         <View>
-          <ListItem style={{ height: scaleSize(60) }}>
+          <ListItem style={{ height: scaleSize(80) }}>
             <Text style={commonStyle.color_back}>{item.projectCode}</Text>
           </ListItem>
           {/*<ListItem><Text>{item.projectData}</Text></ListItem>*/}
@@ -159,26 +159,24 @@ export default class EvalutEnd extends React.Component {
     let renderList = null;
     if (item.followList.length) {
       renderList = item.followList.map((v, i) =>
-        <List
+        <View
           key={v.followId}
-          style={{
+          style={[commonStyle.borderBottom, {
             marginTop: scaleSize(10),
             backgroundColor: '#f5f5f5',
             marginLeft: scaleSize(20 * i > 1 ? 1 : 0)
-          }}
+          }]}
         >
           <View style={{ padding: scaleSize(20), paddingBottom: scaleSize(0) }}>
-            <Text style={styles.colofollowListr_red}>{v.follower}：{v.followDesc}</Text>
+            <Text style={{ fontSize: minFontSize }}>{v.follower}：<Text style={{ color: '#f00' }}>{v.followDesc}</Text></Text>
             <View styles={styles.image_wrap}>
               {v.followPhotos && this.showImage(v.followPhotos)}
             </View>
           </View>
-          <ListItem style={{ height: scaleSize(60) }}>
-            <Left>
-              <Text>{v.createTime}</Text>
-            </Left>
-          </ListItem>
-        </List>
+          <View style={{ height: scaleSize(80) }}>
+            <Text style={{ fontSize: minFontSize }}>{v.createTime}</Text>
+          </View>
+        </View>
       )
     }
 
@@ -240,12 +238,13 @@ const styles = StyleSheet.create({
     marginRight: scaleSize(20),
   },
   header_text: {
-    flex: 1,
+    alignItems: 'center',
     paddingLeft: scaleSize(12),
+    marginLeft: scaleSize(20),
     borderLeftColor: headerColor,
     borderLeftWidth: scaleSize(4),
     borderStyle: 'solid',
-    fontSize: setSpText(18)
+    fontSize: maxFontSize
   },
   icon_show: {
     width: scaleSize(45),

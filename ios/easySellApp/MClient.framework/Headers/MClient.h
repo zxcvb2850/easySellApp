@@ -18,7 +18,7 @@
  接口参数: length: 流媒体数据长度
  返回说明: 无
  */
--(void) ReceiveStream: (int) stream buffer: (unsigned char*) buffer length: (long) length;
+-(void) ReceiveStream: (int) stream buffer: (unsigned char*) buffer length: (int) length;
 
 @end
 
@@ -37,7 +37,7 @@
  接口参数: port: 服务器端口
  返回说明: 流索引
  */
--(int) Connect : (NSString*) server port:(long) port;
+-(int) Connect : (NSString*) server port:(int) port;
 
 /*接口功能: 打开流通道
  接口参数: stream: 流索引
@@ -46,7 +46,7 @@
  接口参数: dispose: 流处理器（实现MAVSStream协议）
  返回说明: 返回0表示连接成功, 返回值小于0表示失败，负值表示错误码
  */
--(int) OpenStream: (int) stream callid:(long long) callid resid:(long) resid dispose: (id) dispose;
+-(int) OpenStream: (int) stream callid:(long long) callid resid:(int) resid dispose: (id) dispose;
 
 /*接口功能: 关闭流通道
  接口参数: stream: 流索引

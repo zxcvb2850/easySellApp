@@ -527,12 +527,12 @@ const styles = StyleSheet.create({
   footer_btn: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-round',
     height: scaleSize(80),
   },
   btn_image: {
-    width: scaleSize(250),
-    height: scaleSize(90)
+    width: scaleSize(212),
+    height: scaleSize(76)
   },
   btn_txt: {
     // width: DEVICE_WIDTH / 2,
