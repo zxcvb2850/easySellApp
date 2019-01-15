@@ -1,7 +1,7 @@
 import React from "react"
 import {StyleSheet, Image, Text, TouchableOpacity, View} from "react-native"
 import {scaleSize} from "../common/screenUtil"
-import {whiteColor} from "../common/styles";
+import {fontSize18, whiteColor} from "../common/styles";
 
 const HeaderAttach = (props) => {
   return (
@@ -9,7 +9,7 @@ const HeaderAttach = (props) => {
       {
         props.all ?
           <View style={styles.head_left}>
-            <Text style={[styles.head_left_text, {paddingHorizontal: scaleSize(40)}]} onPress={props.all}>全部</Text>
+            <Text style={[styles.head_left_text, {paddingHorizontal: scaleSize(30)}]} onPress={props.all}>全部</Text>
           </View>
           : null
       }
@@ -23,9 +23,11 @@ const HeaderAttach = (props) => {
             >
               {
                 props.isCollect ?
-                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_search_yes.png")}/>
+                  <Image style={styles.icon}
+                         source={require("../assets/resource/shop/icon_collection_search_yes.png")}/>
                   :
-                  <Image style={styles.icon} source={require("../assets/resource/shop/icon_collection_search_not.png")}/>
+                  <Image style={styles.icon}
+                         source={require("../assets/resource/shop/icon_collection_search_not.png")}/>
               }
             </TouchableOpacity>
             : null
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
   },
   head_left_text: {
     color: whiteColor,
+    fontSize: fontSize18,
   },
   head_right: {
     position: 'absolute',

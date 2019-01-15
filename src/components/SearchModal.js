@@ -7,7 +7,7 @@ import { StyleSheet, View, Image, Text, AsyncStorage, Platform, TouchableOpacity
 import { Button, Content, Icon, Left, List, ListItem, Right, Item, Input } from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { whiteColor, mainFontSize, minFontSize } from "../common/styles";
+import { whiteColor, fontSize18, fontSize16 } from "../common/styles";
 import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize, setSpText } from "../common/screenUtil";
 import { showToast } from "../common/util";
 import commonStyle from "../common/commStyle";
@@ -112,7 +112,7 @@ class SearchModal extends React.Component {
             this.searchText();
           }}
         >
-          <Text style={{ color: '#666', fontSize: mainFontSize }}>{item}</Text>
+          <Text style={{ color: '#666', fontSize: fontSize18 }}>{item}</Text>
         </TouchableOpacity>
       </Left>
       <Right>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     //paddingHorizontal: scaleSize(20),
     //flex: 1,
     color: '#000',
-    fontSize: minFontSize,
+    fontSize: fontSize16,
     width: scaleSize(535),
     height: scaleSize(64),
     borderStyle: 'solid',

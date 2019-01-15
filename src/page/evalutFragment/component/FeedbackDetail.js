@@ -2,21 +2,21 @@
  * 列外详情
  * */
 import React from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity, BackHandler } from "react-native";
-import { Content, List, ListItem, Left, Right, Item, Input } from "native-base"
+import {StyleSheet, View, Text, Image, TouchableOpacity, BackHandler} from "react-native";
+import {Content, List, ListItem, Left, Right, Item, Input} from "native-base"
 import Header from "../../../components/Header";
-import { scaleSize, setSpText } from "../../../common/screenUtil";
+import {scaleSize, setSpText} from "../../../common/screenUtil";
 import commonStyle from "../../../common/commStyle"
-import { BASE_URL } from "../../../config/config";
-import { showToast } from "../../../common/util";
+import {BASE_URL} from "../../../config/config";
+import {showToast} from "../../../common/util";
 import ImagePicker from "react-native-image-picker"
-import { exceptionFollow, exceptionSave, uploadImage } from "../../../api/evaluReq";
-import { dangerColor, whiteColor } from "../../../common/styles";
+import {exceptionFollow, exceptionSave, uploadImage} from "../../../api/evaluReq";
+import {dangerColor, fontSize14, fontSize16, fontSize18, fontSize20, whiteColor} from "../../../common/styles";
 import CustomImage from "../../../components/CustomImage";
 
 /*mobx*/
-import { inject, observer } from "mobx-react";
-import { computed } from "mobx";
+import {inject, observer} from "mobx-react";
+import {computed} from "mobx";
 
 //图片选择器参数设置
 const options = {
@@ -52,7 +52,7 @@ export default class FeedbackDetail extends React.Component {
   }
 
   onBackPress = () => {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
     params.callback(true);
     this.props.navigation.goBack();
     return true;
@@ -70,16 +70,16 @@ export default class FeedbackDetail extends React.Component {
   }
 
   _exceptionFollow = async () => {
-    const { params } = this.props.navigation.state
+    const {params} = this.props.navigation.state
     let result = await exceptionFollow(params.reviewProjectId);
     console.log(result);
-    this.setState({ data: result.storeReviewProject })
+    this.setState({data: result.storeReviewProject})
   }
 
   /**/
   _changeText = (value) => {
     console.log(value)
-    this.setState({ value })
+    this.setState({value})
   }
 
   /*上传图片*/
@@ -103,7 +103,7 @@ export default class FeedbackDetail extends React.Component {
         showToast('上传成功', 'success')
         imgs.push(uri.imgUrl)
         imgArr = imgs.join(",")
-        this.setState({ imgs: imgArr })
+        this.setState({imgs: imgArr})
       }
     });
   }
@@ -115,7 +115,7 @@ export default class FeedbackDetail extends React.Component {
     let imgs = imgArr.split(",")
     imgs.splice(zIndex, 1)
     imgArr = imgs.join(",")
-    this.setState({ imgs: imgArr })
+    this.setState({imgs: imgArr})
   }
 
   /*保存*/
@@ -133,33 +133,34 @@ export default class FeedbackDetail extends React.Component {
     console.log(this.state.data.reviewProjectId, this.state.data.reviewId, this.state.data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value || "", this.state.imgs || "")
     await exceptionSave(this.state.data.reviewProjectId, this.state.data.reviewId, this.state.data.storeId, userInfo.userId, userInfo.fullname, bool ? 2 : 1, this.state.value || "", this.state.imgs || "")
     showToast("保存成功", "success")
-    await this.setState({ value: "", imgs: "" })
+    await this.setState({value: "", imgs: ""})
     this._exceptionFollow();
   }
 
   render() {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
 
     return (
-      <View style={{ flex: 1, backgroundColor: whiteColor }}>
-        <Header isBack={this.onBackPress} title={"例外跟踪"} />
-        <ListItem>
-          <Text style={[styles.color_back, { fontSize: 18 }]}>{params.storeName}</Text>
+      <View style={{flex: 1, backgroundColor: whiteColor}}>
+        <Header isBack={this.onBackPress} title={"例外跟踪"}/>
+        <ListItem itemDivider>
+          <Text style={[styles.color_back, {fontSize: fontSize20}]}>{params.storeName}</Text>
         </ListItem>
         <Content>
           <List>
             <ListItem>
               <Left>
-                <Text style={styles.color_back}>{this.state.data.projectType}</Text>
+                <Text style={[styles.color_back, {fontSize: fontSize18}]}>{this.state.data.projectType}</Text>
               </Left>
               <Right>
-                <Text style={{ color: '#F00' }}>不合格</Text>
+                <Text style={{color: '#F00', fontSize: fontSize18}}>不合格</Text>
               </Right>
             </ListItem>
             <Text style={[commonStyle.borderBottom, {
               marginHorizontal: scaleSize(40),
               paddingHorizontal: scaleSize(20),
               paddingVertical: scaleSize(30),
+              fontSize: fontSize16
             }]}>{this.state.data.projectRequire}</Text>
             <View style={{
               flexDirection: 'row',
@@ -177,13 +178,13 @@ export default class FeedbackDetail extends React.Component {
               }
             </View>
             <ListItem>
-              <Left><Text>{this.state.data.updateTime}</Text></Left>
+              <Left><Text style={{fontSize: fontSize14}}>{this.state.data.updateTime}</Text></Left>
             </ListItem>
           </List>
           {this.followList()}
           {
             this.state.data.exceptionStatus && this.state.data.exceptionStatus !== 2 ?
-              <View style={{ marginHorizontal: scaleSize(30) }}>
+              <View style={{marginHorizontal: scaleSize(30)}}>
                 <View style={styles.comment}>
                   <View style={styles.image_wrap}>
                     {this.showImages()}
@@ -194,12 +195,12 @@ export default class FeedbackDetail extends React.Component {
                     >
                       <Image
                         source={require("../../../assets/resource/evalut/icon_add.png")}
-                        style={{ width: scaleSize(170), height: scaleSize(95) }} />
+                        style={{width: scaleSize(170), height: scaleSize(95)}}/>
                     </TouchableOpacity>
                   </View>
                   <Item style={styles.input_wrap}>
-                    <Image style={{ width: scaleSize(48), height: scaleSize(48) }}
-                      source={require("../../../assets/resource/evalut/icon_comment.png")} />
+                    <Image style={{width: scaleSize(48), height: scaleSize(48)}}
+                           source={require("../../../assets/resource/evalut/icon_comment.png")}/>
                     <Input
                       placeholder="请输入备注"
                       editable={true}//是否可编辑
@@ -222,7 +223,7 @@ export default class FeedbackDetail extends React.Component {
                     onPress={() => this.exceptionSave(true)}
                   >
                     <Image style={styles.btn_image}
-                      source={require("../../../assets/resource/evalut/btn_qualified.png")} />
+                           source={require("../../../assets/resource/evalut/btn_qualified.png")}/>
                   </TouchableOpacity>
                   <TouchableOpacity
                     activeOpacity={0.9}
@@ -230,7 +231,7 @@ export default class FeedbackDetail extends React.Component {
                     onPress={() => this.exceptionSave(false)}
                   >
                     <Image style={styles.btn_image}
-                      source={require("../../../assets/resource/evalut/btn_unqualified.png")} />
+                           source={require("../../../assets/resource/evalut/btn_unqualified.png")}/>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -249,7 +250,7 @@ export default class FeedbackDetail extends React.Component {
         padding: scaleSize(20),
       }, commonStyle.borderBottom]}
     >
-      <Text>{item.follower}: <Text style={{ color: dangerColor }}>{item.followDesc}</Text></Text>
+      <Text>{item.follower}: <Text style={{color: dangerColor}}>{item.followDesc}</Text></Text>
       <View style={styles.image_wrap}>
         {
           item.followPhotos && item.followPhotos.split(",").map((v, i) => (
@@ -279,9 +280,9 @@ export default class FeedbackDetail extends React.Component {
           onPress={() => this.deleteImage(i)}
         >
           <Image style={styles.delete_icon}
-            source={require("../../../assets/resource/evalut/icon_error_yes.png")} />
+                 source={require("../../../assets/resource/evalut/icon_error_yes.png")}/>
         </TouchableOpacity>
-        <Image source={{ uri: BASE_URL + v }} style={styles.image} />
+        <Image source={{uri: BASE_URL + v}} style={styles.image}/>
       </View>
     )) : null
     return show;

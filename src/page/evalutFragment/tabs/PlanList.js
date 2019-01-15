@@ -4,9 +4,9 @@
 import React from "react";
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native";
 import {List, ListItem, Left, Icon, Body, Right, Thumbnail} from "native-base";
-import {mainColor, whiteColor, maxFontSize} from "../../../common/styles";
+import {mainColor, whiteColor, fontSize20, fontSize17, fontSize18} from "../../../common/styles";
 import {getPlanList} from "../../../api/evaluReq";
-import {scaleSize,setSpText} from "../../../common/screenUtil"
+import {scaleSize, setSpText} from "../../../common/screenUtil"
 import {timerify} from "../../../common/util";
 
 export default class PlanList extends React.Component {
@@ -109,7 +109,7 @@ export default class PlanList extends React.Component {
           height: scaleSize(40),
           backgroundColor: mainColor,
         }}/>
-        <Text style={{fontSize: maxFontSize, color: '#000'}}>{item.planTime}</Text>
+        <Text style={{fontSize: fontSize18, color: '#000'}}>{item.planTime}</Text>
       </ListItem>
       {
         item.data.map(v =>
@@ -131,7 +131,7 @@ export default class PlanList extends React.Component {
                          source={require("../../../assets/resource/evalut/icon_shop.png")}/>
             </Left>
             <Body>
-            <Text>{v.storeName}</Text>
+            <Text style={{fontSize: fontSize17}}>{v.storeName}</Text>
             </Body>
             <Right>
               <Image

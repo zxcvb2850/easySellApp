@@ -3,7 +3,7 @@
 * */
 import React from "react"
 import {StyleSheet, View, Text} from "react-native"
-import {successColor, warringColor, moreMinFont} from "../common/styles";
+import {successColor, warringColor, fontSize14} from "../common/styles";
 import {scaleSize,setSpText} from "../common/screenUtil";
 
 /*
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     color: '#7f9bdb',
   },
   textFontSize: {
-    fontSize: moreMinFont
+    fontSize: fontSize14
   }
 })
 

@@ -2,7 +2,7 @@
 * 公共样式和颜色
 * */
 
-import { scaleSize, setSpText } from "./screenUtil";
+import {scaleSize, setSpText} from "./screenUtil";
 
 /*颜色*/
 export const mainColor = "#525FF4";
@@ -18,7 +18,15 @@ export const dangerColor = "#d9534f";
 export const warringColor = "#f0ad4e";
 
 /*字体大小*/
-export const mainFontSize = setSpText(36);
+/*export const mainFontSize = setSpText(36);
 export const minFontSize = setSpText(32);
 export const moreMinFont = setSpText(28);
-export const maxFontSize = setSpText(40);
+export const maxFontSize = setSpText(40);*/
+export const fontSize20 = 20;
+export const fontSize18 = 18;
+export const fontSize17 = 17;
+export const fontSize16 = 16;
+export const fontSize15 = 15;
+export const fontSize14 = 14;
+export const fontSize13 = 13;
+export const fontSize12 = 12;

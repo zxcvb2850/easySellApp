@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import {Container, Item, Input, Form, Label, Thumbnail, Button} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
-import {mainColor, mainFontSize, maxFontSize, whiteColor} from "../common/styles";
+import {mainColor, fontSize18, fontSize20, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 import {observer, inject} from 'mobx-react'
 import {action} from 'mobx'
@@ -30,7 +30,7 @@ export default class Login extends React.Component {
     setUserInfo(info) {
         this.props.store.UserInfo.setUserInfo(info);
     }
-    
+
     @action
     setStatusBar(color) {
         this.props.store.StatusBarColor.setStatusBarColor(color)
@@ -78,8 +78,8 @@ export default class Login extends React.Component {
                                source={require('../assets/resource/login/logo.png')}/>
                         <Text style={{
                             color: mainColor,
-                            fontSize: maxFontSize,
-                            lineHeight: mainFontSize + 10
+                            fontSize: fontSize20,
+                            lineHeight: fontSize18 + 10
                         }}>智慧管理系统</Text>
                     </View>
                     <Form style={{marginTop: scaleSize(20)}}>
@@ -101,7 +101,7 @@ export default class Login extends React.Component {
                         </Item>
                     </Form>
                     <Button primary style={styles.login_btn} onPress={this.postLogin}>
-                        <Text style={{fontSize: mainFontSize, color: whiteColor}}>登录</Text>
+                        <Text style={{fontSize: fontSize18, color: whiteColor}}>登录</Text>
                     </Button>
                 </View>
                 <Image style={styles.footer_img} source={require("../assets/resource/login/login_footer_bg.png")}/>

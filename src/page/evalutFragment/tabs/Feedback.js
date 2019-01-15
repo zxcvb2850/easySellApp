@@ -4,9 +4,10 @@
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
 import {ListItem, Left, Right} from "native-base"
-import {scaleSize,setSpText} from "../../../common/screenUtil";
-import {lightGaryColor, mainColor, maxFontSize, minFontSize} from "../../../common/styles"
+import {scaleSize} from "../../../common/screenUtil";
+import {lightGaryColor, mainColor, fontSize15, fontSize16, fontSize17} from "../../../common/styles"
 import {getExceptionList} from "../../../api/evaluReq";
+import commStyle from "../../../common/commStyle";
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -118,16 +119,17 @@ export default class Feedback extends React.Component {
       </View>
       {
         item.projectList && item.projectList.map(v =>
-          <ListItem key={v.reviewProjectId} onPress={() => {
-            this.gotoFeedDetail(item, v)
-          }}>
-            <Left>
-              <Text>{v.exception}</Text>
-            </Left>
-            <Right>
-              <Text>处理</Text>
-            </Right>
-          </ListItem>
+          <TouchableOpacity
+            key={v.reviewProjectId}
+            activeOpacity={0.9}
+            style={[commStyle.borderBottom, styles.list_item]}
+            onPress={() => {
+              this.gotoFeedDetail(item, v)
+            }}
+          >
+            <Text style={{fontSize: fontSize15}}>{v.exception}</Text>
+            <Text>处理</Text>
+          </TouchableOpacity>
         )
       }
     </View>
@@ -173,7 +175,7 @@ const styles = StyleSheet.create({
   },
   head_title: {
     flex: 1,
-    fontSize: maxFontSize,
+    fontSize: fontSize17,
     color: '#000',
   },
   eval_icon: {
@@ -181,7 +183,6 @@ const styles = StyleSheet.create({
     height: scaleSize(48)
   },
   footer: {
-    marginBottom: scaleSize(24),
     padding: scaleSize(30),
     flexDirection: 'row',
     alignItems: 'center',
@@ -195,10 +196,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: scaleSize(20),
     flex: 1,
   },
-  desc: {
-    //fontSize: 16,
-  },
   time: {
-    fontSize: minFontSize,
+    fontSize: fontSize16,
+  },
+  list_item: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: scaleSize(30)
   }
 })

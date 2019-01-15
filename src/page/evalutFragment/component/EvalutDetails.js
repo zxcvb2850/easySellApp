@@ -7,11 +7,19 @@ import {Content, Button, ListItem, Input} from "native-base";
 import Accordion from 'react-native-collapsible/Accordion'
 import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"
-import {scaleSize,setSpText} from "../../../common/screenUtil";
-import {backgroundColor, headerColor, lightGaryColor, whiteColor, maxFontSize, moreMinFont, minFontSize} from "../../../common/styles";
+import {scaleSize} from "../../../common/screenUtil";
+import {
+  backgroundColor,
+  headerColor,
+  lightGaryColor,
+  whiteColor,
+  fontSize20,
+  fontSize14,
+} from "../../../common/styles";
 import {getPlanDetails, submitAll} from "../../../api/evaluReq";
-import {checkResult, classify, showToast} from "../../../common/util";
+import {classify, showToast} from "../../../common/util";
 import {uploadImage} from "../../../api/evaluReq";
+import EvalutStatus from "../../../components/EvalutStatus";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'
@@ -151,7 +159,7 @@ export default class EvalutDetails extends React.Component {
           </TouchableOpacity>
         </Header>
         <ListItem itemDivider>
-          <Text style={{fontSize: maxFontSize, color: '#000'}}>{params.storeName}</Text>
+          <Text style={{fontSize: fontSize20, color: '#000'}}>{params.storeName}</Text>
         </ListItem>
         <Content style={styles.center}>
           {/*手风琴动画*/}
@@ -221,7 +229,7 @@ export default class EvalutDetails extends React.Component {
         marginBottom: isActive ? scaleSize(20) : scaleSize(0)
       }]}>
         <View style={styles.content_item}>
-          <Text style={{fontSize: moreMinFont, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
+          <Text style={{fontSize: fontSize14, marginRight: scaleSize(10)}}>{item.projectCode}</Text>
           <TouchableOpacity
             activeOpacity={0.9}
             style={styles.content_desc}
@@ -229,12 +237,7 @@ export default class EvalutDetails extends React.Component {
           >
             <Text style={{color: '#000'}}>{item.projectData}</Text>
             <View style={{justifyContent: 'flex-end', flexDirection: 'row'}}>
-              <Text
-                style={[styles.status_color, {
-                  color: checkResult(item.checkResult).color,
-                  borderColor: checkResult(item.checkResult).color,
-                }]}
-              >{checkResult(item.checkResult).str}</Text>
+              <EvalutStatus checkResult={item.checkResult}/>
             </View>
           </TouchableOpacity>
         </View>
@@ -301,6 +304,7 @@ const styles = StyleSheet.create({
     borderLeftColor: headerColor,
     borderLeftWidth: scaleSize(4),
     borderStyle: 'solid',
+    color: '#333'
   },
   icon_show: {
     width: scaleSize(45),
@@ -321,14 +325,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: scaleSize(80)
-  },
-  status_color: {
-    paddingVertical: scaleSize(6),
-    width: scaleSize(120),
-    borderStyle: 'solid',
-    borderWidth: scaleSize(2),
-    borderRadius: scaleSize(6),
-    fontSize: minFontSize,
-    textAlign: 'center'
   }
 })
