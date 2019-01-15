@@ -13,7 +13,6 @@ import {
   BackHandler,
   DeviceEventEmitter,
   Platform,
-  CameraRoll
 } from "react-native"
 import {Button} from "native-base"
 import RNFS from "react-native-fs"
@@ -30,7 +29,7 @@ import {showToast, imageName} from "../../../common/util";
 
 /*mobx*/
 import {observer, inject} from "mobx-react";
-import {action, computed} from "mobx";
+import {action} from "mobx";
 
 @inject('store')
 @observer

@@ -5,7 +5,7 @@
 import React from "react"
 import {StyleSheet, View, Image, Text, TouchableOpacity, StatusBar} from "react-native"
 import {withNavigation} from "react-navigation"
-import {scaleSize, setSpText} from "../common/screenUtil"
+import {scaleSize} from "../common/screenUtil"
 import {fontSize20, headerColor, whiteColor} from "../common/styles";
 
 /*mobx*/

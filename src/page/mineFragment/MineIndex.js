@@ -7,9 +7,8 @@ import {StyleSheet, View, Text, Image, ImageBackground, AsyncStorage} from "reac
 import {List, ListItem, Left, Body, Right, Button} from "native-base"
 import Header from "../../components/Header"
 import {scaleSize} from "../../common/screenUtil"
-import {garyColor, mainColor, fontSize20, whiteColor, headerColor} from "../../common/styles"
+import {garyColor, mainColor, fontSize20, whiteColor} from "../../common/styles"
 import {postLogout} from "../../api/HttpSend";
-import {showToast} from "../../common/util";
 
 /*mobx*/
 import {observer, inject} from 'mobx-react'

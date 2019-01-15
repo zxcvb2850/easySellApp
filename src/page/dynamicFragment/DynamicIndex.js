@@ -4,21 +4,19 @@
 import React from "react"
 import {
   StyleSheet,
-  ImageBackground,
   RefreshControl,
   View,
   Text,
   Image,
   FlatList,
   TouchableOpacity,
-  AsyncStorage
 } from "react-native"
 import {AnimatedCircularProgress} from 'react-native-circular-progress'
 import LinearGradient from 'react-native-linear-gradient';
 import Header from "../../components/Header"
 import {scaleSize} from "../../common/screenUtil";
 import {
-  backgroundColor, garyColor,
+  backgroundColor,
   headerColor,
   itemHeadColor, fontSize18, warringColor, fontSize16,
   whiteColor, fontSize20

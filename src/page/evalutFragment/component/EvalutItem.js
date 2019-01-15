@@ -9,14 +9,13 @@ import {
   Image,
   Animated,
   TouchableOpacity,
-  DeviceEventEmitter,
   BackHandler,
   Platform,
 } from "react-native";
 import {Content, List, ListItem, Left, Body, Right, Radio, Button, Item, Input} from "native-base";
 import Header from "../../../components/Header";
-import {DEVICE_WIDTH, scaleSize} from "../../../common/screenUtil";
-import {garyColor, lightGaryColor, whiteColor, fontSize20, fontSize16} from "../../../common/styles";
+import {scaleSize} from "../../../common/screenUtil";
+import {whiteColor, fontSize20, fontSize16} from "../../../common/styles";
 import {BASE_URL} from "../../../config/config";
 import {saveSingle, uploadImage} from "../../../api/evaluReq";
 import {showToast} from "../../../common/util";

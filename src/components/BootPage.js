@@ -2,15 +2,15 @@
  * 引导页
  * */
 import React from "react"
-import {StyleSheet, StatusBar, View, Text, Image, ImageBackground, AsyncStorage} from "react-native"
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
-import {getInfo} from "../api/HttpSend";
-import {showToast} from "../common/util"
+import { StyleSheet, StatusBar, View, Text, Image, ImageBackground, AsyncStorage } from "react-native"
+import { DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize } from "../common/screenUtil";
+import { getInfo } from "../api/HttpSend";
+import { showToast } from "../common/util"
 
 /*mobx*/
-import {observer, inject} from 'mobx-react'
-import {action} from 'mobx'
-import {fontSize20, whiteColor} from "../common/styles";
+import { observer, inject } from 'mobx-react'
+import { action } from 'mobx'
+import { fontSize20, whiteColor } from "../common/styles";
 
 @inject('store')
 @observer
@@ -18,6 +18,10 @@ export default class BootPage extends React.Component {
   @action
   setUserInfo(info) {
     this.props.store.UserInfo.setUserInfo(info);
+  }
+  @action
+  setStatusBar(color) {
+    this.props.store.StatusBarColor.setStatusBarColor(color)
   }
 
   componentWillUnmount() {
@@ -27,6 +31,7 @@ export default class BootPage extends React.Component {
 
   componentDidMount() {
     //AsyncStorage.removeItem('shop_token')
+    this.setStatusBar('#ebf6fc')
     this.downCount = setTimeout(() => {
       this.down();
     }, 1000)
@@ -42,7 +47,7 @@ export default class BootPage extends React.Component {
   down = async () => {
     if (this.state.downTimer > 0) {
       this.timer = setTimeout(() => {
-        this.setState({downTimer: this.state.downTimer - 1})
+        this.setState({ downTimer: this.state.downTimer - 1 })
         this.down();
       }, 1000)
     } else {
@@ -66,7 +71,7 @@ export default class BootPage extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true}/>
+        <StatusBar hidden={true} />
         <Image
           style={{
             position: 'absolute',
@@ -75,7 +80,7 @@ export default class BootPage extends React.Component {
             width: DEVICE_WIDTH,
             height: scaleSize(1056),
           }}
-          source={require("../assets/resource/start_up_bg.png")}/>
+          source={require("../assets/resource/start_up_bg.png")} />
         <Image
           style={{
             position: 'absolute',

@@ -2,21 +2,18 @@ import React from "react";
 import {
     StyleSheet,
     StatusBar,
-    TouchableHighlight,
     View,
     Text,
     Image,
-    TouchableOpacity,
-    BackHandler,
     AsyncStorage
 } from "react-native";
-import {Container, Item, Input, Form, Label, Thumbnail, Button} from 'native-base';
+import {Container, Item, Input, Form, Thumbnail, Button} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
 import {mainColor, fontSize18, fontSize20, whiteColor} from "../common/styles";
 import {showToast} from "../common/util";
 import {observer, inject} from 'mobx-react'
 import {action} from 'mobx'
-import {login, getData, getInfo} from "../api/HttpSend";
+import {login, getInfo} from "../api/HttpSend";
 
 @inject('store')
 @observer

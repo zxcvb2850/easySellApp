@@ -3,10 +3,10 @@
  * */
 import React from "react";
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native";
-import {List, ListItem, Left, Icon, Body, Right, Thumbnail} from "native-base";
+import {List, ListItem} from "native-base";
 import {mainColor, whiteColor, fontSize17, fontSize18} from "../../../common/styles";
 import {getPlanList} from "../../../api/evaluReq";
-import {scaleSize, setSpText} from "../../../common/screenUtil"
+import {scaleSize} from "../../../common/screenUtil"
 import {timerify} from "../../../common/util";
 
 export default class PlanList extends React.Component {

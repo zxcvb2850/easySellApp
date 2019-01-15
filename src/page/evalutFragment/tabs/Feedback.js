@@ -2,8 +2,7 @@
  * 例外考评记录
  * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
-import {ListItem, Left, Right} from "native-base"
+import {StyleSheet, View, Text, FlatList, RefreshControl, TouchableOpacity} from "react-native"
 import {scaleSize} from "../../../common/screenUtil";
 import {lightGaryColor, mainColor, fontSize15, fontSize16, fontSize17} from "../../../common/styles"
 import {getExceptionList} from "../../../api/evaluReq";

@@ -3,8 +3,8 @@
 * xiaobai
 * */
 import React from "react";
-import {Image, BackHandler, DeviceEventEmitter} from "react-native"
-import {createStackNavigator, createTabNavigator, createBottomTabNavigator, SafeAreaView} from "react-navigation"
+import {Image, BackHandler} from "react-native"
+import {createStackNavigator, createBottomTabNavigator, SafeAreaView} from "react-navigation"
 
 /*路由指向的文件*/
 import BootPage from "../components/BootPage"

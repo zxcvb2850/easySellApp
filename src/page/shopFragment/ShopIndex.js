@@ -12,7 +12,7 @@ import {
   RefreshControl,
 } from "react-native"
 import Header from "../../components/Header"
-import { garyColor, headColor, whiteColor, fontSize20, fontSize18 } from "../../common/styles"
+import { garyColor, headColor, whiteColor, fontSize20, fontSize17 } from "../../common/styles"
 import { Drawer, Button } from "native-base"
 import HeaderAttach from "../../components/HeaderAttach"
 import { scaleSize } from "../../common/screenUtil";
@@ -356,7 +356,7 @@ export default class DynamicIndex extends React.Component {
           borderBottomWidth: scaleSize(1)
         }]}>
           <View style={styles.body_left}>
-            <Text style={{ fontSize: fontSize18 }}>视频监控</Text>
+            <Text style={{ fontSize: fontSize17 }}>视频监控</Text>
             <StoreStatus status={Number(item.videoState)} />
           </View>
           <View style={styles.body_right}>
@@ -404,10 +404,10 @@ export default class DynamicIndex extends React.Component {
           onPress={() => this._getAlarmList(item)}
         >
           <View style={styles.body_left}>
-            <Text style={{ fontSize: fontSize18 }}>报警联网</Text>
+            <Text style={{ fontSize: fontSize17 }}>报警联网</Text>
             <DeployStatus status={Number(item.armingState)} />
           </View>
-          <Text style={{ color: garyColor, fontSize: fontSize18 }}>信息 ></Text>
+          <Text style={{ color: garyColor, fontSize: fontSize17 }}>信息 ></Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -457,6 +457,7 @@ const styles = StyleSheet.create({
   },
   item_head_title: {
     color: whiteColor,
+    fontSize: fontSize17
   },
   item_head_icon: {
     flex: 1,
@@ -489,7 +490,7 @@ const styles = StyleSheet.create({
   },
   more_text: {
     textAlign: 'center',
-    fontSize: fontSize18,
+    fontSize: fontSize17,
   },
   center_item: {
     marginHorizontal: scaleSize(10),

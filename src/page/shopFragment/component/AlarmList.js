@@ -5,7 +5,7 @@ import React from "react";
 import {StyleSheet, View, Text} from "react-native";
 import {Content} from "native-base"
 import Header from "../../../components/Header";
-import {scaleSize,setSpText} from "../../../common/screenUtil";
+import {scaleSize} from "../../../common/screenUtil";
 import {lightGaryColor, whiteColor, fontSize20} from "../../../common/styles";
 
 const AlarmList = ({navigation}) => {

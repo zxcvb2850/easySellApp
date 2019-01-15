@@ -3,7 +3,7 @@
 * */
 import React from "react"
 import {StyleSheet, View, Text, Image, TouchableOpacity, Modal, Platform} from "react-native"
-import {Content, Button, ListItem, Input} from "native-base";
+import {Content, Button, ListItem} from "native-base";
 import Accordion from 'react-native-collapsible/Accordion'
 import Header from "../../../components/Header";
 import commonStyle from "../../../common/commStyle"

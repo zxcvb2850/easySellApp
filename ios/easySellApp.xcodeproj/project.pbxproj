@@ -105,6 +105,7 @@
 		96C0318F21EC911600F288CC /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; };
 		96C0319021EC911B00F288CC /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; };
 		96C0319121EC911B00F288CC /* MClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		96CDBC8E21EDD07A00AA12FD /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96CDBC8D21EDD07A00AA12FD /* bundle */; };
 		96F36F4E21E320B000DABEA7 /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4C21E320B000DABEA7 /* VideoViewManager.m */; };
 		96F36F4F21E320B000DABEA7 /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4D21E320B000DABEA7 /* VideoView.m */; };
 		96F36F6221E3476800DABEA7 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F36F6121E3473A00DABEA7 /* libRCTCameraRoll.a */; };
@@ -556,6 +557,7 @@
 		9625E86521C7AA0B005AF65B /* shop_not.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_not.png; sourceTree = "<group>"; };
 		9625E86621C7AA0B005AF65B /* shop_yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_yes.png; sourceTree = "<group>"; };
 		96C0318E21EC911500F288CC /* MClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MClient.framework; path = easySellApp/MClient.framework; sourceTree = "<group>"; };
+		96CDBC8D21EDD07A00AA12FD /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		96CFF82917FA44BBB66D9BA1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		96F36F4A21E320AF00DABEA7 /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
 		96F36F4B21E320B000DABEA7 /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
@@ -714,6 +716,7 @@
 		13B07FAE1A68108700A75B9A /* easySellApp */ = {
 			isa = PBXGroup;
 			children = (
+				96CDBC8D21EDD07A00AA12FD /* bundle */,
 				96F36F4A21E320AF00DABEA7 /* VideoView.h */,
 				96F36F4D21E320B000DABEA7 /* VideoView.m */,
 				96F36F4B21E320B000DABEA7 /* VideoViewManager.h */,
@@ -1653,6 +1656,7 @@
 				9625E87421C7AA0C005AF65B /* icon_comment.png in Resources */,
 				9625E88321C7AA0C005AF65B /* icon_addr.png in Resources */,
 				9625E89721C7AA0C005AF65B /* mine_yes.png in Resources */,
+				96CDBC8E21EDD07A00AA12FD /* bundle in Resources */,
 				9625E88B21C7AA0C005AF65B /* icon_phone.png in Resources */,
 				9625E86921C7AA0C005AF65B /* back-icon-mask.png in Resources */,
 				9625E88621C7AA0C005AF65B /* icon_filter.png in Resources */,

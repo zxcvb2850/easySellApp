@@ -2,13 +2,12 @@
 * 考评
 * */
 import React from "react"
-import {StyleSheet, View, Text, Image, FlatList, AsyncStorage} from "react-native"
-import {Content, ListItem, List, Left, Right, Icon, Button, Input} from "native-base"
-import ScrollableTabView, {DefaultTabBar, ScrollableTabBar,} from 'react-native-scrollable-tab-view';
+import {StyleSheet, View} from "react-native"
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import Header from "../../components/Header"
 import HeaderAttach from "../../components/HeaderAttach"
-import {garyColor, mainColor, fontSize20, fontSize16, whiteColor, fontSize18} from "../../common/styles"
-import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize, setSpText} from "../../common/screenUtil";
+import {garyColor, mainColor, fontSize16, whiteColor, fontSize17} from "../../common/styles"
+import {DEVICE_HEIGHT, DEVICE_WIDTH, scaleSize} from "../../common/screenUtil";
 import PlanList from "./tabs/PlanList";
 import Feedback from "./tabs/Feedback";
 import Recording from "./tabs/Recording";
@@ -79,7 +78,7 @@ export default class DynamicIndex extends React.Component {
           <HeaderAttach all={this.allClick} search={this.state.index !== 1 ? this.search : null}/>
         </Header>
         <ScrollableTabView
-          tabBarTextStyle={{paddingTop: scaleSize(20), fontSize: fontSize18}}
+          tabBarTextStyle={{paddingTop: scaleSize(20), fontSize: fontSize17}}
           tabBarUnderlineStyle={{height: scaleSize(4), backgroundColor: mainColor}}
           tabBarActiveTextColor={mainColor}
           tabBarInactiveTextColor={garyColor}

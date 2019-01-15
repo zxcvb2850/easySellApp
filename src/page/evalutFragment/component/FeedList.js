@@ -2,7 +2,7 @@
 * 列外考评列表
 * */
 import React from "react";
-import {StyleSheet, View, Text, BackHandler} from "react-native";
+import {StyleSheet, Text, BackHandler} from "react-native";
 import {Content, List, ListItem, Left} from "native-base";
 import Header from "../../../components/Header";
 

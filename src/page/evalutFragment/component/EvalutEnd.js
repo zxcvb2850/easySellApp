@@ -3,7 +3,7 @@
  * */
 import React from "react";
 import {StyleSheet, View, Text, Image} from "react-native"
-import {Content, List, Left, Right, ListItem} from "native-base"
+import {Content, List, ListItem} from "native-base"
 import Header from "../../../components/Header";
 import {getHistoryDetail} from "../../../api/evaluReq"
 import {
@@ -18,7 +18,7 @@ import {
 import Accordion from 'react-native-collapsible/Accordion'
 import {classify} from "../../../common/util"
 import commonStyle from "../../../common/commStyle"
-import {scaleSize, setSpText} from "../../../common/screenUtil"
+import {scaleSize} from "../../../common/screenUtil"
 import {BASE_URL} from "../../../config/config";
 import CustomImage from "../../../components/CustomImage";
 import EvalutStatus from "../../../components/EvalutStatus";

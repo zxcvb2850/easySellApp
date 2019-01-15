@@ -3,20 +3,17 @@
 * */
 import React from "react"
 import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native"
-import {Separator} from "native-base"
-import {scaleSize,setSpText} from "../../../common/screenUtil";
+import {scaleSize} from "../../../common/screenUtil";
 import {
   garyColor,
   lightGaryColor,
   mainColor,
   whiteColor,
-  fontSize20,
   fontSize16,
   fontSize18,
   fontSize17, fontSize14
 } from "../../../common/styles"
 import {getStoreHistory} from "../../../api/evaluReq";
-import EvalutEnd from "../component/EvalutEnd";
 import {timerify} from "../../../common/util";
 
 export default class Recording extends React.Component {
