@@ -138,19 +138,22 @@ export default class EvalutEnd extends React.Component {
         <View>
           <View style={[styles.item_title, commonStyle.borderBottom, {height: scaleSize(90)}]}>
             <Text style={[commonStyle.color_back, {fontWeight: '700'}]}>{item.projectCode}</Text>
-            <EvalutStatus checkResult={item.exceptionStatus}/>
+            <EvalutStatus checkResult={item.checkResult}/>
           </View>
           {/*<ListItem><Text>{item.projectData}</Text></ListItem>*/}
           <View style={[styles.item_title, commonStyle.borderBottom]}>
             <Text style={{color: '#666'}}>{item.projectRequire}</Text>
           </View>
-          <ListItemDesc
-            value={'例外描述'}
-            desc={item.exception}
-            photos={item.photos}
-            timer={item.updateTime}
-            status={item.exceptionStatus}
-          />
+          {
+            item.checkResult === 3 ?
+              <ListItemDesc
+                value={'例外描述'}
+                desc={item.exception}
+                photos={item.photos}
+                timer={item.updateTime}
+                status={item.checkResult}
+              /> : null
+          }
           {this.followList(item)}
         </View>
       </View>
