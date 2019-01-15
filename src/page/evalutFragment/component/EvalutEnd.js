@@ -135,7 +135,7 @@ export default class EvalutEnd extends React.Component {
     return section.data.map((item) => (
       <View key={item.reviewProjectId}>
         <View>
-          <View style={[styles.item_title, commonStyle.borderBottom, {height: scaleSize(80)}]}>
+          <View style={[styles.item_title, commonStyle.borderBottom, {height: scaleSize(90)}]}>
             <Text style={[commonStyle.color_back, {fontWeight: '700'}]}>{item.projectCode}</Text>
             <EvalutStatus checkResult={item.exceptionStatus}/>
           </View>
@@ -157,7 +157,6 @@ export default class EvalutEnd extends React.Component {
 
   followList = (item) => {
     let renderList = null;
-    console.log('============', item)
     if (item.followList.length) {
       renderList = item.followList.map((v, i) =>
         <ListItemDesc

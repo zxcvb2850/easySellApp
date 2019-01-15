@@ -86,7 +86,9 @@ export default class BootPage extends React.Component {
           }}
           source={require("../assets/resource/start_up_foot_bg.png")}
         />
-        <Text style={styles.downTimer}>{this.state.downTimer}</Text>
+        <View style={styles.down_box}>
+          <Text style={styles.downTimer}>{this.state.downTimer}</Text>
+        </View>
       </View>
     )
   }
@@ -97,17 +99,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ebf6fc'
   },
-  downTimer: {
+  down_box: {
+    alignItems: 'center',
+    justifyContent: 'center',
     position: 'absolute',
     right: scaleSize(20),
     top: scaleSize(20),
     width: scaleSize(100),
     height: scaleSize(100),
-    lineHeight: scaleSize(100),
-    textAlign: 'center',
     backgroundColor: 'orange',
     borderRadius: scaleSize(100),
+  },
+  downTimer: {
     fontSize: fontSize20,
     color: whiteColor
   }

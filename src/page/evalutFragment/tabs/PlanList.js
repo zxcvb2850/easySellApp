@@ -2,9 +2,9 @@
  * 计划考评
  * */
 import React from "react";
-import {StyleSheet, View, Text, Image, FlatList, RefreshControl} from "react-native";
+import {StyleSheet, View, Text, Image, FlatList, RefreshControl, TouchableOpacity} from "react-native";
 import {List, ListItem, Left, Icon, Body, Right, Thumbnail} from "native-base";
-import {mainColor, whiteColor, fontSize20, fontSize17, fontSize18} from "../../../common/styles";
+import {mainColor, whiteColor, fontSize17, fontSize18} from "../../../common/styles";
 import {getPlanList} from "../../../api/evaluReq";
 import {scaleSize, setSpText} from "../../../common/screenUtil"
 import {timerify} from "../../../common/util";
@@ -113,33 +113,30 @@ export default class PlanList extends React.Component {
       </ListItem>
       {
         item.data.map(v =>
-          <ListItem avatar style={{backgroundColor: whiteColor}}
-                    key={v.reviewId}
-                    onPress={() => {
-                      this.props.navigate('EvalutDetails', {
-                        reviewId: v.reviewId,
-                        storeName: v.storeName,
-                        callback: () => {
-                          this._getPlanList();
-                        }
-                      })
-                    }}
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={styles.list_item}
+            key={v.reviewId}
+            onPress={() => {
+              this.props.navigate('EvalutDetails', {
+                reviewId: v.reviewId,
+                storeName: v.storeName,
+                callback: () => {
+                  this._getPlanList();
+                }
+              })
+            }}
           >
-            <Left>
-              <Thumbnail square
-                         style={{width: scaleSize(48), height: scaleSize(48)}}
-                         source={require("../../../assets/resource/evalut/icon_shop.png")}/>
-            </Left>
-            <Body>
-            <Text style={{fontSize: fontSize17}}>{v.storeName}</Text>
-            </Body>
-            <Right>
-              <Image
-                style={{width: scaleSize(44), height: scaleSize(44)}}
-                source={require("../../../assets/resource/common/icon_back_black.png")}
-              />
-            </Right>
-          </ListItem>
+            <Image
+              style={{width: scaleSize(48), height: scaleSize(48)}}
+              source={require("../../../assets/resource/evalut/icon_shop.png")}
+            />
+            <Text numberOfLines={1} style={styles.item_body}>{v.storeName}</Text>
+            <Image
+              style={{width: scaleSize(44), height: scaleSize(44)}}
+              source={require("../../../assets/resource/common/icon_back_black.png")}
+            />
+          </TouchableOpacity>
         )
       }
     </List>
@@ -161,5 +158,17 @@ export default class PlanList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  list_item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: scaleSize(40),
+    paddingVertical: scaleSize(20),
+    backgroundColor: whiteColor
+  },
+  item_body: {
+    flex: 1,
+    marginHorizontal: scaleSize(20),
+    fontSize: fontSize17,
   }
 })
