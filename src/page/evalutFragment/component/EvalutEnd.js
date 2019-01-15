@@ -62,6 +62,7 @@ export default class EvalutEnd extends React.Component {
       other: b,
       not: c,
     })
+    console.log('============', dest)
   }
 
   _updateSections = activeSections => {
@@ -148,6 +149,7 @@ export default class EvalutEnd extends React.Component {
             desc={item.exception}
             photos={item.photos}
             timer={item.updateTime}
+            status={item.exceptionStatus}
           />
           {this.followList(item)}
         </View>
@@ -174,7 +176,7 @@ export default class EvalutEnd extends React.Component {
     return renderList;
   };
 }
-ListItemDesc = ({value, name, desc, photos, timer, index} = props) => (
+ListItemDesc = ({value, name, desc, photos, timer, index, status} = props) => (
   <View
     style={[styles.list_item_desc, {
       marginLeft: scaleSize(20 * index ? 1 : 0)

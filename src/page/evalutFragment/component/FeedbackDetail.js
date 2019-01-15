@@ -156,30 +156,37 @@ export default class FeedbackDetail extends React.Component {
                 <Text style={{color: '#F00', fontSize: fontSize18}}>不合格</Text>
               </Right>
             </ListItem>
-            <Text style={[commonStyle.borderBottom, {
+            <View style={[commonStyle.borderBottom, {
               marginHorizontal: scaleSize(40),
               paddingHorizontal: scaleSize(20),
               paddingVertical: scaleSize(30),
-              fontSize: fontSize16
-            }]}>{this.state.data.projectRequire}</Text>
-            <View style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              marginHorizontal: scaleSize(20),
-            }}>
-              {
-                this.state.data.photos && this.state.data.photos.split(',').map(item => (
-                  <CustomImage
-                    key={item}
-                    style={styles.image}
-                    image={BASE_URL + item}
-                  />
-                ))
-              }
+            }]}>
+              <Text style={{fontSize: fontSize16}}>例外要求</Text>
+              <Text style={{fontSize: fontSize16}}>{this.state.data.projectRequire}</Text>
             </View>
-            <ListItem>
-              <Left><Text style={{fontSize: fontSize14}}>{this.state.data.updateTime}</Text></Left>
-            </ListItem>
+
+            <View style={[commonStyle.borderBottom, {
+              paddingHorizontal: scaleSize(40),
+              paddingVertical: scaleSize(30)
+            }]}>
+              <View style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                //marginHorizontal: scaleSize(20),
+              }}>
+                {
+                  this.state.data.photos && this.state.data.photos.split(',').map(item => (
+                    <CustomImage
+                      key={item}
+                      style={styles.image}
+                      image={BASE_URL + item}
+                    />
+                  ))
+                }
+              </View>
+              <Text>例外描述：<Text style={{color: '#F00'}}>{this.state.data.exception}</Text></Text>
+              <Text style={{fontSize: fontSize14}}>{this.state.data.updateTime}</Text>
+            </View>
           </List>
           {this.followList()}
           {
@@ -308,7 +315,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   image: {
-    margin: scaleSize(20),
+    marginHorizontal: scaleSize(20),
+    marginVertical: scaleSize(14),
     width: scaleSize(170),
     height: scaleSize(95)
   },

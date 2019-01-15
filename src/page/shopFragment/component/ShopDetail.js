@@ -5,7 +5,7 @@ import React from "react"
 import {StyleSheet, View, Text, Image, Linking, TouchableOpacity} from "react-native"
 import {List, ListItem, Button, Content} from "native-base"
 import Header from "../../../components/Header"
-import {scaleSize,setSpText} from "../../../common/screenUtil"
+import {scaleSize, setSpText} from "../../../common/screenUtil"
 import {garyColor, lightGaryColor, fontSize16, whiteColor, fontSize20} from "../../../common/styles"
 import {dialPhone, showToast, timerSplice} from "../../../common/util"
 import StoreStatus from "../../../components/StoreStatus";
@@ -83,7 +83,16 @@ export default class ShopDetail extends React.Component {
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={styles.goto_icon}
-                onPress={() => console.log("打开地图")}
+                onPress={() => {
+                  Linking.canOpenURL('androidamap://route?sid=BGVIS1&slat=39.98871&slon=116.43234&sname=对外经贸大学&did=BGVIS2&dlat=40.055878&dlon=116.307854&dname=北京&dev=0&m=0&t=2').then(supported => {
+                    if (supported) {
+                      Linking.openURL('androidamap://route?sid=BGVIS1&slat=39.98871&slon=116.43234&sname=对外经贸大学&did=BGVIS2&dlat=40.055878&dlon=116.307854&dname=北京&dev=0&m=0&t=2');
+                    } else {
+                      //console.log('无法打开该URI: ');
+                      showToast('打开地址失败')
+                    }
+                  })
+                }}
               >
                 <Image style={styles.goto_icon}
                        source={require("../../../assets/resource/shop/icon_map.png")}/>

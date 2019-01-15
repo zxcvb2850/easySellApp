@@ -420,8 +420,7 @@ export default class EvalutItem extends React.Component {
         </Body>
       </ListItem>
       <View style={styles.header_desc_region}>
-        <Text>{this.state.list[this.state.index].projectRequire}发生的快乐放假了开始打第三方路队看；
-          房间里看撒大家理发苏打绿；客服了可是大姐夫了可是大姐夫了看见的的撒</Text>
+        <Text>{this.state.list[this.state.index].projectRequire}</Text>
       </View>
       <ListItem icon>
         <Left>
@@ -545,7 +544,7 @@ const styles = StyleSheet.create({
     height: scaleSize(39)
   },
   header_desc_region: {
-    marginLeft: scaleSize(70),
+    marginLeft: scaleSize(120),
     marginRight: scaleSize(40),
     paddingVertical: scaleSize(10),
     paddingHorizontal: scaleSize(20),
