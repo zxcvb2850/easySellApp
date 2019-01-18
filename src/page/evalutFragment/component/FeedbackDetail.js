@@ -17,6 +17,7 @@ import CustomImage from "../../../components/CustomImage";
 /*mobx*/
 import {inject, observer} from "mobx-react";
 import {computed} from "mobx";
+import ShopTitle from "../../../components/ShopTitle";
 
 //图片选择器参数设置
 const options = {
@@ -143,9 +144,7 @@ export default class FeedbackDetail extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: whiteColor}}>
         <Header isBack={this.onBackPress} title={"例外跟踪"}/>
-        <ListItem itemDivider>
-          <Text style={[styles.color_back, {fontSize: fontSize20}]}>{params.storeName}</Text>
-        </ListItem>
+        <ShopTitle title={params.storeName}/>
         <Content>
           <List>
             <ListItem>

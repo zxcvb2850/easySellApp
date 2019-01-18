@@ -8,6 +8,7 @@ import {mainColor, whiteColor, fontSize17, fontSize18} from "../../../common/sty
 import {getPlanList} from "../../../api/evaluReq";
 import {scaleSize} from "../../../common/screenUtil"
 import {timerify} from "../../../common/util";
+import ShopSubTitle from "../../../components/ShopSubTitle";
 
 export default class PlanList extends React.Component {
   constructor(props) {
@@ -102,15 +103,7 @@ export default class PlanList extends React.Component {
 
   _renderItem = ({item, index}) => (
     <List key={index}>
-      <ListItem itemDivider style={{backgroundColor: '#F5F5F5', height: scaleSize(88)}}>
-        <View style={{
-          marginHorizontal: scaleSize(8),
-          width: scaleSize(4),
-          height: scaleSize(40),
-          backgroundColor: mainColor,
-        }}/>
-        <Text style={{fontSize: fontSize18, color: '#000'}}>{item.planTime}</Text>
-      </ListItem>
+      <ShopSubTitle customStyles={{backgroundColor: '#F5F5F5'}} title={item.planTime}/>
       {
         item.data.map(v =>
           <TouchableOpacity

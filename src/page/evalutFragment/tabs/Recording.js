@@ -15,6 +15,7 @@ import {
 } from "../../../common/styles"
 import {getStoreHistory} from "../../../api/evaluReq";
 import {timerify} from "../../../common/util";
+import ShopSubTitle from "../../../components/ShopSubTitle";
 
 export default class Recording extends React.Component {
   constructor(props) {
@@ -126,20 +127,18 @@ export default class Recording extends React.Component {
   _keyExtractor = (item, index) => index + '';
   _renderItem = ({item}) => (
     <View style={styles.list}>
-      <View style={styles.top}>
+      <View style={[styles.top, styles.list_item_padding]}>
         <Text style={styles.top_txt}>{item.planTime}</Text>
       </View>
       {
         item.data.length && item.data.map(v => (
           <View key={v.reviewId} style={styles.item}>
-            <View style={styles.head}>
-              <View style={styles.line}/>
-              <Text style={styles.head_title}>{v.storeName}</Text>
+            <ShopSubTitle title={v.storeName}>
               <Image style={styles.eval_icon} source={this.evaluateImage(v.reviewLevel)}/>
-            </View>
+            </ShopSubTitle>
             <TouchableOpacity
               activeOpacity={0.9}
-              style={styles.footer}
+              style={[styles.footer, styles.list_item_padding]}
               onPress={() => {
                 this.props.navigate('EvalutEnd', {storeName: v.storeName, reviewId: v.reviewId})
               }}>
@@ -174,6 +173,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f7f7f7',
   },
+  list_item_padding: {
+    paddingLeft: scaleSize(20),
+    paddingRight: scaleSize(40),
+  },
 
   list: {
     backgroundColor: whiteColor,
@@ -193,27 +196,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
   },
   top_txt: {
-    marginLeft: scaleSize(40),
     fontSize: fontSize18,
-    color: '#000',
-  },
-  head: {
-    paddingHorizontal: scaleSize(28),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: scaleSize(88),
-  },
-  line: {
-    marginHorizontal: scaleSize(8),
-    width: scaleSize(4),
-    height: scaleSize(26),
-    backgroundColor: mainColor,
-  },
-  head_title: {
-    flex: 1,
-    fontSize: fontSize17,
-    color: '#000',
+    color: '#1a1a1a',
   },
   eval_icon: {
     marginHorizontal: scaleSize(14),
@@ -221,7 +205,6 @@ const styles = StyleSheet.create({
     height: scaleSize(48)
   },
   footer: {
-    paddingHorizontal: scaleSize(30),
     flexDirection: 'row',
     alignItems: 'center',
     height: scaleSize(150),
@@ -237,10 +220,10 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: fontSize16,
-    color: '#252525'
+    color: '#4d4d4d'
   },
   time: {
-    color: garyColor,
+    color: '#808080',
     fontSize: fontSize14,
   }
 })

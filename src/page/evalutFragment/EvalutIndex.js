@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     backgroundColor: whiteColor,
   },
   tab: {
-    height: scaleSize(85),
+    height: scaleSize(86),
     backgroundColor: whiteColor,
   },
 

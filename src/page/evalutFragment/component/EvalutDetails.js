@@ -25,6 +25,7 @@ import EvalutStatus from "../../../components/EvalutStatus";
 import {observer, inject} from 'mobx-react'
 import {action, computed} from 'mobx'
 import {getStoreEvalutList} from "../../../api/storeReq";
+import ShopTitle from "../../../components/ShopTitle";
 
 @inject("store")
 @observer
@@ -158,9 +159,7 @@ export default class EvalutDetails extends React.Component {
                    source={require("../../../assets/resource/evalut/icon_confirm.png")}/>
           </TouchableOpacity>
         </Header>
-        <ListItem itemDivider>
-          <Text style={{fontSize: fontSize20, color: '#000'}}>{params.storeName}</Text>
-        </ListItem>
+        <ShopTitle title={params.storeName}/>
         <Content style={styles.center}>
           {/*手风琴动画*/}
           <Accordion

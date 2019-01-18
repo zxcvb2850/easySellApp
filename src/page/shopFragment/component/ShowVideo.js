@@ -30,6 +30,7 @@ import {showToast, imageName} from "../../../common/util";
 /*mobx*/
 import {observer, inject} from "mobx-react";
 import {action} from "mobx";
+import VideoMonitorItem from "../../../components/VideoMonitorItem";
 
 @inject('store')
 @observer
@@ -119,35 +120,39 @@ export default class ShowVideo extends React.Component {
 
   /*获取视频信息*/
   videoChannel = async (item) => {
-    await this.setState({resetIosVideo: (Math.random() * 1000) + "", isVideoStart: true})
-    let result = await getVideoDetail(item.channelId)
-    if (result.code !== 0) {
-      showToast(result.msg, 'error')
-      this.setState({videoInit: false})
-    } else {
-      result = result.preview
-      if (result.address) {
-        let address = result.address + ""
-        let port = result.port + ""
-        let callid = result.callid + ""
-        let resource = result.resource + ""
-        if (Platform.OS === 'ios') {
-          this.setState({
-            //state.videoState = '{"server":"' + address + '","port":"'+port+'","callid":"'+callid+'","resid":"'+resource+'"}'
-            resetIosVideo: null,
-            videoState: `{"server":"${address}","port":"${port}","callid":"${callid}","resid":"${resource}"}`
-          })
-        } else {
-          this.setState({
-            videoPath: `${address}@port:${port}@callid:${callid}@resid:${resource}`
-          })
-        }
-      } else {
-        showToast('暂无视频数据', 'error')
+    if (!item.inUse) {
+      await this.setState({resetIosVideo: (Math.random() * 1000) + "", isVideoStart: true})
+      let result = await getVideoDetail(item.channelId)
+      if (result.code !== 0) {
+        showToast(result.msg, 'error')
         this.setState({videoInit: false})
+      } else {
+        result = result.preview
+        if (result.address) {
+          let address = result.address + ""
+          let port = result.port + ""
+          let callid = result.callid + ""
+          let resource = result.resource + ""
+          if (Platform.OS === 'ios') {
+            this.setState({
+              //state.videoState = '{"server":"' + address + '","port":"'+port+'","callid":"'+callid+'","resid":"'+resource+'"}'
+              resetIosVideo: null,
+              videoState: `{"server":"${address}","port":"${port}","callid":"${callid}","resid":"${resource}"}`
+            })
+          } else {
+            this.setState({
+              videoPath: `${address}@port:${port}@callid:${callid}@resid:${resource}`
+            })
+          }
+        } else {
+          showToast('暂无视频数据', 'error')
+          this.setState({videoInit: false})
+        }
       }
+      this.setState({nowVideo: item, isVideoStart: false})
+    } else {
+      showToast('视频不能播放');
     }
-    this.setState({nowVideo: item, isVideoStart: false})
   }
 
   gotoEvalut = async () => {
@@ -287,27 +292,31 @@ export default class ShowVideo extends React.Component {
                   : null : null
             }
           </View>
-          <View style={styles.video_wrapper}>
-            <View style={styles.video_txt_wrap}>
-              <Text style={styles.video_txt}>当前视频：</Text>
-              <Text style={styles.video_txt}>{this.state.nowVideo.remark || ''}</Text>
-            </View>
-            <View style={styles.video_options}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
-                onPress={this.screenHandle}>
-                <Image style={styles.video_icon}
-                       source={require("../../../assets/resource/shop/icon_screen.png")}/>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={styles.video_icon}
-                onPress={this.screenFull}>
-                <Image style={styles.video_icon}
-                       source={require("../../../assets/resource/shop/icon_full_screen.png")}/>
-              </TouchableOpacity>
-            </View>
+        </View>
+
+        <View style={[styles.video_wrapper, this.state.isFull ? {
+          top: scaleSize(-80),
+          zIndex: 1001
+        } : {}]}>
+          <View style={styles.video_txt_wrap}>
+            <Text style={styles.video_txt}>当前视频：</Text>
+            <Text style={styles.video_txt}>{this.state.nowVideo.remark || ''}</Text>
+          </View>
+          <View style={styles.video_options}>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={[styles.video_icon, {marginHorizontal: scaleSize(30)}]}
+              onPress={this.screenHandle}>
+              <Image style={styles.video_icon}
+                     source={require("../../../assets/resource/shop/icon_screen.png")}/>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              style={styles.video_icon}
+              onPress={this.screenFull}>
+              <Image style={styles.video_icon}
+                     source={require("../../../assets/resource/shop/icon_full_screen.png")}/>
+            </TouchableOpacity>
           </View>
         </View>
         <FlatList
@@ -334,20 +343,31 @@ export default class ShowVideo extends React.Component {
               source={{uri: this.state.screenImage}}
             />
             <View style={styles.modal_button}>
-              <Button
-                light
-                style={styles.modal_btn}
-                onPress={() => this.setState({isShowScreen: false})}
-              >
-                <Text>关闭</Text>
-              </Button>
-              <Button
-                light
-                style={styles.modal_btn}
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: scaleSize(54),
+                  backgroundColor: 'rgba(57,102,159,0.3)',
+                  borderRadius: scaleSize(50),
+                }}
                 onPress={this.submitScreen}
               >
-                <Text>报告错误</Text>
-              </Button>
+                <Text style={{
+                  paddingHorizontal: scaleSize(25),
+                  color: '#c90000'
+                }}>报告错误</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={{width: scaleSize(54), height: scaleSize(54)}}
+                onPress={() => this.setState({isShowScreen: false})}
+              >
+                <Image
+                  style={{width: scaleSize(54), height: scaleSize(54)}}
+                  source={require("../../../assets/resource/shop/video_screen_close.png")}/>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -361,19 +381,12 @@ export default class ShowVideo extends React.Component {
 
   _renderItem = ({item}) => (
     <View style={styles.video_item}>
-      <Button block light
-              style={[styles.center_item, {borderColor: item.inUse ? 'rgba(0,0,0,.1)' : garyColor}]}
-              onPress={() => this.videoChannel(item)}>
-        {
-          item.inUse ?
-            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                   source={require("../../../assets/resource/shop/icon_video_offine.png")}/>
-            :
-            <Image style={{width: scaleSize(43), height: scaleSize(43)}}
-                   source={require("../../../assets/resource/shop/icon_video_online.png")}/>
-        }
-        <Text style={{color: item.inUse ? garyColor : '#000'}}>{item.remark}</Text>
-      </Button>
+      <VideoMonitorItem
+        customStyles={styles.center_item}
+        title={item.remark}
+        status={item.inUse}
+        onPress={() => this.videoChannel(item)}
+      />
     </View>
   )
 }
@@ -399,16 +412,11 @@ const styles = StyleSheet.create({
     right: 0,
   },
   video_wrapper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     paddingHorizontal: scaleSize(40),
     flexDirection: 'row',
     alignItems: 'center',
     height: scaleSize(80),
-    backgroundColor: 'rgba(72,123,225,0.3)',
-    zIndex: 1001,
+    backgroundColor: 'rgba(72,123,225,1)',
   },
   video_txt_wrap: {
     flex: 1,
@@ -457,18 +465,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modal_wrapper: {
-    width: scaleSize(500),
-    height: scaleSize(700)
+    position: 'relative',
+    width: scaleSize(695),
+    height: scaleSize(420)
   },
   modal_image: {
     flex: 1,
-    width: scaleSize(500),
-    height: scaleSize(600),
+    width: scaleSize(695),
+    height: scaleSize(420),
   },
   modal_button: {
+    position: 'absolute',
+    top: scaleSize(20),
+    left: scaleSize(14),
+    right: scaleSize(14),
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     height: scaleSize(100),
   },
   modal_btn: {

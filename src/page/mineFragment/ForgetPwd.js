@@ -125,6 +125,6 @@ const styles = StyleSheet.create({
   },
   confirm_btn: {
     margin: scaleSize(40),
-    //alignSelf: 'center',
+    borderRadius: scaleSize(10),
   }
 })

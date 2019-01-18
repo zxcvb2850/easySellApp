@@ -2,19 +2,19 @@
 * 公用样式函数
 * */
 import {StyleSheet} from "react-native"
-import {scaleSize, setSpText} from "./screenUtil";
+import {scaleSize} from "./screenUtil";
 import {lightGaryColor, fontSize16} from "./styles";
 
 export default StyleSheet.create({
   borderTopBottom: {
-    borderTopColor: lightGaryColor,
-    borderBottomColor: lightGaryColor,
+    borderTopColor: '#e1e1e1',
+    borderBottomColor: '#e1e1e1',
     borderTopWidth: scaleSize(1),
     borderBottomWidth: scaleSize(1),
     borderStyle: 'solid',
   },
   borderBottom: {
-    borderBottomColor: lightGaryColor,
+    borderBottomColor: '#e1e1e1',
     borderBottomWidth: scaleSize(1),
     borderStyle: 'solid',
   },

@@ -1,7 +1,7 @@
 import React from "react"
 import {StyleSheet, Image, Text, TouchableOpacity, View} from "react-native"
 import {scaleSize} from "../common/screenUtil"
-import {fontSize17, whiteColor} from "../common/styles";
+import {fontSize16, whiteColor} from "../common/styles";
 
 const HeaderAttach = (props) => {
   return (
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   head_left_text: {
     color: whiteColor,
-    fontSize: fontSize17,
+    fontSize: fontSize16,
   },
   head_right: {
     position: 'absolute',

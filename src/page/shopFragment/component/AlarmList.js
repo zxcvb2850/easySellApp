@@ -7,6 +7,7 @@ import {Content} from "native-base"
 import Header from "../../../components/Header";
 import {scaleSize} from "../../../common/screenUtil";
 import {lightGaryColor, whiteColor, fontSize20} from "../../../common/styles";
+import ShopTitle from "../../../components/ShopTitle";
 
 const AlarmList = ({navigation}) => {
   const {params} = navigation.state;
@@ -14,9 +15,7 @@ const AlarmList = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Header isBack title={'报警列表'}/>
-      <View style={styles.title}>
-        <Text style={styles.title_text}>{params.storeName}</Text>
-      </View>
+      <ShopTitle title={params.storeName}/>
       <Content style={{flex: 1}}>
         {
           params.data ? params.data.map(item => (
@@ -46,13 +45,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  title: {
-    padding: scaleSize(20),
-  },
-  title_text: {
-    color: '#000',
-    fontSize: fontSize20,
-  },
   content: {
     paddingHorizontal: scaleSize(30),
     height: scaleSize(130),

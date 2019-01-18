@@ -2,15 +2,25 @@
 *  店铺详情
 * */
 import React from "react"
-import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native"
-import { Content } from "native-base"
+import {StyleSheet, View, Text, Image, TouchableOpacity} from "react-native"
+import {Content} from "native-base"
 import Header from "../../../components/Header"
-import { scaleSize } from "../../../common/screenUtil"
-import { garyColor, lightGaryColor, whiteColor, fontSize20, fontSize17 } from "../../../common/styles"
-import { dialPhone, showToast, timerSplice } from "../../../common/util"
+import {scaleSize} from "../../../common/screenUtil"
+import {
+  garyColor,
+  lightGaryColor,
+  whiteColor,
+  fontSize20,
+  fontSize17,
+  successColor,
+  mainColor, dangerColor
+} from "../../../common/styles"
+import {dialPhone, showToast, timerSplice} from "../../../common/util"
 import StoreStatus from "../../../components/StoreStatus";
 import DeployStatus from "../../../components/DeployStatus";
-import { getStoreDetails, getAlarmList } from "../../../api/storeReq";
+import {getStoreDetails, getAlarmList} from "../../../api/storeReq";
+import ShopTitle from "../../../components/ShopTitle";
+import commStyle from "../../../common/commStyle";
 
 export default class ShopDetail extends React.Component {
   constructor(props) {
@@ -65,20 +75,20 @@ export default class ShopDetail extends React.Component {
   }
 
   render() {
-    const { params } = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
     return (
       <View style={styles.container}>
-        <Header isBack title={`店铺详情`} />
-        <Content style={{ flex: 1 }}>
+        <Header isBack title={`店铺详情`}/>
+        <Content style={{flex: 1}}>
           <View style={styles.list}>
-            <View style={[styles.list_item, styles.first]}>
-              <Text style={[styles.color_back, { fontSize: fontSize20 }]}>{params.storeName}</Text>
-            </View>
+            <ShopTitle
+              title={params.storeName}
+              customStyle={commStyle.borderBottom}/>
             <View style={[styles.list_item]}>
-              <Image style={styles.icon} source={require("../../../assets/resource/shop/icon_addr.png")} />
+              <Image style={styles.icon} source={require("../../../assets/resource/shop/icon_addr.png")}/>
               <View style={styles.txt_wrap}>
                 <Text style={styles.item_txt}>地址：</Text>
-                <Text style={[styles.item_txt, { color: garyColor }]}>{this.state.shopData.address}</Text>
+                <Text style={[styles.item_txt, {color: garyColor}]}>{this.state.shopData.address}</Text>
               </View>
               <TouchableOpacity
                 activeOpacity={0.9}
@@ -95,40 +105,40 @@ export default class ShopDetail extends React.Component {
                 }}
               >
                 <Image style={styles.goto_icon}
-                  source={require("../../../assets/resource/shop/icon_map.png")} />
+                       source={require("../../../assets/resource/shop/icon_map.png")}/>
               </TouchableOpacity>
             </View>
             <View style={[styles.list_item]}>
               <Image style={styles.icon}
-                source={require("../../../assets/resource/shop/icon_phone_min.png")} />
+                     source={require("../../../assets/resource/shop/icon_phone_min.png")}/>
               <View style={styles.txt_wrap}>
                 <Text style={styles.item_txt}>电话：</Text>
-                <Text style={[styles.item_txt, { color: garyColor }]}
-                  onPress={() => dialPhone(this.state.shopData.storeTel)}>{this.state.shopData.storeTel}</Text>
+                <Text style={[styles.item_txt, {color: garyColor}]}
+                      onPress={() => dialPhone(this.state.shopData.storeTel)}>{this.state.shopData.storeTel}</Text>
               </View>
             </View>
             {
               this.state.linkmanList.length ? this.state.linkmanList.map(item => (
-                <View style={[styles.list_item]} key={item.storeLinkmanId}>
-                  {
-                    item.position === '店员' ?
-                      <Image style={styles.icon}
-                        source={require("../../../assets/resource/shop/icon_number.png")} />
-                      :
-                      <Image style={styles.icon}
-                        source={require("../../../assets/resource/shop/icon_leader.png")} />
-                  }
-                  <View style={styles.txt_wrap}>
-                    <Text style={styles.item_txt}>{item.position}：</Text>
-                    <Text style={[styles.item_txt, { color: garyColor }]}
-                      onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
+                  <View style={[styles.list_item]} key={item.storeLinkmanId}>
+                    {
+                      item.position === '店员' ?
+                        <Image style={styles.icon}
+                               source={require("../../../assets/resource/shop/icon_number.png")}/>
+                        :
+                        <Image style={styles.icon}
+                               source={require("../../../assets/resource/shop/icon_leader.png")}/>
+                    }
+                    <View style={styles.txt_wrap}>
+                      <Text style={styles.item_txt}>{item.position}：</Text>
+                      <Text style={[styles.item_txt, {color: garyColor}]}
+                            onPress={() => dialPhone(item.linkmanTel)}>{item.linkmanName}-{item.linkmanTel}</Text>
+                    </View>
                   </View>
-                </View>
-              ))
+                ))
                 :
                 <View style={[styles.list_item]}>
                   <Image style={styles.icon}
-                    source={require("../../../assets/resource/shop/icon_number.png")} />
+                         source={require("../../../assets/resource/shop/icon_number.png")}/>
                   <View style={styles.txt_wrap}>
                     <Text style={styles.item_txt}>店员：</Text>
                   </View>
@@ -136,23 +146,22 @@ export default class ShopDetail extends React.Component {
             }
           </View>
           <View style={[styles.info, styles.borderTopBottom]}>
-            <View style={[styles.first, styles.title]}>
+            {/*<View style={[styles.first, styles.title]}>
               <Text style={styles.color_back}>考评信息</Text>
-            </View>
-            <View style={styles.figure}>
-              <View style={styles.table_wrapper}>
-                <View style={[styles.table_item, styles.table_header]}>
-                  <Text style={styles.table_td}>考评进展</Text>
-                  <Text style={styles.table_td}>合格率</Text>
-                  <Text style={styles.table_td}>等级</Text>
-                  <Text style={styles.table_td}>考评状态</Text>
-                  <Text style={[{ width: scaleSize(200) }]}>更新时间</Text>
-                </View>
-                {this.state.reviewList && this.tableItem(this.state.reviewList)}
+            </View>*/}
+            <ShopTitle title={'考评信息'}/>
+            <View style={styles.table_wrapper}>
+              <View style={[styles.table_item, commStyle.borderBottom, styles.table_header]}>
+                <Text style={styles.table_td}>考评进展</Text>
+                <Text style={styles.table_td}>合格率</Text>
+                <Text style={styles.table_td}>等级</Text>
+                <Text style={styles.table_td}>考评状态</Text>
+                <Text style={[{width: scaleSize(200)}]}>更新时间</Text>
               </View>
+              {this.state.reviewList && this.tableItem(this.state.reviewList)}
             </View>
           </View>
-          <TouchableOpacity
+          {/*<TouchableOpacity
             activeOpacity={0.9}
             style={[styles.info_list, styles.borderTopBottom]}
             onPress={() => {
@@ -163,26 +172,42 @@ export default class ShopDetail extends React.Component {
             }}
           >
             <Text style={styles.color_back}>视频监控</Text>
-            <StoreStatus style={{ flex: 1, paddingHorizontal: scaleSize(10) }}
-              status={this.state.videoState} />
+            <StoreStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
+                         status={this.state.videoState}/>
             <Image
-              style={{ width: scaleSize(48), height: scaleSize(48) }}
+              style={{width: scaleSize(48), height: scaleSize(48)}}
               source={require("../../../assets/resource/shop/icon_look.png")}
             />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={[styles.info_list, styles.borderTopBottom]}
-            onPress={this._getAlarmList}
+          </TouchableOpacity>*/}
+          <ShopTitle
+            title={"视频监控"}
+            customStyle={[styles.info_list, commStyle.borderTopBottom]}
+            handleItem={() => {
+              this.props.navigation.navigate('ShopVideo', {
+                storeId: params.storeId,
+                storeName: params.storeName
+              })
+            }}
           >
-            <Text style={styles.color_back}>报警联网</Text>
-            <DeployStatus style={{ flex: 1, paddingHorizontal: scaleSize(10) }}
-              status={this.state.armingState} />
+            <StoreStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
+                         status={this.state.videoState}/>
             <Image
-              style={{ width: scaleSize(39), height: scaleSize(39) }}
+              style={{width: scaleSize(48), height: scaleSize(48)}}
+              source={require("../../../assets/resource/shop/icon_look.png")}
+            />
+          </ShopTitle>
+          <ShopTitle
+            title={"报警联网"}
+            customStyle={[styles.info_list, commStyle.borderTopBottom, {marginBottom: scaleSize(24)}]}
+            handleItem={this._getAlarmList}
+          >
+            <DeployStatus style={{flex: 1, paddingHorizontal: scaleSize(10)}}
+                          status={this.state.armingState}/>
+            <Image
+              style={{width: scaleSize(39), height: scaleSize(39)}}
               source={require("../../../assets/resource/shop/icon_list.png")}
             />
-          </TouchableOpacity>
+          </ShopTitle>
         </Content>
       </View>
     )
@@ -194,16 +219,16 @@ export default class ShopDetail extends React.Component {
         key={item.reviewId}
         activeOpacity={0.9}
         onPress={() => this.clickTableItem(item)}
-        style={[styles.table_item, styles.table_item_last]}>
+        style={[styles.table_item, commStyle.borderBottom, styles.table_item_last]}>
         <Text style={styles.table_td}>{item.reviewRate * 100}%</Text>
         <Text style={styles.table_td}>{item.qualifiedRate * 100}%</Text>
         <Text style={styles.table_td}>{item.reviewLevel}</Text>
         <Text style={[styles.table_td, {
-          color: item.reviewStatus === 1 ? "#4895ea" : item.reviewStatus === 2 ? "#ea9448" : "#53bc58"
+          color: item.reviewStatus === 1 ? mainColor : item.reviewStatus === 2 ? dangerColor : successColor
         }]}>
           {item.reviewStatus === 1 ? "待考评" : item.reviewStatus === 2 ? "待提交" : "已完结"}
         </Text>
-        <Text numberOfLines={1} style={[{ width: scaleSize(200) }]}>{timerSplice(item.updateTime)}</Text>
+        <Text numberOfLines={1} style={[{width: scaleSize(200)}]}>{timerSplice(item.updateTime)}</Text>
       </TouchableOpacity>
     ))
 
@@ -269,33 +294,20 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: scaleSize(80),
+    height: scaleSize(86),
   },
   /*表格样式*/
-  figure: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderTopColor: lightGaryColor,
-    borderTopWidth: scaleSize(1),
-    borderStyle: 'solid',
-  },
   table_wrapper: {
     paddingVertical: scaleSize(20),
-    flex: 1,
-    flexDirection: 'column',
-    width: scaleSize(720)
+    marginHorizontal: scaleSize(30),
   },
   table_header: {
-    backgroundColor: '#c4c4c4',
+    height: scaleSize(80),
   },
   table_item: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: scaleSize(60),
-    borderStyle: 'solid',
-    borderColor: garyColor,
-    borderWidth: scaleSize(1),
-    borderBottomWidth: 0,
+    height: scaleSize(88),
   },
   table_item_last: {
     borderBottomWidth: scaleSize(1),
@@ -306,11 +318,6 @@ const styles = StyleSheet.create({
 
   info_list: {
     marginTop: scaleSize(24),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: scaleSize(24),
-    height: scaleSize(96),
     backgroundColor: whiteColor,
   },
 })

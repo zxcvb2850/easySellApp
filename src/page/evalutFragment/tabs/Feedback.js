@@ -7,6 +7,7 @@ import {scaleSize} from "../../../common/screenUtil";
 import {lightGaryColor, mainColor, fontSize15, fontSize16, fontSize17} from "../../../common/styles"
 import {getExceptionList} from "../../../api/evaluReq";
 import commStyle from "../../../common/commStyle";
+import ShopSubTitle from "../../../components/ShopSubTitle";
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -105,10 +106,7 @@ export default class Feedback extends React.Component {
   _keyExtractor = (item) => item.reviewId + '';
   _renderItem = ({item}) => (
     <View style={styles.item}>
-      <View style={styles.head}>
-        <View style={styles.line}/>
-        <Text style={styles.head_title}>{item.storeName}</Text>
-      </View>
+      <ShopSubTitle customStyles={{backgroundColor: '#0ff'}} title={item.storeName}/>
       <View style={styles.footer}>
         <View style={[styles.center, commStyle.borderBottomRgba]}>
           <Text style={styles.time}>考评内容：全部不合格项目({item.projectList.length}项)</Text>
@@ -157,25 +155,6 @@ const styles = StyleSheet.create({
     borderTopColor: lightGaryColor,
     borderTopWidth: scaleSize(1),
     borderStyle: 'solid',
-  },
-  head: {
-    paddingHorizontal: scaleSize(28),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: scaleSize(88),
-    backgroundColor: '#0ff',
-  },
-  line: {
-    marginHorizontal: scaleSize(8),
-    width: scaleSize(4),
-    height: scaleSize(26),
-    backgroundColor: mainColor,
-  },
-  head_title: {
-    flex: 1,
-    fontSize: fontSize17,
-    color: '#000',
   },
   eval_icon: {
     marginHorizontal: scaleSize(14),

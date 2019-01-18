@@ -22,6 +22,7 @@ import {scaleSize} from "../../../common/screenUtil"
 import {BASE_URL} from "../../../config/config";
 import CustomImage from "../../../components/CustomImage";
 import EvalutStatus from "../../../components/EvalutStatus";
+import ShopTitle from "../../../components/ShopTitle";
 
 export default class EvalutEnd extends React.Component {
   constructor(props) {
@@ -74,9 +75,7 @@ export default class EvalutEnd extends React.Component {
     return (
       <View style={styles.container}>
         <Header isBack title={"考评详情"}/>
-        <ListItem itemDivider>
-          <Text style={{fontSize: fontSize20, color: '#000'}}>{this.state.storeInfo.storeName}</Text>
-        </ListItem>
+        <ShopTitle title={this.state.storeInfo.storeName}/>
         <Content style={styles.container}>
           <List style={styles.header_desc}>
             <ListItem style={styles.header_item}>
@@ -179,7 +178,7 @@ export default class EvalutEnd extends React.Component {
     return renderList;
   };
 }
-ListItemDesc = ({value, name, desc, photos, timer, index, status} = props) => (
+const ListItemDesc = ({value, name, desc, photos, timer, index, status} = props) => (
   <View
     style={[styles.list_item_desc, {
       marginLeft: scaleSize(20 * index ? 1 : 0)

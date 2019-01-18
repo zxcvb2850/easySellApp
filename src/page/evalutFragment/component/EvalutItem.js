@@ -25,6 +25,7 @@ import ImagePicker from "react-native-image-picker"
 import {inject, observer} from "mobx-react";
 import {computed, action} from "mobx";
 import CustomImage from "../../../components/CustomImage";
+import ShopTitle from "../../../components/ShopTitle";
 
 //图片选择器参数设置
 const options = {
@@ -248,9 +249,7 @@ export default class EvalutItem extends React.Component {
     return (
       <View style={styles.container}>
         <Header isBack={this.onBackPress} title={"考评详情"}/>
-        <ListItem itemDivider>
-          <Text style={{fontSize: fontSize20, color: '#000'}}>{params.storeName}</Text>
-        </ListItem>
+        <ShopTitle title={params.storeName}/>
         <View style={{flex: 1, paddingHorizontal: scaleSize(10)}}>
           <Content style={styles.center}>
             {this.state.list[this.state.index] && this.showHeader()}
