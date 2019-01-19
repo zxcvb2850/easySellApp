@@ -3,6 +3,9 @@ package com.easysellapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+
 import com.rnfs.RNFSPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -28,8 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new RNFSPackage(),
-            new OrientationPackage(),
+                    new SplashScreenReactPackage(),
+                    new RNFSPackage(),
+                    new OrientationPackage(),
                     new ImagePickerPackage(),
                     new LinearGradientPackage(),
                     new SvgPackage(),

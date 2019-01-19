@@ -3,6 +3,7 @@
  * */
 import React from "react"
 import {StyleSheet, StatusBar, View, Text, Image, ImageBackground, AsyncStorage} from "react-native"
+import SplashScreen from "react-native-splash-screen";
 import {DEVICE_WIDTH, scaleSize} from "../common/screenUtil";
 import {getInfo} from "../api/HttpSend";
 import {showToast} from "../common/util"
@@ -31,6 +32,7 @@ export default class BootPage extends React.Component {
   }
 
   componentDidMount() {
+    SplashScreen.hide();
     //AsyncStorage.removeItem('shop_token')
     this.setStatusBar('#ebf6fc')
     this.downCount = setTimeout(() => {
@@ -54,9 +56,9 @@ export default class BootPage extends React.Component {
     } else {
       const token = await AsyncStorage.getItem('shop_token');
       console.log('-----token----', token)
+      SplashScreen.hide();
       if (token !== null) {
         let result = await getInfo(true)
-        console.log(result);
         if (result.code === 401) {
           showToast('登录过期，请重新登陆', 'warning')
           this.props.navigation.navigate('Login');
