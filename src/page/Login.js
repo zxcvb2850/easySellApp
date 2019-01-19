@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Image,
-  AsyncStorage
+  AsyncStorage,
+  Platform
 } from "react-native";
 import {Container, Item, Input, Form, Thumbnail, Button, Label} from 'native-base';
 import {scaleSize} from "../common/screenUtil";
@@ -15,6 +16,7 @@ import {observer, inject} from 'mobx-react'
 import {action} from 'mobx'
 import {login, getInfo} from "../api/HttpSend";
 import Modal from "react-native-modal";
+import {BASE_IP, BASE_PORT} from "../config/config";
 
 @inject('store')
 @observer
@@ -34,9 +36,15 @@ export default class Login extends React.Component {
     this.props.store.StatusBarColor.setStatusBarColor(color)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setRouter();
     this.setStatusBar("#000")
+
+    let nowIp = await AsyncStorage.getItem('base_ip');
+    let nowPort = await AsyncStorage.getItem('base_port');
+    const ip = nowIp || BASE_IP
+    const port = nowPort || BASE_PORT;
+    this.setState({serverIP: ip, serverPort: port})
   }
 
   constructor() {
@@ -44,6 +52,8 @@ export default class Login extends React.Component {
     this.state = {
       name: '',
       pwd: '',
+      serverIP: '',
+      serverPort: '',
       isOpenSys: false,
     }
   }
@@ -58,14 +68,32 @@ export default class Login extends React.Component {
       return
     }
     let result = await login(this.state.name, this.state.pwd);
-    showToast('登录成功', 'success');
-    await AsyncStorage.setItem('shop_token', result.token);
-    let res = await getInfo()
-    this.setRouter(true);
-    this.setUserInfo(res.user);
-    this.setState({name: '', pwd: ''})
-    this.props.navigation.navigate('TabDynamic')
+    if (result.code === 0) {
+      showToast('登录成功', 'success');
+      await AsyncStorage.setItem('shop_token', result.token);
+      let res = await getInfo()
+      this.setRouter(true);
+      this.setUserInfo(res.user);
+      this.setState({name: '', pwd: ''})
+      this.props.navigation.navigate('TabDynamic')
+    } else {
+      showToast(result.msg, 'error')
+    }
   }
+
+  handleClose = () => {
+    this.setState({isOpenSys: false})
+  }
+  handleConfirm = () => {
+    if (this.state.serverIP && this.state.serverPort) {
+      AsyncStorage.setItem('base_ip', this.state.serverIP);
+      AsyncStorage.setItem('base_port', this.state.serverPort);
+      this.handleClose();
+    } else {
+      showToast('服务器配置不能为空')
+    }
+  }
+
 
   render() {
     return (
@@ -112,27 +140,40 @@ export default class Login extends React.Component {
           style={styles.sys_text}>服务器设置</Text>
         <Modal
           isVisible={this.state.isOpenSys}
-          onSwipe={() => {
-            this.setState({isOpenSys: false})
-          }}
-          onBackdropPress={() => {
-            this.setState({isOpenSys: false})
-          }}
+          onSwipe={this.handleClose}
+          onBackdropPress={this.handleClose}
           style={styles.modal}
         >
           <View style={{width: scaleSize(600), backgroundColor: '#DDD'}}>
             <View style={styles.sys_input_item}>
               <Text>服务器地址:</Text>
-              <Input style={styles.sys_input}/>
+              <Item>
+                <Input
+                  style={styles.sys_input}
+                  value={this.state.serverIP}
+                  onChangeText={value => this.setState({serverIP: value})}
+                />
+              </Item>
             </View>
             <View style={styles.sys_input_item}>
-              <Text style={styles.sys_input}>服务器端口:</Text>
-              <Input/>
+              <Text>服务器端口:</Text>
+              <Item>
+                <Input
+                  style={styles.sys_input}
+                  value={this.state.serverPort}
+                  onChangeText={value => this.setState({serverPort: value})}
+                />
+              </Item>
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Button style={styles.sys_btn}><Text>取消</Text></Button>
-              <Button style={styles.sys_btn}><Text>确认</Text></Button>
+              <Button style={styles.sys_btn} onPress={this.handleClose}>
+                <Text style={{color: '#FFF'}}>取消</Text>
+              </Button>
+              <Button style={styles.sys_btn} onPress={this.handleConfirm}>
+                <Text style={{color: '#FFF'}}>确认</Text>
+              </Button>
             </View>
+            {Platform.OS === 'ios' && <KeyboardSpacer/>}
           </View>
         </Modal>
       </Container>
@@ -186,7 +227,7 @@ const styles = StyleSheet.create({
     height: scaleSize(100),
   },
   sys_input: {
-    borderBottomColor: '#e1e1e1',
+    borderBottomColor: '#bfbfbf',
     borderBottomWidth: scaleSize(1),
     borderStyle: 'solid',
   },

@@ -41,7 +41,7 @@ export default class BootPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      downTimer: 0,
+      downTimer: 2,
     }
   }
 
@@ -56,6 +56,7 @@ export default class BootPage extends React.Component {
       console.log('-----token----', token)
       if (token !== null) {
         let result = await getInfo(true)
+        console.log(result);
         if (result.code === 401) {
           showToast('登录过期，请重新登陆', 'warning')
           this.props.navigation.navigate('Login');

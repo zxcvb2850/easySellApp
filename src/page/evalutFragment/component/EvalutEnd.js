@@ -78,18 +78,18 @@ export default class EvalutEnd extends React.Component {
         <ShopTitle title={this.state.storeInfo.storeName}/>
         <Content style={styles.container}>
           <List style={styles.header_desc}>
-            <ListItem style={styles.header_item}>
+            <View style={styles.header_item}>
               <Text style={styles.item_text}>检查项目：{this.state.storeEvalut.length}</Text>
-            </ListItem>
-            <ListItem style={styles.header_item}>
+            </View>
+            <View style={styles.header_item}>
               <Text style={styles.item_text}>正常数：{this.state.normal}</Text>
-            </ListItem>
-            <ListItem style={styles.header_item}>
+            </View>
+            <View style={styles.header_item}>
               <Text style={styles.item_text}>列外数：{this.state.other}</Text>
-            </ListItem>
-            <ListItem style={styles.header_item}>
+            </View>
+            <View style={styles.header_item}>
               <Text style={styles.item_text}>不适用数：{this.state.not}</Text>
-            </ListItem>
+            </View>
             <View style={{
               paddingVertical: scaleSize(20),
               marginHorizontal: scaleSize(40),
@@ -282,9 +282,13 @@ const styles = StyleSheet.create({
   },
 
   header_item: {
-    paddingLeft: scaleSize(20),
+    justifyContent:'center',
+    paddingLeft: scaleSize(40),
     marginRight: scaleSize(20),
-    height: scaleSize(80)
+    height: scaleSize(86),
+    borderBottomColor: '#e1e1e1',
+    borderBottomWidth: scaleSize(1),
+    borderStyle: 'solid',
   },
   item_title: {
     paddingVertical: scaleSize(20),

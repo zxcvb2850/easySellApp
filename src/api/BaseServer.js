@@ -5,7 +5,7 @@ import {showToast} from "../common/util";// 获取store实例
 
 // store.setRoute(1)
 // DeviceEventEmitter.emit('gotoRouter', 'Login')
-// axios.defaults.baseURL = BASE_URL + PROPT;
+// axios.defaults.baseURL = BASE_URL() + PROPT;
 axios.defaults.timeout = 100000
 
 //axios拦截器
@@ -87,9 +87,9 @@ axios.interceptors.response.use(response => {//请求返回数据处理
 //请求的封装
 export default class BaseServer {
   static async get(url, params, isShowError = false) {
+    let serverUrl = await BASE_URL()
     return new Promise((resolve, reject) => {
-      axios.get(BASE_URL + url, params).then((res) => {
-        // console.log('++++++++++', res, params, isShowError);
+      axios.get(serverUrl + url, params).then((res) => {
         if (res != null) {
           res = res.data;
           if (isShowError) {
@@ -107,9 +107,9 @@ export default class BaseServer {
   }
 
   static async post(url, params, isShowError = false) {
-    //console.log('------post------', params)
+    let serverUrl = await BASE_URL()
     return new Promise((resolve, reject) => {
-      axios.post(BASE_URL + url, params, {
+      axios.post(serverUrl + url, params, {
         headers: {
           'Content-Type': 'application/json'
         }
@@ -133,8 +133,9 @@ export default class BaseServer {
 
   static async put(url, params, isShowError = false) {
     //console.log('-----put-------', params)
+    let serverUrl = await BASE_URL()
     return new Promise((resolve, reject) => {
-      axios.put(BASE_URL + url, params)
+      axios.put(serverUrl + url, params)
         .then((res) => {
           console.log(res)
           if (res != null) {
@@ -156,8 +157,9 @@ export default class BaseServer {
   /*上传图片*/
   static async postImage(url, data, isShowError = false) {
     //console.log('-----post-------', data)
+    let serverUrl = await BASE_URL()
     return new Promise((resolve, reject) => {
-      axios.post(BASE_URL + url, data, {
+      axios.post(serverUrl + url, data, {
         headers: {'Content-Type': 'multipart/form-data'}
       })
         .then((res) => {

@@ -8,7 +8,7 @@ import BaseServer from "./BaseServer"
 export function login(username, password) {
   let url = "/app/user/login";
   let data = {username, password}
-  return BaseServer.post(url, data)
+  return BaseServer.post(url, data, true)
 }
 
 //获取个人信息
@@ -28,8 +28,8 @@ export function postLogout() {
 export async function resetPassword(password, newPassword) {
   let url = '/app/user/password';
   let data = {
-	"newPassword": newPassword,
-	"password": password
+    "newPassword": newPassword,
+    "password": password
   }
   return BaseServer.post(url, data);
 }
