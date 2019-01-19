@@ -8,15 +8,16 @@ import {
   AsyncStorage,
   Platform
 } from "react-native";
-import {Container, Item, Input, Form, Thumbnail, Button, Label} from 'native-base';
-import {scaleSize} from "../common/screenUtil";
-import {mainColor, fontSize18, fontSize20, whiteColor} from "../common/styles";
-import {showToast} from "../common/util";
-import {observer, inject} from 'mobx-react'
-import {action} from 'mobx'
-import {login, getInfo} from "../api/HttpSend";
+import { Container, Item, Input, Form, Thumbnail, Button, Label } from 'native-base';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import { scaleSize } from "../common/screenUtil";
+import { mainColor, fontSize18, fontSize20, whiteColor } from "../common/styles";
+import { showToast } from "../common/util";
+import { observer, inject } from 'mobx-react'
+import { action } from 'mobx'
+import { login, getInfo } from "../api/HttpSend";
 import Modal from "react-native-modal";
-import {BASE_IP, BASE_PORT} from "../config/config";
+import { BASE_IP, BASE_PORT } from "../config/config";
 
 @inject('store')
 @observer
@@ -44,7 +45,7 @@ export default class Login extends React.Component {
     let nowPort = await AsyncStorage.getItem('base_port');
     const ip = nowIp || BASE_IP
     const port = nowPort || BASE_PORT;
-    this.setState({serverIP: ip, serverPort: port})
+    this.setState({ serverIP: ip, serverPort: port })
   }
 
   constructor() {
@@ -74,7 +75,7 @@ export default class Login extends React.Component {
       let res = await getInfo()
       this.setRouter(true);
       this.setUserInfo(res.user);
-      this.setState({name: '', pwd: ''})
+      this.setState({ name: '', pwd: '' })
       this.props.navigation.navigate('TabDynamic')
     } else {
       showToast(result.msg, 'error')
@@ -82,7 +83,7 @@ export default class Login extends React.Component {
   }
 
   handleClose = () => {
-    this.setState({isOpenSys: false})
+    this.setState({ isOpenSys: false })
   }
   handleConfirm = () => {
     if (this.state.serverIP && this.state.serverPort) {
@@ -98,44 +99,44 @@ export default class Login extends React.Component {
   render() {
     return (
       <Container style={styles.container}>
-        <StatusBar backgroundColor={'#000'} hidden={false}/>
+        <StatusBar backgroundColor={'#000'} hidden={false} />
         <View style={styles.content}>
-          <View style={{alignItems: "center"}}>
-            <Image style={{width: scaleSize(236), height: scaleSize(236)}}
-                   source={require('../assets/resource/login/logo.png')}/>
+          <View style={{ alignItems: "center" }}>
+            <Image style={{ width: scaleSize(236), height: scaleSize(236) }}
+              source={require('../assets/resource/login/logo.png')} />
             <Text style={{
               color: mainColor,
               fontSize: fontSize20,
               lineHeight: fontSize18 + 10
             }}>智慧管理系统</Text>
           </View>
-          <Form style={{marginTop: scaleSize(20)}}>
+          <Form style={{ marginTop: scaleSize(20) }}>
             <Item>
-              <Thumbnail square style={{width: scaleSize(40), height: scaleSize(42)}}
-                         source={require('../assets/resource/login/account_icon.png')}/>
+              <Thumbnail square style={{ width: scaleSize(40), height: scaleSize(42) }}
+                source={require('../assets/resource/login/account_icon.png')} />
               <Input autoCapitalize={'none'} placeholder='请输入用户名'
-                     onChangeText={text => this.setState({name: text.replace(/\s/g, "")})}
-                     value={this.state.name}/>
+                onChangeText={text => this.setState({ name: text.replace(/\s/g, "") })}
+                value={this.state.name} />
             </Item>
 
             <Item>
               <Thumbnail square
-                         style={{width: scaleSize(40), height: scaleSize(42)}}
-                         source={require('../assets/resource/login/passwd_icon.png')}/>
+                style={{ width: scaleSize(40), height: scaleSize(42) }}
+                source={require('../assets/resource/login/passwd_icon.png')} />
               <Input secureTextEntry placeholder='请输入密码'
-                     onChangeText={text => this.setState({pwd: text.replace(/\s/g, "")})}
-                     value={this.state.pwd}/>
+                onChangeText={text => this.setState({ pwd: text.replace(/\s/g, "") })}
+                value={this.state.pwd} />
             </Item>
           </Form>
           <Button primary style={styles.login_btn} onPress={this.postLogin}>
-            <Text style={{fontSize: fontSize18, color: whiteColor}}>登录</Text>
+            <Text style={{ fontSize: fontSize18, color: whiteColor }}>登录</Text>
           </Button>
         </View>
-        <Image style={styles.footer_img} source={require("../assets/resource/login/login_footer_bg.png")}/>
+        <Image style={styles.footer_img} source={require("../assets/resource/login/login_footer_bg.png")} />
         <Text
           onPress={() => {
             console.log(111)
-            this.setState({isOpenSys: true})
+            this.setState({ isOpenSys: true })
           }}
           style={styles.sys_text}>服务器设置</Text>
         <Modal
@@ -144,36 +145,32 @@ export default class Login extends React.Component {
           onBackdropPress={this.handleClose}
           style={styles.modal}
         >
-          <View style={{width: scaleSize(600), backgroundColor: '#DDD'}}>
+          <View style={{ width: scaleSize(600), backgroundColor: '#DDD' }}>
             <View style={styles.sys_input_item}>
               <Text>服务器地址:</Text>
-              <Item>
-                <Input
-                  style={styles.sys_input}
-                  value={this.state.serverIP}
-                  onChangeText={value => this.setState({serverIP: value})}
-                />
-              </Item>
+              <Input
+                style={styles.sys_input}
+                value={this.state.serverIP}
+                onChangeText={value => this.setState({ serverIP: value })}
+              />
             </View>
             <View style={styles.sys_input_item}>
               <Text>服务器端口:</Text>
-              <Item>
-                <Input
-                  style={styles.sys_input}
-                  value={this.state.serverPort}
-                  onChangeText={value => this.setState({serverPort: value})}
-                />
-              </Item>
+              <Input
+                style={styles.sys_input}
+                value={this.state.serverPort}
+                onChangeText={value => this.setState({ serverPort: value })}
+              />
             </View>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Button style={styles.sys_btn} onPress={this.handleClose}>
-                <Text style={{color: '#FFF'}}>取消</Text>
+                <Text style={{ color: '#FFF' }}>取消</Text>
               </Button>
               <Button style={styles.sys_btn} onPress={this.handleConfirm}>
-                <Text style={{color: '#FFF'}}>确认</Text>
+                <Text style={{ color: '#FFF' }}>确认</Text>
               </Button>
             </View>
-            {Platform.OS === 'ios' && <KeyboardSpacer/>}
+            {Platform.OS === 'ios' && <KeyboardSpacer />}
           </View>
         </Modal>
       </Container>

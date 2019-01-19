@@ -4,7 +4,7 @@
 
 import React from "react";
 import { StyleSheet, View, Image, Text, AsyncStorage, Platform, TouchableOpacity } from "react-native";
-import { Button, Content, Icon, Left, List, ListItem, Right, Item, Input } from "native-base";
+import { Content, Left, List, ListItem, Right, Input } from "native-base";
 import Modal from "react-native-modal";
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { whiteColor, fontSize18, fontSize16 } from "../common/styles";

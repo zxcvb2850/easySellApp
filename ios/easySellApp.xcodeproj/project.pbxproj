@@ -16,8 +16,6 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1686AD74B4A745B19B4BEF64 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44F9155703704BD481DE5EB5 /* libRNSVG.a */; };
@@ -27,7 +25,6 @@
 		1E6EBCA914D14A9B80906A83 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AD66FC1423946E9865A05B9 /* FontAwesome.ttf */; };
 		1FAF90C4291242F4A2E01D2C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D2E8D96F8EA4524A1C4CECB /* Feather.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		2D02E4C31E0B4AEC006451C7 /* libRCTImage-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */; };
@@ -49,6 +46,8 @@
 		71CA4E57EE544D0F92582A07 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5DF3866CE04D7BBFEC249F /* libRNFS.a */; };
 		7670AD5143044D32BCE8728C /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 25398A9528334464A0D52A39 /* libRNSVG-tvOS.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		9616D9B621F2F68E004FCAF0 /* Image.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9616D9B521F2F68E004FCAF0 /* Image.xcassets */; };
+		9616D9B921F3069B004FCAF0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9616D9B721F3069B004FCAF0 /* LaunchScreen.xib */; };
 		961A64ED21C3850900B068AA /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; };
 		961A64F021C3851300B068AA /* NPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; };
 		961A64F121C3851300B068AA /* NPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 961A64EB21C3850800B068AA /* NPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -105,7 +104,7 @@
 		96C0318F21EC911600F288CC /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; };
 		96C0319021EC911B00F288CC /* MClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; };
 		96C0319121EC911B00F288CC /* MClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96C0318E21EC911500F288CC /* MClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		96CDBC8E21EDD07A00AA12FD /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96CDBC8D21EDD07A00AA12FD /* bundle */; };
+		96CDBCE221EDEB7100AA12FD /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 96CDBCB321EDEB7000AA12FD /* bundle */; };
 		96F36F4E21E320B000DABEA7 /* VideoViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4C21E320B000DABEA7 /* VideoViewManager.m */; };
 		96F36F4F21E320B000DABEA7 /* VideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96F36F4D21E320B000DABEA7 /* VideoView.m */; };
 		96F36F6221E3476800DABEA7 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F36F6121E3473A00DABEA7 /* libRCTCameraRoll.a */; };
@@ -480,8 +479,6 @@
 		13B07F961A680F5B00A75B9A /* easySellApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = easySellApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = easySellApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = easySellApp/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = easySellApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = easySellApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = easySellApp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
@@ -505,6 +502,8 @@
 		804CD44FD6014196B76D1A8F /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8BB068278B054337A7E9EF80 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
+		9616D9B521F2F68E004FCAF0 /* Image.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Image.xcassets; sourceTree = "<group>"; };
+		9616D9B821F3069B004FCAF0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = easySellApp/Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		961A64EB21C3850800B068AA /* NPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NPlayer.framework; path = easySellApp/NPlayer.framework; sourceTree = "<group>"; };
 		9625E7F921C7AA0B005AF65B /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = bundle/index.ios.jsbundle; sourceTree = "<group>"; };
 		9625E82B21C7AA0B005AF65B /* back-icon-mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-icon-mask.png"; sourceTree = "<group>"; };
@@ -557,7 +556,7 @@
 		9625E86521C7AA0B005AF65B /* shop_not.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_not.png; sourceTree = "<group>"; };
 		9625E86621C7AA0B005AF65B /* shop_yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shop_yes.png; sourceTree = "<group>"; };
 		96C0318E21EC911500F288CC /* MClient.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MClient.framework; path = easySellApp/MClient.framework; sourceTree = "<group>"; };
-		96CDBC8D21EDD07A00AA12FD /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
+		96CDBCB321EDEB7000AA12FD /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		96CFF82917FA44BBB66D9BA1 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		96F36F4A21E320AF00DABEA7 /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = easySellApp/VideoView.h; sourceTree = "<group>"; };
 		96F36F4B21E320B000DABEA7 /* VideoViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoViewManager.h; path = easySellApp/VideoViewManager.h; sourceTree = "<group>"; };
@@ -716,7 +715,8 @@
 		13B07FAE1A68108700A75B9A /* easySellApp */ = {
 			isa = PBXGroup;
 			children = (
-				96CDBC8D21EDD07A00AA12FD /* bundle */,
+				9616D9B721F3069B004FCAF0 /* LaunchScreen.xib */,
+				96CDBCB321EDEB7000AA12FD /* bundle */,
 				96F36F4A21E320AF00DABEA7 /* VideoView.h */,
 				96F36F4D21E320B000DABEA7 /* VideoView.m */,
 				96F36F4B21E320B000DABEA7 /* VideoViewManager.h */,
@@ -726,10 +726,9 @@
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
-				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				9616D9B521F2F68E004FCAF0 /* Image.xcassets */,
 			);
 			name = easySellApp;
 			sourceTree = "<group>";
@@ -1630,13 +1629,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				9625E87921C7AA0C005AF65B /* icon_show.png in Resources */,
 				9625E88121C7AA0C005AF65B /* icon_logout.png in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				9625E86C21C7AA0C005AF65B /* back-icon@3x.png in Resources */,
 				AD61EF3533EE4305B33530A8 /* Entypo.ttf in Resources */,
 				9625E89621C7AA0C005AF65B /* mine_not.png in Resources */,
+				9616D9B921F3069B004FCAF0 /* LaunchScreen.xib in Resources */,
 				9625E88021C7AA0C005AF65B /* passwd_icon.png in Resources */,
 				42405C7FFEA841998D5BDCD7 /* EvilIcons.ttf in Resources */,
 				9625E89421C7AA0C005AF65B /* evalut_not.png in Resources */,
@@ -1656,12 +1654,12 @@
 				9625E87421C7AA0C005AF65B /* icon_comment.png in Resources */,
 				9625E88321C7AA0C005AF65B /* icon_addr.png in Resources */,
 				9625E89721C7AA0C005AF65B /* mine_yes.png in Resources */,
-				96CDBC8E21EDD07A00AA12FD /* bundle in Resources */,
 				9625E88B21C7AA0C005AF65B /* icon_phone.png in Resources */,
 				9625E86921C7AA0C005AF65B /* back-icon-mask.png in Resources */,
 				9625E88621C7AA0C005AF65B /* icon_filter.png in Resources */,
 				9625E88C21C7AA0C005AF65B /* icon_phone_min.png in Resources */,
 				9625E87721C7AA0C005AF65B /* icon_lian.png in Resources */,
+				96CDBCE221EDEB7100AA12FD /* bundle in Resources */,
 				9625E87E21C7AA0C005AF65B /* login_footer_bg.png in Resources */,
 				9625E86D21C7AA0C005AF65B /* avatar.png in Resources */,
 				9625E89821C7AA0C005AF65B /* shop_not.png in Resources */,
@@ -1682,6 +1680,7 @@
 				9625E88821C7AA0C005AF65B /* icon_map.png in Resources */,
 				9625E87A21C7AA0C005AF65B /* icon_you.png in Resources */,
 				5CE10B610EFE448993BF994A /* SimpleLineIcons.ttf in Resources */,
+				9616D9B621F2F68E004FCAF0 /* Image.xcassets in Resources */,
 				9625E86E21C7AA0C005AF65B /* icon_back.png in Resources */,
 				9625E89221C7AA0C005AF65B /* dynamic_not.png in Resources */,
 				9625E89121C7AA0C005AF65B /* icon_video_online.png in Resources */,
@@ -1704,7 +1703,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1788,13 +1786,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		13B07FB11A68108700A75B9A /* LaunchScreen.xib */ = {
+		9616D9B721F3069B004FCAF0 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				13B07FB21A68108700A75B9A /* Base */,
+				9616D9B821F3069B004FCAF0 /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = easySellApp;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1804,6 +1801,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1845,10 +1843,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5RCYAG49G7;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1875,8 +1874,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.csst.easysell;
 				PRODUCT_NAME = easySellApp;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "fe90b955-998a-422d-8e90-59d3e86405bf";
+				PROVISIONING_PROFILE_SPECIFIER = easySellApp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
