@@ -39,7 +39,7 @@ export default class Login extends React.Component {
 
   async componentDidMount() {
     this.setRouter();
-    this.setStatusBar("#000")
+    this.setStatusBar("#FFF")
 
     let nowIp = await AsyncStorage.getItem('base_ip');
     let nowPort = await AsyncStorage.getItem('base_port');

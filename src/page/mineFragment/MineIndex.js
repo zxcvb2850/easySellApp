@@ -22,6 +22,11 @@ export default class MineIndex extends React.Component {
     this.props.store.NavInfo.setRoute(true);
   }
 
+  @action
+  setStatusBar(color) {
+    this.props.store.StatusBarColor.setStatusBarColor(color)
+  }
+
   /*获取个人信息*/
   @computed get userInfo() {
     return this.props.store.UserInfo.userInfo;
@@ -33,6 +38,7 @@ export default class MineIndex extends React.Component {
     this.setRouter();
     await AsyncStorage.removeItem('shop_token')
     await AsyncStorage.removeItem('shop_info')
+    this.setStatusBar("#FFF")
     this.props.navigation.navigate("Login");
   }
 
