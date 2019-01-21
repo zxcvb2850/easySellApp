@@ -466,17 +466,20 @@ const styles = StyleSheet.create({
   },
   modal_wrapper: {
     position: 'relative',
-    width: scaleSize(695),
-    height: scaleSize(420)
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: scaleSize(703),
+    height: scaleSize(428),
+    borderRadius: scaleSize(6),
+    backgroundColor: whiteColor,
   },
   modal_image: {
-    flex: 1,
     width: scaleSize(695),
     height: scaleSize(420),
   },
   modal_button: {
     position: 'absolute',
-    top: scaleSize(20),
+    top: 0,
     left: scaleSize(14),
     right: scaleSize(14),
     flexDirection: 'row',
