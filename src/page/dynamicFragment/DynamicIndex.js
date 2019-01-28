@@ -11,18 +11,18 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native"
-import {AnimatedCircularProgress} from 'react-native-circular-progress'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import LinearGradient from 'react-native-linear-gradient';
 import Header from "../../components/Header"
-import {scaleSize} from "../../common/screenUtil";
+import { scaleSize } from "../../common/screenUtil";
 import {
   backgroundColor,
   headerColor,
   itemHeadColor, fontSize18, warringColor, fontSize16,
   whiteColor, fontSize20
 } from "../../common/styles";
-import {storeStat} from "../../api/storeReq";
-import {reviewPlanStat, reviewRecordStat} from "../../api/evaluReq";
+import { storeStat } from "../../api/storeReq";
+import { reviewPlanStat, reviewRecordStat } from "../../api/evaluReq";
 
 export default class DynamicIndex extends React.Component {
   componentWillUnmount() {
@@ -40,6 +40,7 @@ export default class DynamicIndex extends React.Component {
   constructor() {
     super()
     this.state = {
+      title: '首页',
       data: [],
       progress: [],//圆形进度条数据
       arming: {
@@ -66,22 +67,23 @@ export default class DynamicIndex extends React.Component {
 
   _storeStat = async () => {
     let result = await storeStat()
-    result = {arming: result.arming, store: result.store, video: result.video}
+    let name = result.name
+    result = { arming: result.arming, store: result.store, video: result.video }
     for (let key in result) {
-      Object.assign(result[key], {name: key})
+      Object.assign(result[key], { name: key })
     }
     result = Object.values(result)
-    this.setState({progress: result, refreshing: false})
+    this.setState({ progress: result, refreshing: false, title: name })
   }
 
   _reviewRecordStat = async (page = 1) => {
     let result = await reviewRecordStat(page);
-    this.setState({reviewRecord: result})
+    this.setState({ reviewRecord: result })
   }
 
   _reviewPlanStat = async () => {
     let result = await reviewPlanStat()
-    this.setState({reviewPlan: result.reviewPlan})
+    this.setState({ reviewPlan: result.reviewPlan })
   }
 
   //下拉刷新
@@ -116,7 +118,7 @@ export default class DynamicIndex extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header title={"碧桂园-保安部"}/>
+        <Header title={this.state.title} />
         <FlatList
           style={styles.list}
           data={this.state.data}
@@ -128,7 +130,7 @@ export default class DynamicIndex extends React.Component {
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this.Refresh}
-              title="刷新中..."/>}
+              title="刷新中..." />}
         />
       </View>
     )
@@ -152,19 +154,19 @@ export default class DynamicIndex extends React.Component {
                 backgroundColor="rgba(0,0,0,0.1)"
                 children={() => (
                   <View>
-                    <Text style={[styles.gary_color, {textAlign: 'center'}]}>
+                    <Text style={[styles.gary_color, { textAlign: 'center' }]}>
                       {item.name === 'arming' ? '布防' : item.name === 'store' ? '在线' : '可视'}
                     </Text>
-                    <Text style={[styles.color_white, {textAlign: 'center', fontSize: 26}]}>{item.rate * 100}%</Text>
-                  </View>)}/>
+                    <Text style={[styles.color_white, { textAlign: 'center', fontSize: 26 }]}>{item.rate * 100}%</Text>
+                  </View>)} />
               <View style={styles.desc_title}>
                 <Image style={styles.icon_min}
-                       source={require("../../assets/resource/dynamic/icon_video.png")}/>
-                <Text style={[styles.gary_color, {fontSize: fontSize16}]}>{this.showName(item.name)}总数</Text>
+                  source={require("../../assets/resource/dynamic/icon_video.png")} />
+                <Text style={[styles.gary_color, { fontSize: fontSize16 }]}>{this.showName(item.name)}总数</Text>
               </View>
               <Text onPress={() => {
-                this.setState({text: 50})
-              }} style={[styles.color_white, {fontSize: fontSize20}]}>{item.total}</Text>
+                this.setState({ text: 50 })
+              }} style={[styles.color_white, { fontSize: fontSize20 }]}>{item.total}</Text>
             </View>
           ))
         }
@@ -185,16 +187,16 @@ export default class DynamicIndex extends React.Component {
             <Text style={[styles.txt, styles.gary_text_color]}>今日计划</Text>
             <Text style={[styles.txt, styles.gary_text_color]}>{this.state.reviewPlan.plan}</Text>
           </View>
-          <View style={styles.line}/>
+          <View style={styles.line} />
           <View style={styles.body_item}>
             <Text style={[styles.txt, styles.gary_text_color]}>今日考评</Text>
             <Text style={[styles.txt, styles.gary_text_color]}>{this.state.reviewPlan.today}</Text>
           </View>
-          <View style={styles.line}/>
+          <View style={styles.line} />
           <View style={[styles.body_item, styles.row]}>
             <Text style={[styles.txt, styles.txt_continue]}>继续</Text>
-            <Image style={{width: scaleSize(32), height: scaleSize(32)}}
-                   source={require("../../assets/resource/home/icon_continue.png")}/>
+            <Image style={{ width: scaleSize(32), height: scaleSize(32) }}
+              source={require("../../assets/resource/home/icon_continue.png")} />
           </View>
         </View>
       </TouchableOpacity>
@@ -206,7 +208,7 @@ export default class DynamicIndex extends React.Component {
           //this.props.navigation.navigate('screenFull')
         }}
       >
-        <View style={[styles.item_header, {backgroundColor: warringColor}]}>
+        <View style={[styles.item_header, { backgroundColor: warringColor }]}>
           <Text style={[styles.txt, styles.item_title]}>考评报表</Text>
           <Text style={styles.item_degree}>完成总数：{this.state.reviewRecord.recordTotal}</Text>
         </View>
@@ -218,19 +220,19 @@ export default class DynamicIndex extends React.Component {
                   style={styles.txt}>优>>{(this.state.reviewRecord.reviewRecord.excellent.rule * 100).toFixed(0)}%</Text>
                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.excellent.total}</Text>
               </View>
-              <View style={styles.line}/>
+              <View style={styles.line} />
               <View style={[styles.body_item]}>
                 <Text
                   style={styles.txt}>良>>{(this.state.reviewRecord.reviewRecord.good.rule * 100).toFixed(0)}%</Text>
                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.good.total}</Text>
               </View>
-              <View style={styles.line}/>
+              <View style={styles.line} />
               <View style={[styles.body_item]}>
                 <Text
                   style={styles.txt}>中>>{(this.state.reviewRecord.reviewRecord.medium.rule * 100).toFixed(0)}%</Text>
                 <Text style={styles.txt}>{this.state.reviewRecord.reviewRecord.medium.total}</Text>
               </View>
-              <View style={styles.line}/>
+              <View style={styles.line} />
               <View style={styles.body_item}>
                 <Text
                   style={styles.txt}>差>>{(this.state.reviewRecord.reviewRecord.bad.rule * 100).toFixed(0)}%</Text>
@@ -243,7 +245,7 @@ export default class DynamicIndex extends React.Component {
     </View>
   )
 
-  _renderItem = ({item}) => (
+  _renderItem = ({ item }) => (
     <View>
       <Text>1</Text>
     </View>
