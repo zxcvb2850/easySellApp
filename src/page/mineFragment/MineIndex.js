@@ -72,6 +72,18 @@ export default class MineIndex extends React.Component {
                      source={require("../../assets/resource/common/icon_back_black.png")}/>
             </Right>
           </ListItem>
+          <ListItem onPress={() => this.props.navigation.navigate('WebViewCommon', {
+            title: '隐私政策',
+            url: 'http://118.186.224.167:8288/privacy.html\n'
+          })}>
+            <Left>
+              <Text style={{color: garyColor}}>隐私政策</Text>
+            </Left>
+            <Right>
+              <Image style={{width: scaleSize(48), height: scaleSize(48)}}
+                     source={require("../../assets/resource/common/icon_back_black.png")}/>
+            </Right>
+          </ListItem>
         </List>
         <Button block style={styles.logout_btn} onPress={this.logout}>
           <Image style={{width: scaleSize(36), height: scaleSize(36)}}

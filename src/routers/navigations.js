@@ -22,6 +22,7 @@ import EvalutEnd from "../page/evalutFragment/component/EvalutEnd"
 import EvalutItem from "../page/evalutFragment/component/EvalutItem"
 import FeedList from "../page/evalutFragment/component/FeedList"
 import FeedbackDetail from "../page/evalutFragment/component/FeedbackDetail"
+import WebViewCommon from "../components/WebViewCommon"
 
 import {garyColor, mainColor} from "../common/styles";
 import {scaleSize} from "../common/screenUtil";
@@ -105,6 +106,7 @@ export const AppNavigator = createStackNavigator({
   ForgetPwd: {screen: ForgetPwd},//修改密码
   ShopDetail: {screen: ShopDetail},//店铺详情
   AlarmList: {screen: AlarmList},//报警列表
+  WebViewCommon: {screen: WebViewCommon},//公用webview
 }, {
   //路由参数
   header: null,
